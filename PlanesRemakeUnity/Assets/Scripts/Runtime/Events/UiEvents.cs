@@ -7,6 +7,7 @@ namespace PlanesRemastered.Runtime.Events
         OnCoinsValueChanged,
         OnWallsValueChanged,
         OnPuauseButtonPressed,
-        OnUnpauseButtonPressed
+        OnUnpauseButtonPressed,
+        OnMainMenuButtonPressed
     }
 }

@@ -1,7 +1,8 @@
 namespace PlanesRemastered.Runtime.UI.Views
 {
-    using PlanesRemastered.Runtime.Events;
     using UnityEngine;
+    
+    using PlanesRemastered.Runtime.Events;
 
     public class MainMenuView : BaseView
     {

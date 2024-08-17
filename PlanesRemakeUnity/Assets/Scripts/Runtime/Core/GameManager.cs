@@ -81,7 +81,7 @@ namespace PlanesRemastered.Runtime.Core
             {
                 case UiEvents.OnPlayButtonPressed:
                     {
-                        contentLoader.LoadScene("MainLevel", LoadSceneMode.Single, 
+                        contentLoader.LoadScene("MainLevel", LoadSceneMode.Additive, 
                             () =>
                             {
                                 uiManager.RemoveView(ViewIds.MainMenu);
@@ -105,6 +105,17 @@ namespace PlanesRemastered.Runtime.Core
                         uiManager.RemoveView(ViewIds.PauseMenu);
                         inputManager.DisableInput(uiManager);
                         IsGamePaused = false;
+                        break;
+                    }
+
+                case UiEvents.OnMainMenuButtonPressed:
+                    {
+                        uiManager.RemoveView(ViewIds.PauseMenu);
+                        contentLoader.UnloadScene("MainLevel",
+                            () =>
+                            {
+                                uiManager.DisplayView(ViewIds.MainMenu);
+                            });
                         break;
                     }
 
