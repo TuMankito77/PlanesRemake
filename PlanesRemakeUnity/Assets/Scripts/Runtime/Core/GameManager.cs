@@ -1,4 +1,4 @@
-namespace PlanesRemastered.Runtime.Core
+namespace PlanesRemake.Runtime.Core
 {
     using System;
     using System.Collections.Generic;
@@ -6,11 +6,11 @@ namespace PlanesRemastered.Runtime.Core
     using UnityEngine;
     using UnityEngine.SceneManagement;
     
-    using PlanesRemastered.Runtime.Events;
-    using PlanesRemastered.Runtime.Gameplay;
-    using PlanesRemastered.Runtime.Input;
-    using PlanesRemastered.Runtime.UI;
-    using PlanesRemastered.Runtime.UI.Views;
+    using PlanesRemake.Runtime.Events;
+    using PlanesRemake.Runtime.Gameplay;
+    using PlanesRemake.Runtime.Input;
+    using PlanesRemake.Runtime.UI;
+    using PlanesRemake.Runtime.UI.Views;
 
     public class GameManager : IListener
     {
@@ -111,6 +111,7 @@ namespace PlanesRemastered.Runtime.Core
                 case UiEvents.OnMainMenuButtonPressed:
                     {
                         uiManager.RemoveView(ViewIds.PauseMenu);
+                        currentLevelInitializer = null;
                         contentLoader.UnloadScene("MainLevel",
                             () =>
                             {
