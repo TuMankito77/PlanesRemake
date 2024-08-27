@@ -1,26 +1,18 @@
-namespace PlanesRemastered.Runtime.Gameplay
+namespace PlanesRemake.Runtime.Gameplay
 {
     using UnityEngine;
     
-    using PlanesRemastered.Runtime.Input;
+    using PlanesRemake.Runtime.Input;
+    using PlanesRemake.Runtime.Utils;
 
     public class Aircraft : MonoBehaviour, IInputControlableEntity
     {
-        private struct Boundaries
-        {
-            public float top;
-            public float bottom;
-            public float left;
-            public float right;
-            public Vector3 center;
-        }
-
         [SerializeField, Min(1)]
         private float movementSpeed = 10;
 
         private Vector2 direction = Vector2.zero;
         private Camera isometricCamera = null;
-        private Boundaries boundaries = default(Boundaries);
+        private CameraExtensions.Boundaries boundaries = default(CameraExtensions.Boundaries);
 
         #region Unity Methods
 
@@ -47,28 +39,13 @@ namespace PlanesRemastered.Runtime.Gameplay
 
         public void Initialize(Camera sourceIsometricCamera)
         {
-            isometricCamera = sourceIsometricCamera;
-            GetCameraBoundaries();
+            boundaries = sourceIsometricCamera.GetScreenBoundariesInWorld(transform.position);
             transform.position = boundaries.center;
         }
 
         public void UpdateDirection(Vector2 sourceDirection)
         {
            direction = sourceDirection.normalized;
-        }
-
-        private void GetCameraBoundaries()
-        {
-            float screenHeight = isometricCamera.pixelHeight;
-            float screenWidth = isometricCamera.pixelWidth;
-            Vector3 aircraftToCameraVector = transform.position - isometricCamera.transform.position;
-
-            float depthDistanceToCamera = aircraftToCameraVector.magnitude;
-            boundaries.top = isometricCamera.ScreenToWorldPoint(new Vector3(screenWidth, screenHeight, depthDistanceToCamera)).y;
-            boundaries.bottom = isometricCamera.ScreenToWorldPoint(new Vector3(0, 0, depthDistanceToCamera)).y;
-            boundaries.left = isometricCamera.ScreenToWorldPoint(new Vector3(0, 0, depthDistanceToCamera)).x;
-            boundaries.right = isometricCamera.ScreenToWorldPoint(new Vector3(screenWidth, screenHeight, depthDistanceToCamera)).x;
-            boundaries.center = isometricCamera.ScreenToWorldPoint(new Vector3(screenWidth / 2, screenHeight / 2, depthDistanceToCamera));
         }
     }
 }
