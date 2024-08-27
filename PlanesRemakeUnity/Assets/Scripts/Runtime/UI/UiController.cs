@@ -1,8 +1,8 @@
-namespace PlanesRemastered.Runtime.UI
+namespace PlanesRemake.Runtime.UI
 {
     using System;
 
-    using PlanesRemastered.Runtime.Input;
+    using PlanesRemake.Runtime.Input;
     
     public class UiController : InputController
     {

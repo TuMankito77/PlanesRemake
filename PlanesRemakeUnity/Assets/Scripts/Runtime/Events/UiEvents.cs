@@ -1,4 +1,4 @@
-namespace PlanesRemastered.Runtime.Events
+namespace PlanesRemake.Runtime.Events
 {
     public enum UiEvents
     {

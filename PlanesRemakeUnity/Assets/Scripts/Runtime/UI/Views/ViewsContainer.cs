@@ -1,10 +1,10 @@
-namespace PlanesRemastered.Runtime.Core
+namespace PlanesRemake.Runtime.Core
 {
     using System.Collections.Generic;
 
     using UnityEngine;
     
-    using PlanesRemastered.Runtime.UI.Views;
+    using PlanesRemake.Runtime.UI.Views;
 
     [CreateAssetMenu(fileName = "ViewsContainer", menuName = "Ui/ViewsContainer")]
     public class ViewsContainer : ScriptableObject

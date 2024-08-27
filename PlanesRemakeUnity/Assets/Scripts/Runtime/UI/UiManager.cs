@@ -1,4 +1,4 @@
-namespace PlanesRemastered.Runtime.UI
+namespace PlanesRemake.Runtime.UI
 {
     using System;
     using System.Threading.Tasks;
@@ -7,9 +7,9 @@ namespace PlanesRemastered.Runtime.UI
     using UnityEngine;
     using UnityEngine.EventSystems;
 
-    using PlanesRemastered.Runtime.Core;
-    using PlanesRemastered.Runtime.UI.Views;
-    using PlanesRemastered.Runtime.Input;
+    using PlanesRemake.Runtime.Core;
+    using PlanesRemake.Runtime.UI.Views;
+    using PlanesRemake.Runtime.Input;
 
     public class UiManager : BaseSystem, IInputControlableEntity
     {

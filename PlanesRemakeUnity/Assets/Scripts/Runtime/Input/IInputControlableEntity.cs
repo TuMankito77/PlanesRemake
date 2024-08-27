@@ -1,4 +1,4 @@
-namespace PlanesRemastered.Runtime.Input
+namespace PlanesRemake.Runtime.Input
 {
     public interface IInputControlableEntity
     {

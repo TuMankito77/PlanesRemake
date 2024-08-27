@@ -1,4 +1,4 @@
-namespace PlanesRemastered.Runtime.Core
+namespace PlanesRemake.Runtime.Core
 {
     using UnityEngine;
 

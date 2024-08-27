@@ -1,4 +1,4 @@
-namespace PlanesRemastered.Runtime.UI.Views
+namespace PlanesRemake.Runtime.UI.Views
 {
     public static class ViewIds
     {

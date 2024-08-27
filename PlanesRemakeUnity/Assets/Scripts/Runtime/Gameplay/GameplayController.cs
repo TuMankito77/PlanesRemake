@@ -1,13 +1,13 @@
-namespace PlanesRemastered.Runtime.Gameplay
+namespace PlanesRemake.Runtime.Gameplay
 {
     using System;
 
     using UnityEngine;
     using UnityEngine.InputSystem;
 
-    using PlanesRemastered.Runtime.Events;
-    using PlanesRemastered.Runtime.Input;
-    using PlanesRemastered.Runtime.Core;
+    using PlanesRemake.Runtime.Events;
+    using PlanesRemake.Runtime.Input;
+    using PlanesRemake.Runtime.Core;
 
     public class GameplayController : InputController
     {

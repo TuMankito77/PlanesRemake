@@ -1,4 +1,4 @@
-namespace PlanesRemastered.Runtime.UI
+namespace PlanesRemake.Runtime.UI
 {
     using System;
 

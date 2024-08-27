@@ -1,11 +1,11 @@
-namespace PlanesRemastered.Runtime.UI.Views
+namespace PlanesRemake.Runtime.UI.Views
 {
     using System;
     
     using UnityEngine;
     using UnityEngine.UI;
     
-    using PlanesRemastered.Runtime.Events;
+    using PlanesRemake.Runtime.Events;
 
     public class HudView : BaseView, IListener
     {
