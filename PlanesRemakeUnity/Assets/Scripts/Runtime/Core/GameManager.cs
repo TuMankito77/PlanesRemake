@@ -111,6 +111,7 @@ namespace PlanesRemake.Runtime.Core
                 case UiEvents.OnMainMenuButtonPressed:
                     {
                         uiManager.RemoveView(ViewIds.PauseMenu);
+                        currentLevelInitializer.Dispose();
                         currentLevelInitializer = null;
                         contentLoader.UnloadScene("MainLevel",
                             () =>

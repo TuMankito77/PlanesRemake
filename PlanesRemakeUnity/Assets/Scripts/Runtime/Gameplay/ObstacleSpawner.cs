@@ -4,6 +4,7 @@ namespace PlanesRemake.Runtime.Gameplay
 
     using PlanesRemake.Runtime.Utils;
 
+    //NOTE: Think about making this a generic class that can spawn all sort of objects.
     public class ObstacleSpawner
     {
         private readonly Quaternion obstacleDefaultRotation = Quaternion.Euler(new Vector3(-15, -15, 0));
@@ -23,9 +24,18 @@ namespace PlanesRemake.Runtime.Gameplay
                 boundaries.center.y,
                 0);
 
-            spawningTimer = new Timer(10, sourceIsRepeating: true);
+            //We are calling this function once so that the first wall appears and we don't have the player 
+            //waiting for something to happen.
+            OnSpawningTimerCompleted();
+            spawningTimer = new Timer(30, sourceIsRepeating: true);
             spawningTimer.OnTimerCompleted += OnSpawningTimerCompleted;
             spawningTimer.Start();
+        }
+
+        public void Dispose()
+        {
+            spawningTimer.OnTimerCompleted -= OnSpawningTimerCompleted;
+            spawningTimer.Stop();
         }
 
         private void SpawnObstacle(Obstacle obstaclePrefab)

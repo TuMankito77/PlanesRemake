@@ -43,10 +43,9 @@ namespace PlanesRemake.Runtime.Core
                 ()=> DisplayAssetNotLoadedError(OBSTACLE_PREFAB_PATH));
         }
 
-        //Investigate how to call the destructor of a class in order to clean-up everything that it was managing.
-        ~LevelInitializer()
+        public void Dispose()
         {
-            //Dispose everything that wee need to dispose.
+            obstacleSpawner.Dispose();
         }
 
         //To-do: Consider moving this function to the ContentLoader class.
