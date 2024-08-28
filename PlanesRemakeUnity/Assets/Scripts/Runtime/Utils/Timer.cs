@@ -31,7 +31,7 @@ namespace PlanesRemake.Runtime.Utils
         }
 
         /// <summary>
-        /// If the timer is stop suddenly, the is complete action will not be called.
+        /// If the timer is stop suddenly, the OnTimerCompleted action will not be called.
         /// </summary>
         public void Stop()
         {
