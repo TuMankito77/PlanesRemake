@@ -7,6 +7,12 @@ namespace PlanesRemake.Runtime.Gameplay
     [RequireComponent(typeof(DirectionalMovement), typeof(OsilateMovement))]
     public class Obstacle : MonoBehaviour
     {
+        [SerializeField]
+        private CollisionEventNotifier gapCollider = null;
+
+        [SerializeField]
+        private CollisionEventNotifier[] wallColliders = null;
+        
         private DirectionalMovement directionalMovement = null;
         private OsilateMovement osilateMovement = null;
 
@@ -16,6 +22,16 @@ namespace PlanesRemake.Runtime.Gameplay
         {
             directionalMovement = GetComponent<DirectionalMovement>();
             osilateMovement = GetComponent<OsilateMovement>();
+        }
+
+        private void Start()
+        {
+            foreach(CollisionEventNotifier wallCollider in wallColliders)
+            {
+                wallCollider.OnTiggerEnterDetected += OnWallTriggerEntered;
+            }
+
+            gapCollider.OnTriggerExitDetected += OnGapTriggerExited;
         }
 
         #endregion
@@ -30,6 +46,16 @@ namespace PlanesRemake.Runtime.Gameplay
             directionalMovement.ChangeVelocityVector(velocityVector);
             osilateMovement.ChangeOsilationDistance(osilationDistance);
             osilateMovement.ChangeSpeed(osilationSpeed);
+        }
+
+        private void OnWallTriggerEntered(Collider other)
+        {
+            Debug.LogWarning("Wall collided!");
+        }
+
+        private void OnGapTriggerExited(Collider other)
+        {
+            Debug.LogWarning("Gap exited!");
         }
     }
 }
