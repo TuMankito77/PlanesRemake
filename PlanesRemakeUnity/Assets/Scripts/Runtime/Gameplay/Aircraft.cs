@@ -4,8 +4,10 @@ namespace PlanesRemake.Runtime.Gameplay
     
     using PlanesRemake.Runtime.Input;
     using PlanesRemake.Runtime.Utils;
+    using PlanesRemake.Runtime.Events;
+    using System;
 
-    public class Aircraft : MonoBehaviour, IInputControlableEntity
+    public class Aircraft : MonoBehaviour, IInputControlableEntity, IListener
     {
         [SerializeField, Min(1)]
         private float movementSpeed = 10;
@@ -13,6 +15,8 @@ namespace PlanesRemake.Runtime.Gameplay
         private Vector2 direction = Vector2.zero;
         private Camera isometricCamera = null;
         private CameraExtensions.Boundaries boundaries = default(CameraExtensions.Boundaries);
+        //NOTE: Remove this timer once we have an animation an we know when the destroy animation finishes.
+        private Timer timer = null;
 
         #region Unity Methods
 
@@ -37,15 +41,66 @@ namespace PlanesRemake.Runtime.Gameplay
 
         #endregion
 
+        #region IListener
+
+        public void HandleEvent(IComparable eventName, object data)
+        {
+            switch(eventName)
+            {
+                case GameplayEvents gameplayEvent:
+                {
+                    HandleGameplayEvents(gameplayEvent, data);
+                    break;
+                }
+            }
+        }
+
+        #endregion
+
         public void Initialize(Camera sourceIsometricCamera)
         {
             boundaries = sourceIsometricCamera.GetScreenBoundariesInWorld(transform.position);
             transform.position = boundaries.center;
+            EventDispatcher.Instance.AddListener(this, typeof(GameplayEvents));
         }
 
         public void UpdateDirection(Vector2 sourceDirection)
         {
            direction = sourceDirection.normalized;
+        }
+
+        private void DestroyAircraft()
+        {
+            direction = Vector2.zero;
+            timer = new Timer(5);
+            timer.OnTimerCompleted += SendAircraftDestroyedEvent;
+            timer.Start();
+        }
+
+        private void SendAircraftDestroyedEvent()
+        {
+            timer.OnTimerCompleted -= SendAircraftDestroyedEvent;
+            EventDispatcher.Instance.RemoveListener(this, typeof(GameplayEvents));
+            EventDispatcher.Instance.Dispatch(GameplayEvents.OnAircraftDestroyed, this);
+        }
+
+        private void HandleGameplayEvents(GameplayEvents gameplayEvent, object data)
+        {
+            switch(gameplayEvent)
+            {
+                case GameplayEvents.OnWallcollision:
+                {
+                    Collider collider = data as Collider;
+                    
+                    if(collider.gameObject != gameObject)
+                    {
+                        return;
+                    }
+
+                    DestroyAircraft();
+                    break;
+                }
+            }
         }
     }
 }
