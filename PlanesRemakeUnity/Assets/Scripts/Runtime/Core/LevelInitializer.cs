@@ -9,12 +9,13 @@ namespace PlanesRemake.Runtime.Core
     public class LevelInitializer
     {
         private const string SPHERICAL_BACKGROUND_PREFAB_PATH = "MainLevel/SphericalBackground";
-        private const string PLAYER_PLANE_PREFAB_PATH = "MainLevel/Player";
+        private const string AIRCRAFT_PREFAB_PATH = "MainLevel/Aircraft";
         private const string OBSTACLE_PREFAB_PATH = "MainLevel/Obstacle";
 
         private GameObject skyDomeBackground = null;
-        private Aircraft playerPlane = null;
         private ObstacleSpawner obstacleSpawner = null;
+        
+        public Aircraft Aircraft { get; private set; } = null;
 
         public LevelInitializer(ContentLoader contentLoader, InputManager inputManager)
         {
@@ -28,16 +29,16 @@ namespace PlanesRemake.Runtime.Core
                 () => DisplayAssetNotLoadedError(SPHERICAL_BACKGROUND_PREFAB_PATH));
 
             contentLoader.LoadAsset<Aircraft>
-                (PLAYER_PLANE_PREFAB_PATH, 
+                (AIRCRAFT_PREFAB_PATH, 
                 (assetLoaded) =>
                 {
-                    playerPlane = GameObject.Instantiate(assetLoaded, Vector3.zero, Quaternion.Euler(0, 115, -25));
-                    playerPlane.Initialize(isometricCamera);
-                    inputManager.EnableInput(playerPlane);
+                    Aircraft = GameObject.Instantiate(assetLoaded, Vector3.zero, Quaternion.Euler(0, 115, -25));
+                    Aircraft.Initialize(isometricCamera);
+                    inputManager.EnableInput(Aircraft);
                 },
-                () => DisplayAssetNotLoadedError(PLAYER_PLANE_PREFAB_PATH));
+                () => DisplayAssetNotLoadedError(AIRCRAFT_PREFAB_PATH));
 
-            contentLoader.LoadAsset<Obstacle>
+            contentLoader.LoadAsset<GameObject>
                 (OBSTACLE_PREFAB_PATH,
                 (assetLoaded) => obstacleSpawner = new ObstacleSpawner(assetLoaded, isometricCamera),
                 ()=> DisplayAssetNotLoadedError(OBSTACLE_PREFAB_PATH));
