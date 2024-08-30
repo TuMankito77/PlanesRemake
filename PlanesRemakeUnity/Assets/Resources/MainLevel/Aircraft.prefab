@@ -112,8 +112,8 @@ GameObject:
   - component: {fileID: 3211565370048440531}
   - component: {fileID: 1213488579361636036}
   m_Layer: 6
-  m_Name: Player
-  m_TagString: Untagged
+  m_Name: Aircraft
+  m_TagString: Aircraft
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
