@@ -32,7 +32,7 @@ namespace PlanesRemake.Runtime.Core
             systemsInitializer.OnSystemsInitialized += OnSystemsInitialized;
             systemsInitializer.InitializeSystems(baseSystems);
             
-            EventDispatcher.Instance.AddListener(this, typeof(UiEvents));
+            EventDispatcher.Instance.AddListener(this, typeof(UiEvents), typeof(GameplayEvents));
         }
 
         ~GameManager()
@@ -49,6 +49,12 @@ namespace PlanesRemake.Runtime.Core
                 case UiEvents uiEvent:
                 {
                     HandleUiEvents(uiEvent, data);
+                    break;
+                }
+
+                case GameplayEvents gameplayEvent:
+                {
+                    HandleGameplayEvents(gameplayEvent, data);
                     break;
                 }
             }
@@ -111,13 +117,7 @@ namespace PlanesRemake.Runtime.Core
                 case UiEvents.OnMainMenuButtonPressed:
                     {
                         uiManager.RemoveView(ViewIds.PauseMenu);
-                        currentLevelInitializer.Dispose();
-                        currentLevelInitializer = null;
-                        contentLoader.UnloadScene("MainLevel",
-                            () =>
-                            {
-                                uiManager.DisplayView(ViewIds.MainMenu);
-                            });
+                        UnloadMainLevel();
                         break;
                     }
 
@@ -127,6 +127,35 @@ namespace PlanesRemake.Runtime.Core
                         break;
                     }
             }
+        }
+
+        private void HandleGameplayEvents(GameplayEvents gameplayEvent, object data)
+        {
+            switch(gameplayEvent)
+            {
+                case GameplayEvents.OnWallcollision:
+                {
+                    inputManager.DisableInput(currentLevelInitializer.Aircraft);
+                    break;
+                }
+
+                case GameplayEvents.OnAircraftDestroyed:
+                {
+                    UnloadMainLevel();
+                    break;
+                }
+            }
+        }
+
+        private void UnloadMainLevel()
+        {
+            currentLevelInitializer.Dispose();
+            currentLevelInitializer = null;
+            contentLoader.UnloadScene("MainLevel",
+            () =>
+            {
+                uiManager.DisplayView(ViewIds.MainMenu);
+            });
         }
     }
 
