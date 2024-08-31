@@ -14,12 +14,19 @@ namespace PlanesRemake.Runtime.Core
 
     public class GameManager : IListener
     {
+        public struct PlayerData
+        {
+            public int coinsCollected;
+            public int wallsEvaded;
+        }
+
         private SystemsInitializer systemsInitializer = null;
         private List<BaseSystem> baseSystems = null;
         private ContentLoader contentLoader = null;
         private UiManager uiManager = null;
         private InputManager inputManager = null;
         private LevelInitializer currentLevelInitializer = null;
+        private PlayerData playerData = default(PlayerData);
 
         public bool IsGamePaused { get; private set; } = false;
         
@@ -66,6 +73,9 @@ namespace PlanesRemake.Runtime.Core
         {
             contentLoader = systemsInitializer.GetSystem<ContentLoader>();
             uiManager = systemsInitializer.GetSystem<UiManager>();
+            playerData = new PlayerData();
+            playerData.coinsCollected = 0;
+            playerData.wallsEvaded = 0;
             CreateInputControllers();
         }
 
@@ -139,6 +149,14 @@ namespace PlanesRemake.Runtime.Core
                     break;
                 }
 
+                case GameplayEvents.OnWallEvaded:
+                {
+                    playerData.wallsEvaded++;
+                    string wallsEvadedAsString = playerData.wallsEvaded.ToString();
+                    EventDispatcher.Instance.Dispatch(UiEvents.OnWallsValueChanged, wallsEvadedAsString);
+                    break;
+                }
+
                 case GameplayEvents.OnAircraftDestroyed:
                 {
                     UnloadMainLevel();
@@ -149,13 +167,21 @@ namespace PlanesRemake.Runtime.Core
 
         private void UnloadMainLevel()
         {
+            uiManager.RemoveView(ViewIds.Hud);
             currentLevelInitializer.Dispose();
             currentLevelInitializer = null;
             contentLoader.UnloadScene("MainLevel",
             () =>
             {
+                ResetPlayerData();
                 uiManager.DisplayView(ViewIds.MainMenu);
             });
+        }
+
+        private void ResetPlayerData()
+        {
+            playerData.coinsCollected = 0;
+            playerData.wallsEvaded = 0;
         }
     }
 
