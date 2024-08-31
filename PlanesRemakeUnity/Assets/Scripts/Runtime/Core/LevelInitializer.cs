@@ -1,8 +1,11 @@
 namespace PlanesRemake.Runtime.Core
 {
+    using UnityEngine;
+    
     using PlanesRemake.Runtime.Gameplay;
     using PlanesRemake.Runtime.Input;
-    using UnityEngine;
+    using PlanesRemake.Runtime.Gameplay.Spawners;
+    using System.Collections.Generic;
 
     //NOTE: Should we make this a system?
     //Probably yes, as it loads data asynchronously and sometimes we need to know when we have access to this data.
@@ -11,14 +14,16 @@ namespace PlanesRemake.Runtime.Core
         private const string SPHERICAL_BACKGROUND_PREFAB_PATH = "MainLevel/SphericalBackground";
         private const string AIRCRAFT_PREFAB_PATH = "MainLevel/Aircraft";
         private const string OBSTACLE_PREFAB_PATH = "MainLevel/Obstacle";
+        private const string COIN_PREFAB_PATH = "MainLevel/Coin";
 
         private GameObject skyDomeBackground = null;
-        private ObstacleSpawner obstacleSpawner = null;
+        private List<BaseSpawner> spawners = null;
         
         public Aircraft Aircraft { get; private set; } = null;
 
         public LevelInitializer(ContentLoader contentLoader, InputManager inputManager)
         {
+            spawners = new List<BaseSpawner>();
             //NOTE: Update this so that we do not look for this object by name, but rather by reference 
             //as it could cause performance issues. 
             Camera isometricCamera = GameObject.Find("IsometricCamera").GetComponent<Camera>();
@@ -40,13 +45,21 @@ namespace PlanesRemake.Runtime.Core
 
             contentLoader.LoadAsset<GameObject>
                 (OBSTACLE_PREFAB_PATH,
-                (assetLoaded) => obstacleSpawner = new ObstacleSpawner(assetLoaded, isometricCamera),
+                (assetLoaded) => spawners.Add(new ObstacleSpawner(assetLoaded, isometricCamera)),
                 ()=> DisplayAssetNotLoadedError(OBSTACLE_PREFAB_PATH));
+
+            contentLoader.LoadAsset<GameObject>
+                (COIN_PREFAB_PATH,
+                (assetLoaded) => spawners.Add(new CoinSpawner(assetLoaded, isometricCamera)),
+                () => DisplayAssetNotLoadedError(COIN_PREFAB_PATH));
         }
 
         public void Dispose()
         {
-            obstacleSpawner.Dispose();
+            foreach(BaseSpawner spawner in spawners)
+            {
+                spawner.Dispose();
+            }
         }
 
         //To-do: Consider moving this function to the ContentLoader class.
