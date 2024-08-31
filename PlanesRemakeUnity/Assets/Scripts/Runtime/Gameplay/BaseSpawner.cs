@@ -1,10 +1,13 @@
 namespace PlanesRemake.Runtime.Gameplay
 {
+    using System;
+    
     using UnityEngine;
     
     using PlanesRemake.Runtime.Utils;
-    
-    public abstract class BaseSpawner
+    using PlanesRemake.Runtime.Events;
+
+    public abstract class BaseSpawner : IListener
     {
         protected CameraExtensions.Boundaries boundaries = default(CameraExtensions.Boundaries);
 
@@ -15,6 +18,28 @@ namespace PlanesRemake.Runtime.Gameplay
         protected abstract Quaternion StartingRotation { get;}
         protected abstract float SpawnDelayInSeconds { get;}
         protected abstract bool SpawnPrefabOnCreation { get;}
+
+        #region IListener
+
+        public void HandleEvent(IComparable eventName, object data)
+        {
+            switch(eventName)
+            {
+                case GameplayEvents gameplayEvent:
+                {
+                    HandleGameplayEvents(gameplayEvent, data);
+                    break;
+                }
+
+                default:
+                {
+                    LoggerUtil.LogError($"{GetType()} - The event {eventName} is not handled by this class. You may need to unsubscribe.");
+                    break;
+                }
+            }
+        }
+
+        #endregion
 
         public BaseSpawner(GameObject sourcePrefab, Camera sourceIsometricCamera)
         {
@@ -30,6 +55,8 @@ namespace PlanesRemake.Runtime.Gameplay
             spawningTimer = new Timer(SpawnDelayInSeconds, sourceIsRepeating: true);
             spawningTimer.OnTimerCompleted += OnSpawningTimerCompleted;
             spawningTimer.Start();
+
+            EventDispatcher.Instance.AddListener(this, typeof(GameplayEvents));
         }
 
         public virtual void Dispose()
@@ -46,6 +73,18 @@ namespace PlanesRemake.Runtime.Gameplay
         private void OnSpawningTimerCompleted()
         {
             SpawnPrefab(prefab);
+        }
+
+        private void HandleGameplayEvents(GameplayEvents gameplayEvent, object data)
+        {
+            switch(gameplayEvent)
+            {
+                case GameplayEvents.OnWallcollision:
+                {
+                    spawningTimer.Pause();
+                    break;
+                }
+            }
         }
     }
 }
