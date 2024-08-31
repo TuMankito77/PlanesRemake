@@ -13,7 +13,6 @@ namespace PlanesRemake.Runtime.Gameplay
         private float movementSpeed = 10;
 
         private Vector2 direction = Vector2.zero;
-        private Camera isometricCamera = null;
         private CameraExtensions.Boundaries boundaries = default(CameraExtensions.Boundaries);
         //NOTE: Remove this timer once we have an animation an we know when the destroy animation finishes.
         private Timer timer = null;
