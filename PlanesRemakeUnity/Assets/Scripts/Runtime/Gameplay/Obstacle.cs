@@ -69,17 +69,16 @@ namespace PlanesRemake.Runtime.Gameplay
                 directionalMovement.enabled = false;
                 osilateMovement.enabled = false;
                 EventDispatcher.Instance.Dispatch(GameplayEvents.OnWallcollision, other);
-                Debug.LogWarning("Aircraft crashed");
             }
         }
 
         private void OnGapTriggerExited(Collider other)
         {
-            if(other.tag == triggerDetectionTag && !wasCrossed)
+            if(other.tag == triggerDetectionTag && !wasCrossed &&
+                other.transform.position.x > transform.position.x)
             {
                 wasCrossed = true;
-                EventDispatcher.Instance.Dispatch(GameplayEvents.OnGapCrossed, other);
-                Debug.LogWarning("Aircraft crossed wall");
+                EventDispatcher.Instance.Dispatch(GameplayEvents.OnWallEvaded, other);
             }
         }
     }
