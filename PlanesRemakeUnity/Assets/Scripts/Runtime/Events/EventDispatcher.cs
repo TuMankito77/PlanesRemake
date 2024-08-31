@@ -5,6 +5,12 @@ namespace PlanesRemake.Runtime.Events
 
     public class EventDispatcher
     {
+        private struct EventQueuedInfo
+        {
+            public IComparable eventName;
+            public object data;
+        }
+
         #region Singleton
 
         private static EventDispatcher instance = null;
@@ -26,13 +32,13 @@ namespace PlanesRemake.Runtime.Events
 
         private bool isDispatchingEvent = false;
         private Dictionary<Type, List<IListener>> listenersPerType = null;
-        private Queue<IComparable> eventsQueued = null;
+        private Queue<EventQueuedInfo> eventsQueued = null;
 
         public EventDispatcher()
         {
             listenersPerType = new Dictionary<Type, List<IListener>>();
             isDispatchingEvent = false;
-            eventsQueued = new Queue<IComparable>();
+            eventsQueued = new Queue<EventQueuedInfo>();
         }
 
         public void AddListener(IListener listener, params Type[] eventTypes)
@@ -81,7 +87,13 @@ namespace PlanesRemake.Runtime.Events
 
             if(isDispatchingEvent)
             {
-                eventsQueued.Enqueue(eventName);
+                EventQueuedInfo eventQueuedInfo = new EventQueuedInfo()
+                {
+                    eventName = eventName,
+                    data = data
+                };
+
+                eventsQueued.Enqueue(eventQueuedInfo);
                 return;
             }
 
@@ -97,7 +109,8 @@ namespace PlanesRemake.Runtime.Events
 
             if(eventsQueued.Count > 0)
             {
-                Dispatch(eventsQueued.Dequeue()); 
+                EventQueuedInfo eventQueuedInfo = eventsQueued.Dequeue();
+                Dispatch(eventQueuedInfo.eventName, eventQueuedInfo.data); 
             }
         }
     }
