@@ -6,7 +6,7 @@ namespace PlanesRemake.Runtime.Events
         OnQuitButtonPressed,
         OnCoinsValueChanged,
         OnWallsValueChanged,
-        OnPuauseButtonPressed,
+        OnPauseButtonPressed,
         OnUnpauseButtonPressed,
         OnMainMenuButtonPressed
     }

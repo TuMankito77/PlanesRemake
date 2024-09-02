@@ -42,7 +42,7 @@ namespace PlanesRemake.Runtime.Gameplay
 
         private void OnPuaseActionTriggered(InputAction.CallbackContext obj)
         {
-            IComparable eventToDispatch = gameManager.IsGamePaused ? UiEvents.OnUnpauseButtonPressed : UiEvents.OnPuauseButtonPressed;
+            IComparable eventToDispatch = gameManager.IsGamePaused ? UiEvents.OnUnpauseButtonPressed : UiEvents.OnPauseButtonPressed;
             EventDispatcher.Instance.Dispatch(eventToDispatch);
         }
 
