@@ -20,5 +20,13 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
             float randomYPosition = Random.Range(boundaries.bottom, boundaries.top);
             return new Vector3(boundaries.right, randomYPosition, 0);
         }
+
+        protected override GameObject SpawnPrefab(GameObject prefab)
+        {
+            GameObject coinGameObject = base.SpawnPrefab(prefab);
+            Coin newCoin = coinGameObject.GetComponent<Coin>();
+            newCoin.Initialize(Aircraft.AIRCRAFT_TAG);
+            return coinGameObject;
+        }
     }
 }
