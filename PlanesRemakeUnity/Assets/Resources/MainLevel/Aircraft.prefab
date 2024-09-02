@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spinningSpeed: 500
+  rotatingDirection: {x: 0, y: 0, z: -1}
 --- !u!1 &4837489700871892594
 GameObject:
   m_ObjectHideFlags: 0
