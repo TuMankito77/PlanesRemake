@@ -3,6 +3,7 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
     using System;
 
     using UnityEngine;
+    using UnityEngine.Pool;
 
     using PlanesRemake.Runtime.Utils;
     using PlanesRemake.Runtime.Events;
@@ -12,7 +13,9 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
         protected CameraExtensions.Boundaries boundaries = default(CameraExtensions.Boundaries);
 
         private GameObject prefab = null;
+        private GameObject prefabInstancesContainer = null;
         private Timer spawningTimer = null;
+        private IObjectPool<GameObject> prefabInstancesPool = null;
 
         protected abstract Vector3 StartingPosition { get; }
         protected abstract Quaternion StartingRotation { get; }
@@ -47,16 +50,18 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
 
         #endregion
 
-        public BaseSpawner(GameObject sourcePrefab, Camera sourceIsometricCamera)
+        public BaseSpawner(GameObject sourcePrefab, int objectPoolSize, int objectPoolMaxCapacity, Camera sourceIsometricCamera)
         {
             prefab = sourcePrefab;
+            prefabInstancesContainer = new GameObject($"{prefab.name}_Container");
+            prefabInstancesPool = new ObjectPool<GameObject>(OnCreatePoolObject, OnGetPoolObject, OnReleasePoolObject, OnDestroyPoolObject, collectionCheck: true, objectPoolSize, objectPoolMaxCapacity);
 
             boundaries = sourceIsometricCamera.GetScreenBoundariesInWorld(Vector3.zero);
 
             //NOTE: Maybe this should be moved to the class that needs this behavior rather than leaving it here.
             if (SpawnPrefabOnCreation)
             {
-                OnSpawningTimerCompleted();
+                prefabInstancesPool.Get();
             }
 
             spawningTimer = new Timer(SpawnDelayInSeconds, sourceIsRepeating: true);
@@ -70,16 +75,34 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
         {
             spawningTimer.OnTimerCompleted -= OnSpawningTimerCompleted;
             spawningTimer.Stop();
+            prefabInstancesPool.Clear();
         }
 
-        protected virtual GameObject SpawnPrefab(GameObject prefab)
+        protected virtual GameObject OnCreatePoolObject()
         {
-            return GameObject.Instantiate(prefab, StartingPosition, StartingRotation);
+            return GameObject.Instantiate(prefab, StartingPosition, StartingRotation, prefabInstancesContainer.transform);
+        }
+
+        protected virtual void OnGetPoolObject(GameObject instance)
+        {
+            instance.SetActive(true);
+        }
+
+        protected virtual void OnReleasePoolObject(GameObject instance)
+        {
+            instance.SetActive(false);
+            instance.transform.position = StartingPosition;
+            instance.transform.rotation = StartingRotation;
+        }
+
+        protected virtual void OnDestroyPoolObject(GameObject instance)
+        {
+
         }
 
         private void OnSpawningTimerCompleted()
         {
-            SpawnPrefab(prefab);
+            prefabInstancesPool.Get();
         }
 
         private void HandleGameplayEvents(GameplayEvents gameplayEvent, object data)

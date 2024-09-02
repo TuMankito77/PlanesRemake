@@ -11,18 +11,17 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
         protected override float SpawnDelayInSeconds => 30;
         protected override bool SpawnPrefabOnCreation => true;
 
-        public ObstacleSpawner(GameObject obstaclePrefab, Camera isometricCamera)
-            :base(obstaclePrefab, isometricCamera)
+        public ObstacleSpawner(GameObject obstaclePrefab, int obstaclePoolSize, int obstaclePoolMaxCapacity, Camera isometricCamera)
+            :base(obstaclePrefab, obstaclePoolSize, obstaclePoolMaxCapacity, isometricCamera)
         {
 
         }
 
-        protected override GameObject SpawnPrefab(GameObject prefab)
+        protected override void OnGetPoolObject(GameObject instance)
         {
-            GameObject obstacleGameObject = base.SpawnPrefab(prefab);
-            Obstacle newObstacle = obstacleGameObject.GetComponent<Obstacle>();
-            newObstacle.Initialize(Aircraft.AIRCRAFT_TAG, 1, 10, boundaries.top, StartingPosition, StartingRotation);
-            return obstacleGameObject;
+            base.OnGetPoolObject(instance);
+            Obstacle obstacle = instance.GetComponent<Obstacle>();
+            obstacle.Initialize(Aircraft.AIRCRAFT_TAG, 1, 10, boundaries.top, StartingPosition, StartingRotation);
         }
     }
 }
