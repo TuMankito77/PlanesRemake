@@ -20,6 +20,9 @@ namespace PlanesRemake.Runtime.Utils
             isRepeating = sourceIsRepeating;
         }
 
+        /// <summary>
+        /// You can use this to unpause a timer or restart a timer that has been stopped.
+        /// </summary>
         public void Start()
         {
             TimerManager.Instance.AddTimer(this);
