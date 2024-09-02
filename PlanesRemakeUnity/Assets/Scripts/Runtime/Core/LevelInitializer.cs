@@ -1,7 +1,7 @@
 namespace PlanesRemake.Runtime.Core
 {
     using UnityEngine;
-    
+
     using PlanesRemake.Runtime.Gameplay;
     using PlanesRemake.Runtime.Input;
     using PlanesRemake.Runtime.Gameplay.Spawners;
@@ -15,10 +15,12 @@ namespace PlanesRemake.Runtime.Core
         private const string AIRCRAFT_PREFAB_PATH = "MainLevel/Aircraft";
         private const string OBSTACLE_PREFAB_PATH = "MainLevel/Obstacle";
         private const string COIN_PREFAB_PATH = "MainLevel/Coin";
+        private const int SPAWNER_POOL_SIZE = 10;
+        private const int SPAWNER_POOL_MAX_CAPACITY = 100;
 
         private GameObject skyDomeBackground = null;
         private List<BaseSpawner> spawners = null;
-        
+
         public Aircraft Aircraft { get; private set; } = null;
 
         public LevelInitializer(ContentLoader contentLoader, InputManager inputManager)
@@ -29,12 +31,12 @@ namespace PlanesRemake.Runtime.Core
             Camera isometricCamera = GameObject.Find("IsometricCamera").GetComponent<Camera>();
             //To-do: Use the assets loaded here to grab the information about the players choice for the background and the aircraft chosen.
             contentLoader.LoadAsset<GameObject>
-                (SPHERICAL_BACKGROUND_PREFAB_PATH, 
-                (assetLoaded) => skyDomeBackground = GameObject.Instantiate(assetLoaded, Vector3.zero, Quaternion.identity), 
+                (SPHERICAL_BACKGROUND_PREFAB_PATH,
+                (assetLoaded) => skyDomeBackground = GameObject.Instantiate(assetLoaded, Vector3.zero, Quaternion.identity),
                 () => DisplayAssetNotLoadedError(SPHERICAL_BACKGROUND_PREFAB_PATH));
 
             contentLoader.LoadAsset<Aircraft>
-                (AIRCRAFT_PREFAB_PATH, 
+                (AIRCRAFT_PREFAB_PATH,
                 (assetLoaded) =>
                 {
                     Aircraft = GameObject.Instantiate(assetLoaded, Vector3.zero, Quaternion.Euler(0, 115, -25));
@@ -45,18 +47,18 @@ namespace PlanesRemake.Runtime.Core
 
             contentLoader.LoadAsset<GameObject>
                 (OBSTACLE_PREFAB_PATH,
-                (assetLoaded) => spawners.Add(new ObstacleSpawner(assetLoaded, isometricCamera)),
-                ()=> DisplayAssetNotLoadedError(OBSTACLE_PREFAB_PATH));
+                (assetLoaded) => spawners.Add(new ObstacleSpawner(assetLoaded, SPAWNER_POOL_SIZE, SPAWNER_POOL_MAX_CAPACITY, isometricCamera)),
+                () => DisplayAssetNotLoadedError(OBSTACLE_PREFAB_PATH));
 
             contentLoader.LoadAsset<GameObject>
                 (COIN_PREFAB_PATH,
-                (assetLoaded) => spawners.Add(new CoinSpawner(assetLoaded, isometricCamera)),
+                (assetLoaded) => spawners.Add(new CoinSpawner(assetLoaded, SPAWNER_POOL_SIZE, SPAWNER_POOL_MAX_CAPACITY, isometricCamera)),
                 () => DisplayAssetNotLoadedError(COIN_PREFAB_PATH));
         }
 
         public void Dispose()
         {
-            foreach(BaseSpawner spawner in spawners)
+            foreach (BaseSpawner spawner in spawners)
             {
                 spawner.Dispose();
             }
