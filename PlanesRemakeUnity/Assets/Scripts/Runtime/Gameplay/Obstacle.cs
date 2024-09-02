@@ -48,7 +48,7 @@ namespace PlanesRemake.Runtime.Gameplay
             }
 
             gapCollider.OnTriggerExitDetected -= OnGapTriggerExited;
-            EventDispatcher.Instance.RemoveListener(this, typeof(UiEvents));
+            EventDispatcher.Instance.RemoveListener(this, typeof(UiEvents), typeof(GameplayEvents));
         }
 
         #endregion
@@ -62,6 +62,12 @@ namespace PlanesRemake.Runtime.Gameplay
                 case UiEvents uiEvent:
                     {
                         HandleUiEvents(uiEvent, data);
+                        break;
+                    }
+
+                case GameplayEvents gameplayEvent:
+                    {
+                        HandleGameplayEvents(gameplayEvent, data);
                         break;
                     }
 
@@ -86,15 +92,13 @@ namespace PlanesRemake.Runtime.Gameplay
             directionalMovement.ChangeVelocityVector(velocityVector);
             osilateMovement.ChangeOsilationDistance(osilationDistance);
             osilateMovement.ChangeSpeed(osilationSpeed);
-            EventDispatcher.Instance.AddListener(this, typeof(UiEvents));
+            EventDispatcher.Instance.AddListener(this, typeof(UiEvents), typeof(GameplayEvents));
         }
 
         private void OnWallTriggerEntered(Collider other)
         {
             if(other.tag == triggerDetectionTag)
             {
-                directionalMovement.enabled = false;
-                osilateMovement.enabled = false;
                 EventDispatcher.Instance.Dispatch(GameplayEvents.OnWallcollision, other);
             }
         }
@@ -109,21 +113,42 @@ namespace PlanesRemake.Runtime.Gameplay
             }
         }
 
+        private void SetMovementEnabled(bool isEnabled)
+        {
+            directionalMovement.enabled = isEnabled;
+            osilateMovement.enabled = isEnabled;
+        }
+
         private void HandleUiEvents(UiEvents uiEvent, object data)
         {
             switch(uiEvent)
             {
                 case UiEvents.OnPauseButtonPressed:
                     {
-                        directionalMovement.enabled = false;
-                        osilateMovement.enabled = false;
+                        SetMovementEnabled(false);
                         break;
                     }
 
                 case UiEvents.OnUnpauseButtonPressed:
                     {
-                        directionalMovement.enabled = true;
-                        osilateMovement.enabled = true;
+                        SetMovementEnabled(true);
+                        break;
+                    }
+
+                default:
+                    {
+                        break;
+                    }
+            }
+        }
+
+        private void HandleGameplayEvents(GameplayEvents gameplayEvent, object data)
+        {
+            switch(gameplayEvent)
+            {
+                case GameplayEvents.OnWallcollision:
+                    {
+                        SetMovementEnabled(false);
                         break;
                     }
 

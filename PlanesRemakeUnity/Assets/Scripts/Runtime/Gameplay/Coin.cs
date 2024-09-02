@@ -7,12 +7,14 @@ namespace PlanesRemake.Runtime.Gameplay
     using PlanesRemake.Runtime.Gameplay.CommonBehaviors;
     using PlanesRemake.Runtime.Events;
     using PlanesRemake.Runtime.Utils;
+    using UnityEngine.Pool;
 
-    [RequireComponent(typeof(DirectionalMovement), typeof(CollisionEventNotifier))]
+    [RequireComponent(typeof(DirectionalMovement), typeof(CollisionEventNotifier), typeof(DirectionalSpinning))]
     public class Coin : MonoBehaviour, IListener
     {
         private CollisionEventNotifier collisionEventNotifier = null;
         private DirectionalMovement directionalMovement = null;
+        private DirectionalSpinning directionalSpinning = null;
         private string triggerDetectionTag = string.Empty;
 
         #region Unity Methods
@@ -21,6 +23,7 @@ namespace PlanesRemake.Runtime.Gameplay
         {
             collisionEventNotifier = GetComponent<CollisionEventNotifier>();
             directionalMovement = GetComponent<DirectionalMovement>();
+            directionalSpinning = GetComponent<DirectionalSpinning>();
         }
 
         private void Start()
@@ -31,7 +34,7 @@ namespace PlanesRemake.Runtime.Gameplay
         private void OnDestroy()
         {
             collisionEventNotifier.OnTiggerEnterDetected -= OnCoinTriggerEntered;
-            EventDispatcher.Instance.RemoveListener(this, typeof(UiEvents));
+            EventDispatcher.Instance.RemoveListener(this, typeof(UiEvents), typeof(GameplayEvents));
         }
 
         #endregion
@@ -48,6 +51,12 @@ namespace PlanesRemake.Runtime.Gameplay
                         break;
                     }
 
+                case GameplayEvents gameplayEvent:
+                    {
+                        HandleGameplayEvents(gameplayEvent, data);
+                        break;
+                    }
+
                 default:
                     {
                         LoggerUtil.LogError($"{GetType()} - The event {eventName} is not handled by this class. You may need to unsubscribe.");
@@ -58,10 +67,14 @@ namespace PlanesRemake.Runtime.Gameplay
 
         #endregion
 
+        #region IPoolableObjec
+
+        #endregion
+
         public void Initialize(string sourceTriggerDetectionTag)
         {
             triggerDetectionTag = sourceTriggerDetectionTag;
-            EventDispatcher.Instance.AddListener(this, typeof(UiEvents));
+            EventDispatcher.Instance.AddListener(this, typeof(UiEvents), typeof(GameplayEvents));
         }
 
         private void OnCoinTriggerEntered(Collider other)
@@ -75,11 +88,17 @@ namespace PlanesRemake.Runtime.Gameplay
 
         private void StartDestroySequence()
         {
-            collisionEventNotifier.enabled = false;
-            directionalMovement.enabled = false;
+            SetMovementEnabled(false);
             //Play destroy animation or spawn VFX.
             //NOTE: Replace this by the pooling system.
             Destroy(gameObject);
+        }
+
+        private void SetMovementEnabled(bool isEnabled)
+        {
+            collisionEventNotifier.enabled = isEnabled;
+            directionalMovement.enabled = isEnabled;
+            directionalSpinning.enabled = isEnabled;
         }
 
         private void HandleUiEvents(UiEvents uiEvent, object data)
@@ -97,6 +116,23 @@ namespace PlanesRemake.Runtime.Gameplay
                     {
                         collisionEventNotifier.enabled = true;
                         directionalMovement.enabled = true;
+                        break;
+                    }
+
+                default:
+                    {
+                        break;
+                    }
+            }
+        }
+
+        private void HandleGameplayEvents(GameplayEvents gameplayEvent, object data)
+        {
+            switch(gameplayEvent)
+            {
+                case GameplayEvents.OnWallcollision:
+                    {
+                        SetMovementEnabled(false);
                         break;
                     }
 
