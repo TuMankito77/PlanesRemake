@@ -99,10 +99,10 @@ namespace PlanesRemake.Runtime.Events
 
             isDispatchingEvent = true;
 
-            foreach(IListener listener in listeners)
+            for(int i = 0; i < listeners.Count; i++)
             {
                 //To-do: Send the data by allowing the senders to send an event request that will contain data
-                listener.HandleEvent(eventName, data);
+                listeners[i].HandleEvent(eventName, data);
             }
 
             isDispatchingEvent = false;
