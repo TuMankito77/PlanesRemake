@@ -1,9 +1,9 @@
 namespace PlanesRemake.Runtime.Gameplay.Spawners
 {
     using System;
-    
+
     using UnityEngine;
-    
+
     using PlanesRemake.Runtime.Utils;
     using PlanesRemake.Runtime.Events;
 
@@ -14,28 +14,34 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
         private GameObject prefab = null;
         private Timer spawningTimer = null;
 
-        protected abstract Vector3 StartingPosition { get;}
-        protected abstract Quaternion StartingRotation { get;}
-        protected abstract float SpawnDelayInSeconds { get;}
-        protected abstract bool SpawnPrefabOnCreation { get;}
+        protected abstract Vector3 StartingPosition { get; }
+        protected abstract Quaternion StartingRotation { get; }
+        protected abstract float SpawnDelayInSeconds { get; }
+        protected abstract bool SpawnPrefabOnCreation { get; }
 
         #region IListener
 
         public void HandleEvent(IComparable eventName, object data)
         {
-            switch(eventName)
+            switch (eventName)
             {
                 case GameplayEvents gameplayEvent:
-                {
-                    HandleGameplayEvents(gameplayEvent, data);
-                    break;
-                }
+                    {
+                        HandleGameplayEvents(gameplayEvent, data);
+                        break;
+                    }
+
+                case UiEvents uiEvent:
+                    {
+                        HandleUiEvents(uiEvent, data);
+                        break;
+                    }
 
                 default:
-                {
-                    LoggerUtil.LogError($"{GetType()} - The event {eventName} is not handled by this class. You may need to unsubscribe.");
-                    break;
-                }
+                    {
+                        LoggerUtil.LogError($"{GetType()} - The event {eventName} is not handled by this class. You may need to unsubscribe.");
+                        break;
+                    }
             }
         }
 
@@ -48,7 +54,7 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
             boundaries = sourceIsometricCamera.GetScreenBoundariesInWorld(Vector3.zero);
 
             //NOTE: Maybe this should be moved to the class that needs this behavior rather than leaving it here.
-            if(SpawnPrefabOnCreation)
+            if (SpawnPrefabOnCreation)
             {
                 OnSpawningTimerCompleted();
             }
@@ -57,7 +63,7 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
             spawningTimer.OnTimerCompleted += OnSpawningTimerCompleted;
             spawningTimer.Start();
 
-            EventDispatcher.Instance.AddListener(this, typeof(GameplayEvents));
+            EventDispatcher.Instance.AddListener(this, typeof(GameplayEvents), typeof(UiEvents));
         }
 
         public virtual void Dispose()
@@ -78,13 +84,41 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
 
         private void HandleGameplayEvents(GameplayEvents gameplayEvent, object data)
         {
-            switch(gameplayEvent)
+            switch (gameplayEvent)
             {
                 case GameplayEvents.OnWallcollision:
-                {
-                    spawningTimer.Pause();
-                    break;
-                }
+                    {
+                        spawningTimer.Pause();
+                        break;
+                    }
+
+                default:
+                    {
+                        break;
+                    }
+            }
+        }
+
+        private void HandleUiEvents(UiEvents uiEvent, object data)
+        {
+            switch(uiEvent)
+            {
+                case UiEvents.OnPauseButtonPressed:
+                    {
+                        spawningTimer.Pause();
+                        break;
+                    }
+
+                case UiEvents.OnUnpauseButtonPressed:
+                    {
+                        spawningTimer.Start();
+                        break;
+                    }
+
+                default:
+                    {
+                        break;
+                    }
             }
         }
     }
