@@ -21,7 +21,7 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
         {
             GameObject obstacleGameObject = base.SpawnPrefab(prefab);
             Obstacle newObstacle = obstacleGameObject.GetComponent<Obstacle>();
-            newObstacle.Initialize("Aircraft", 1, 10, boundaries.top, StartingPosition, StartingRotation);
+            newObstacle.Initialize(Aircraft.AIRCRAFT_TAG, 1, 10, boundaries.top, StartingPosition, StartingRotation);
             return obstacleGameObject;
         }
     }

@@ -9,6 +9,10 @@ namespace PlanesRemake.Runtime.Gameplay
 
     public class Aircraft : MonoBehaviour, IInputControlableEntity, IListener
     {
+        //NOTE: This is momentaneous, we have to make this tag
+        //changeble from a drop-down menu on each object that uses it.
+        public static string AIRCRAFT_TAG = "Aircraft";
+
         [SerializeField, Min(1)]
         private float movementSpeed = 10;
 
