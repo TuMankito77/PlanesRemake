@@ -2,10 +2,10 @@ namespace PlanesRemake.Runtime.Core
 {
     using System;
     using System.Collections.Generic;
-    
+
     using UnityEngine;
     using UnityEngine.SceneManagement;
-    
+
     using PlanesRemake.Runtime.Events;
     using PlanesRemake.Runtime.Gameplay;
     using PlanesRemake.Runtime.Input;
@@ -29,7 +29,7 @@ namespace PlanesRemake.Runtime.Core
         private PlayerData playerData = default(PlayerData);
 
         public bool IsGamePaused { get; private set; } = false;
-        
+
         public GameManager()
         {
             baseSystems = new List<BaseSystem>();
@@ -38,7 +38,7 @@ namespace PlanesRemake.Runtime.Core
             systemsInitializer = new SystemsInitializer();
             systemsInitializer.OnSystemsInitialized += OnSystemsInitialized;
             systemsInitializer.InitializeSystems(baseSystems);
-            
+
             EventDispatcher.Instance.AddListener(this, typeof(UiEvents), typeof(GameplayEvents));
         }
 
@@ -51,19 +51,19 @@ namespace PlanesRemake.Runtime.Core
 
         public void HandleEvent(IComparable eventName, object data)
         {
-            switch(eventName)
+            switch (eventName)
             {
                 case UiEvents uiEvent:
-                {
-                    HandleUiEvents(uiEvent, data);
-                    break;
-                }
+                    {
+                        HandleUiEvents(uiEvent, data);
+                        break;
+                    }
 
                 case GameplayEvents gameplayEvent:
-                {
-                    HandleGameplayEvents(gameplayEvent, data);
-                    break;
-                }
+                    {
+                        HandleGameplayEvents(gameplayEvent, data);
+                        break;
+                    }
             }
         }
 
@@ -93,11 +93,11 @@ namespace PlanesRemake.Runtime.Core
 
         private void HandleUiEvents(UiEvents uiEvent, object data)
         {
-            switch(uiEvent)
+            switch (uiEvent)
             {
                 case UiEvents.OnPlayButtonPressed:
                     {
-                        contentLoader.LoadScene("MainLevel", LoadSceneMode.Additive, 
+                        contentLoader.LoadScene("MainLevel", LoadSceneMode.Additive,
                             () =>
                             {
                                 uiManager.RemoveView(ViewIds.MainMenu);
@@ -108,7 +108,7 @@ namespace PlanesRemake.Runtime.Core
                         break;
                     }
 
-                case UiEvents.OnPuauseButtonPressed:
+                case UiEvents.OnPauseButtonPressed:
                     {
                         uiManager.DisplayView(ViewIds.PauseMenu);
                         inputManager.EnableInput(uiManager);
@@ -141,27 +141,40 @@ namespace PlanesRemake.Runtime.Core
 
         private void HandleGameplayEvents(GameplayEvents gameplayEvent, object data)
         {
-            switch(gameplayEvent)
+            switch (gameplayEvent)
             {
                 case GameplayEvents.OnWallcollision:
-                {
-                    inputManager.DisableInput(currentLevelInitializer.Aircraft);
-                    break;
-                }
+                    {
+                        inputManager.DisableInput(currentLevelInitializer.Aircraft);
+                        break;
+                    }
 
                 case GameplayEvents.OnWallEvaded:
-                {
-                    playerData.wallsEvaded++;
-                    string wallsEvadedAsString = playerData.wallsEvaded.ToString();
-                    EventDispatcher.Instance.Dispatch(UiEvents.OnWallsValueChanged, wallsEvadedAsString);
-                    break;
-                }
+                    {
+                        playerData.wallsEvaded++;
+                        string wallsEvadedAsString = playerData.wallsEvaded.ToString();
+                        EventDispatcher.Instance.Dispatch(UiEvents.OnWallsValueChanged, wallsEvadedAsString);
+                        break;
+                    }
+
+                case GameplayEvents.OnCoinCollected:
+                    {
+                        playerData.coinsCollected++;
+                        string coinsCollectedAsString = playerData.coinsCollected.ToString();
+                        EventDispatcher.Instance.Dispatch(UiEvents.OnCoinsValueChanged, coinsCollectedAsString);
+                        break;
+                    }
 
                 case GameplayEvents.OnAircraftDestroyed:
-                {
-                    UnloadMainLevel();
-                    break;
-                }
+                    {
+                        UnloadMainLevel();
+                        break;
+                    }
+
+                default:
+                    {
+                        break;
+                    }
             }
         }
 
