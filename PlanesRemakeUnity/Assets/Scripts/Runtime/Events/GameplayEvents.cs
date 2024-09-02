@@ -4,6 +4,7 @@ namespace PlanesRemake.Runtime.Events
     {
         OnWallcollision,
         OnWallEvaded,
+        OnCoinCollected,
         OnAircraftDestroyed
     }
 }
