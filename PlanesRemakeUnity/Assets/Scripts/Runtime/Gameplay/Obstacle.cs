@@ -7,9 +7,10 @@ namespace PlanesRemake.Runtime.Gameplay
     using PlanesRemake.Runtime.Gameplay.CommonBehaviors;
     using PlanesRemake.Runtime.Events;
     using PlanesRemake.Runtime.Utils;
+    using UnityEngine.Pool;
 
     [RequireComponent(typeof(DirectionalMovement), typeof(OsilateMovement))]
-    public class Obstacle : MonoBehaviour, IListener
+    public class Obstacle : BasePoolableObject, IListener
     {
         [SerializeField]
         private CollisionEventNotifier gapCollider = null;
@@ -19,8 +20,12 @@ namespace PlanesRemake.Runtime.Gameplay
         
         private DirectionalMovement directionalMovement = null;
         private OsilateMovement osilateMovement = null;
+        private ObjectPoolReleaser objectPoolReleaser = null;
         private bool wasCrossed = false;
         private string triggerDetectionTag = string.Empty;
+        private IObjectPool<GameObject> obstaclesPool = null;
+
+        protected override IObjectPool<GameObject> ObjectPool => obstaclesPool;
 
         #region Unity Methods
 
@@ -28,6 +33,7 @@ namespace PlanesRemake.Runtime.Gameplay
         {
             directionalMovement = GetComponent<DirectionalMovement>();
             osilateMovement = GetComponent<OsilateMovement>();
+            objectPoolReleaser = GetComponent<ObjectPoolReleaser>();
         }
 
         private void Start()
@@ -83,16 +89,25 @@ namespace PlanesRemake.Runtime.Gameplay
 
         //NOTE: We can create a container that has all of this information so that it gets passed in
         //and we do not have this long list of parameters 
-        public void Initialize(string sourceTriggerDetectionTag,float movementSpeed, float osilationSpeed, float osilationDistance, Vector3 startingPosition, Quaternion startingRotation)
+        public void Initialize(string sourceTriggerDetectionTag, IObjectPool<GameObject> sourceObstaclesPool, CameraExtensions.Boundaries cameraBoundaries, float movementSpeed, float osilationSpeed, float osilationDistance, Vector3 startingPosition, Quaternion startingRotation)
         {
             triggerDetectionTag = sourceTriggerDetectionTag;
+            obstaclesPool = sourceObstaclesPool;
+            objectPoolReleaser.SetCameraBoundaries(cameraBoundaries);
             transform.position = startingPosition;
             transform.rotation = startingRotation;
             Vector3 velocityVector = new Vector3(-movementSpeed, 0, 0);
             directionalMovement.ChangeVelocityVector(velocityVector);
             osilateMovement.ChangeOsilationDistance(osilationDistance);
             osilateMovement.ChangeSpeed(osilationSpeed);
+            SetMovementEnabled(true);
             EventDispatcher.Instance.AddListener(this, typeof(UiEvents), typeof(GameplayEvents));
+        }
+
+        public override void ReleaseObject()
+        {
+            EventDispatcher.Instance.RemoveListener(this, typeof(UiEvents), typeof(GameplayEvents));
+            base.ReleaseObject();
         }
 
         private void OnWallTriggerEntered(Collider other)

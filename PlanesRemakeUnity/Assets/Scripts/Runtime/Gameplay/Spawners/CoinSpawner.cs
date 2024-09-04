@@ -25,7 +25,7 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
         {
             base.OnGetPoolObject(instance);
             Coin coin = instance.GetComponent<Coin>();
-            coin.Initialize(Aircraft.AIRCRAFT_TAG);
+            coin.Initialize(Aircraft.AIRCRAFT_TAG, prefabInstancesPool, boundaries);
         }
     }
 }

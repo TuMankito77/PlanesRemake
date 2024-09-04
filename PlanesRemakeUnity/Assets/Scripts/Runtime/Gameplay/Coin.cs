@@ -10,12 +10,16 @@ namespace PlanesRemake.Runtime.Gameplay
     using UnityEngine.Pool;
 
     [RequireComponent(typeof(DirectionalMovement), typeof(CollisionEventNotifier), typeof(DirectionalSpinning))]
-    public class Coin : MonoBehaviour, IListener
+    public class Coin : BasePoolableObject, IListener
     {
         private CollisionEventNotifier collisionEventNotifier = null;
         private DirectionalMovement directionalMovement = null;
         private DirectionalSpinning directionalSpinning = null;
+        private ObjectPoolReleaser objectPoolReleaser = null;
+        private IObjectPool<GameObject> coinsPool = null;
         private string triggerDetectionTag = string.Empty;
+
+        protected override IObjectPool<GameObject> ObjectPool => coinsPool;
 
         #region Unity Methods
 
@@ -24,6 +28,7 @@ namespace PlanesRemake.Runtime.Gameplay
             collisionEventNotifier = GetComponent<CollisionEventNotifier>();
             directionalMovement = GetComponent<DirectionalMovement>();
             directionalSpinning = GetComponent<DirectionalSpinning>();
+            objectPoolReleaser = GetComponent<ObjectPoolReleaser>();
         }
 
         private void Start()
@@ -71,10 +76,19 @@ namespace PlanesRemake.Runtime.Gameplay
 
         #endregion
 
-        public void Initialize(string sourceTriggerDetectionTag)
+        public void Initialize(string sourceTriggerDetectionTag, IObjectPool<GameObject> sourceCoinPool, CameraExtensions.Boundaries cameraBoundaries)
         {
             triggerDetectionTag = sourceTriggerDetectionTag;
+            coinsPool = sourceCoinPool;
+            objectPoolReleaser.SetCameraBoundaries(cameraBoundaries);
+            SetMovementEnabled(true);
             EventDispatcher.Instance.AddListener(this, typeof(UiEvents), typeof(GameplayEvents));
+        }
+
+        public override void ReleaseObject()
+        {
+            EventDispatcher.Instance.RemoveListener(this, typeof(UiEvents), typeof(GameplayEvents));
+            base.ReleaseObject();
         }
 
         private void OnCoinTriggerEntered(Collider other)
@@ -90,8 +104,7 @@ namespace PlanesRemake.Runtime.Gameplay
         {
             SetMovementEnabled(false);
             //Play destroy animation or spawn VFX.
-            //NOTE: Replace this by the pooling system.
-            Destroy(gameObject);
+            ReleaseObject();
         }
 
         private void SetMovementEnabled(bool isEnabled)

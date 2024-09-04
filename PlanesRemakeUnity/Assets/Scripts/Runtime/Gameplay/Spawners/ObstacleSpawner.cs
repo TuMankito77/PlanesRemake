@@ -21,7 +21,7 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
         {
             base.OnGetPoolObject(instance);
             Obstacle obstacle = instance.GetComponent<Obstacle>();
-            obstacle.Initialize(Aircraft.AIRCRAFT_TAG, 1, 10, boundaries.top, StartingPosition, StartingRotation);
+            obstacle.Initialize(Aircraft.AIRCRAFT_TAG, prefabInstancesPool, boundaries, 1, 10, boundaries.top, StartingPosition, StartingRotation);
         }
     }
 }

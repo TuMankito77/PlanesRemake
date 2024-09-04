@@ -11,11 +11,11 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
     public abstract class BaseSpawner : IListener
     {
         protected CameraExtensions.Boundaries boundaries = default(CameraExtensions.Boundaries);
+        protected IObjectPool<GameObject> prefabInstancesPool = null;
 
         private GameObject prefab = null;
         private GameObject prefabInstancesContainer = null;
         private Timer spawningTimer = null;
-        private IObjectPool<GameObject> prefabInstancesPool = null;
 
         protected abstract Vector3 StartingPosition { get; }
         protected abstract Quaternion StartingRotation { get; }
