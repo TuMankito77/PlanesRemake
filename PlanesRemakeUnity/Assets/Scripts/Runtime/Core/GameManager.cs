@@ -126,6 +126,7 @@ namespace PlanesRemake.Runtime.Core
 
                 case UiEvents.OnMainMenuButtonPressed:
                     {
+                        IsGamePaused = false;
                         uiManager.RemoveView(ViewIds.PauseMenu);
                         UnloadMainLevel();
                         break;

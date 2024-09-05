@@ -42,6 +42,11 @@ namespace PlanesRemake.Runtime.Gameplay
                 transform.position.z);
         }
 
+        private void OnDestroy()
+        {
+            EventDispatcher.Instance.RemoveListener(this, typeof(GameplayEvents));
+        }
+
         #endregion
 
         #region IListener
