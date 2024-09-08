@@ -1,6 +1,7 @@
 namespace PlanesRemake.Runtime.Gameplay.Spawners
 {
     using System;
+    using System.Collections.Generic;
 
     using UnityEngine;
     using UnityEngine.Pool;
@@ -11,9 +12,9 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
     public abstract class BaseSpawner : IListener
     {
         protected CameraExtensions.Boundaries boundaries = default(CameraExtensions.Boundaries);
-        protected IObjectPool<GameObject> prefabInstancesPool = null;
+        protected IObjectPool<BasePoolableObject> prefabInstancesPool = null;
 
-        private GameObject prefab = null;
+        private BasePoolableObject prefab = null;
         private GameObject prefabInstancesContainer = null;
         private Timer spawningTimer = null;
 
@@ -50,12 +51,11 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
 
         #endregion
 
-        public BaseSpawner(GameObject sourcePrefab, int objectPoolSize, int objectPoolMaxCapacity, Camera sourceIsometricCamera)
+        public BaseSpawner(BasePoolableObject sourcePrefab, int objectPoolSize, int objectPoolMaxCapacity, Camera sourceIsometricCamera)
         {
             prefab = sourcePrefab;
             prefabInstancesContainer = new GameObject($"{prefab.name}_Container");
-            prefabInstancesPool = new ObjectPool<GameObject>(OnCreatePoolObject, OnGetPoolObject, OnReleasePoolObject, OnDestroyPoolObject, collectionCheck: true, objectPoolSize, objectPoolMaxCapacity);
-
+            prefabInstancesPool = new ObjectPool<BasePoolableObject>(OnCreatePoolObject, OnGetPoolObject, OnReleasePoolObject, OnDestroyPoolObject, collectionCheck: true, objectPoolSize, objectPoolMaxCapacity);
             boundaries = sourceIsometricCamera.GetScreenBoundariesInWorld(Vector3.zero);
 
             //NOTE: Maybe this should be moved to the class that needs this behavior rather than leaving it here.
@@ -78,24 +78,24 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
             prefabInstancesPool.Clear();
         }
 
-        protected virtual GameObject OnCreatePoolObject()
+        protected virtual BasePoolableObject OnCreatePoolObject()
         {
             return GameObject.Instantiate(prefab, StartingPosition, StartingRotation, prefabInstancesContainer.transform);
         }
 
-        protected virtual void OnGetPoolObject(GameObject instance)
+        protected virtual void OnGetPoolObject(BasePoolableObject instance)
         {
-            instance.SetActive(true);
+            instance.gameObject.SetActive(true);
         }
 
-        protected virtual void OnReleasePoolObject(GameObject instance)
+        protected virtual void OnReleasePoolObject(BasePoolableObject instance)
         {
-            instance.SetActive(false);
+            instance.gameObject.SetActive(false);
             instance.transform.position = StartingPosition;
             instance.transform.rotation = StartingRotation;
         }
 
-        protected virtual void OnDestroyPoolObject(GameObject instance)
+        protected virtual void OnDestroyPoolObject(BasePoolableObject instance)
         {
 
         }

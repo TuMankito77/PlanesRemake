@@ -45,12 +45,12 @@ namespace PlanesRemake.Runtime.Core
                 },
                 () => DisplayAssetNotLoadedError(AIRCRAFT_PREFAB_PATH));
 
-            contentLoader.LoadAsset<GameObject>
+            contentLoader.LoadAsset<Obstacle>
                 (OBSTACLE_PREFAB_PATH,
                 (assetLoaded) => spawners.Add(new ObstacleSpawner(assetLoaded, SPAWNER_POOL_SIZE, SPAWNER_POOL_MAX_CAPACITY, isometricCamera)),
                 () => DisplayAssetNotLoadedError(OBSTACLE_PREFAB_PATH));
 
-            contentLoader.LoadAsset<GameObject>
+            contentLoader.LoadAsset<Coin>
                 (COIN_PREFAB_PATH,
                 (assetLoaded) => spawners.Add(new CoinSpawner(assetLoaded, SPAWNER_POOL_SIZE, SPAWNER_POOL_MAX_CAPACITY, isometricCamera)),
                 () => DisplayAssetNotLoadedError(COIN_PREFAB_PATH));

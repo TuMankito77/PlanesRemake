@@ -9,34 +9,35 @@ namespace PlanesRemake.Runtime.Gameplay
     using PlanesRemake.Runtime.Utils;
     using UnityEngine.Pool;
 
-    [RequireComponent(typeof(DirectionalMovement), typeof(CollisionEventNotifier), typeof(DirectionalSpinning))]
     public class Coin : BasePoolableObject, IListener
     {
+        [SerializeField]
         private CollisionEventNotifier collisionEventNotifier = null;
+
+        [SerializeField]
         private DirectionalMovement directionalMovement = null;
+
+        [SerializeField]
         private DirectionalSpinning directionalSpinning = null;
+
+        [SerializeField]
         private ObjectPoolReleaser objectPoolReleaser = null;
-        private IObjectPool<GameObject> coinsPool = null;
+        
+        private IObjectPool<BasePoolableObject> coinsPool = null;
         private string triggerDetectionTag = string.Empty;
 
-        protected override IObjectPool<GameObject> ObjectPool => coinsPool;
+        protected override IObjectPool<BasePoolableObject> ObjectPool => coinsPool;
 
-        #region Unity Methods
 
-        private void Awake()
-        {
-            collisionEventNotifier = GetComponent<CollisionEventNotifier>();
-            directionalMovement = GetComponent<DirectionalMovement>();
-            directionalSpinning = GetComponent<DirectionalSpinning>();
-            objectPoolReleaser = GetComponent<ObjectPoolReleaser>();
-        }
+        #region Uinty Methods
 
-        private void Start()
+        private void OnEnable()
         {
             collisionEventNotifier.OnTiggerEnterDetected += OnCoinTriggerEntered;
+            EventDispatcher.Instance.AddListener(this, typeof(UiEvents), typeof(GameplayEvents));
         }
 
-        private void OnDestroy()
+        private void OnDisable()
         {
             collisionEventNotifier.OnTiggerEnterDetected -= OnCoinTriggerEntered;
             EventDispatcher.Instance.RemoveListener(this, typeof(UiEvents), typeof(GameplayEvents));
@@ -76,19 +77,12 @@ namespace PlanesRemake.Runtime.Gameplay
 
         #endregion
 
-        public void Initialize(string sourceTriggerDetectionTag, IObjectPool<GameObject> sourceCoinPool, CameraExtensions.Boundaries cameraBoundaries)
+        public void Initialize(string sourceTriggerDetectionTag, IObjectPool<BasePoolableObject> sourceCoinPool, CameraExtensions.Boundaries cameraBoundaries)
         {
             triggerDetectionTag = sourceTriggerDetectionTag;
             coinsPool = sourceCoinPool;
             objectPoolReleaser.SetCameraBoundaries(cameraBoundaries);
             SetMovementEnabled(true);
-            EventDispatcher.Instance.AddListener(this, typeof(UiEvents), typeof(GameplayEvents));
-        }
-
-        public override void ReleaseObject()
-        {
-            EventDispatcher.Instance.RemoveListener(this, typeof(UiEvents), typeof(GameplayEvents));
-            base.ReleaseObject();
         }
 
         private void OnCoinTriggerEntered(Collider other)

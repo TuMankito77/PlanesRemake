@@ -5,11 +5,11 @@ namespace PlanesRemake.Runtime.Gameplay
 
     public abstract class BasePoolableObject : MonoBehaviour
     {
-        protected abstract IObjectPool<GameObject> ObjectPool { get; }
+        protected abstract IObjectPool<BasePoolableObject> ObjectPool { get; }
 
         public virtual void ReleaseObject()
         {
-            ObjectPool.Release(gameObject);
+            ObjectPool.Release(this);
         }
     }
 }

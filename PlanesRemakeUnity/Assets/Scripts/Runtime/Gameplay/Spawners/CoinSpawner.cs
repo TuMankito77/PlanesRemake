@@ -9,7 +9,7 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
         protected override float SpawnDelayInSeconds => 5;
         protected override bool SpawnPrefabOnCreation => false;
     
-        public CoinSpawner(GameObject coinPrefab, int coinPoolSize, int coinPoolMaxCapacity, Camera isometricCamera) 
+        public CoinSpawner(Coin coinPrefab, int coinPoolSize, int coinPoolMaxCapacity, Camera isometricCamera) 
             : base(coinPrefab, coinPoolSize, coinPoolMaxCapacity, isometricCamera)
         {
             
@@ -21,7 +21,7 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
             return new Vector3(boundaries.right, randomYPosition, 0);
         }
 
-        protected override void OnGetPoolObject(GameObject instance)
+        protected override void OnGetPoolObject(BasePoolableObject instance)
         {
             base.OnGetPoolObject(instance);
             Coin coin = instance.GetComponent<Coin>();

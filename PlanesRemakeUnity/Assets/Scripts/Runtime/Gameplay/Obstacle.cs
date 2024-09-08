@@ -17,38 +17,38 @@ namespace PlanesRemake.Runtime.Gameplay
 
         [SerializeField]
         private CollisionEventNotifier[] wallColliders = null;
-        
+
+        [SerializeField]
         private DirectionalMovement directionalMovement = null;
+
+        [SerializeField]
         private OsilateMovement osilateMovement = null;
+
+        [SerializeField]
         private ObjectPoolReleaser objectPoolReleaser = null;
+        
         private bool wasCrossed = false;
         private string triggerDetectionTag = string.Empty;
-        private IObjectPool<GameObject> obstaclesPool = null;
+        private IObjectPool<BasePoolableObject> obstaclesPool = null;
 
-        protected override IObjectPool<GameObject> ObjectPool => obstaclesPool;
+        protected override IObjectPool<BasePoolableObject> ObjectPool => obstaclesPool;
 
         #region Unity Methods
 
-        private void Awake()
+        private void OnEnable()
         {
-            directionalMovement = GetComponent<DirectionalMovement>();
-            osilateMovement = GetComponent<OsilateMovement>();
-            objectPoolReleaser = GetComponent<ObjectPoolReleaser>();
-        }
-
-        private void Start()
-        {
-            foreach(CollisionEventNotifier wallCollider in wallColliders)
+            foreach (CollisionEventNotifier wallCollider in wallColliders)
             {
                 wallCollider.OnTiggerEnterDetected += OnWallTriggerEntered;
             }
 
             gapCollider.OnTriggerExitDetected += OnGapTriggerExited;
+            EventDispatcher.Instance.AddListener(this, typeof(UiEvents), typeof(GameplayEvents));
         }
 
-        private void OnDestroy()
+        private void OnDisable()
         {
-            foreach(CollisionEventNotifier wallCollider in wallColliders)
+            foreach (CollisionEventNotifier wallCollider in wallColliders)
             {
                 wallCollider.OnTiggerEnterDetected -= OnWallTriggerEntered;
             }
@@ -89,7 +89,7 @@ namespace PlanesRemake.Runtime.Gameplay
 
         //NOTE: We can create a container that has all of this information so that it gets passed in
         //and we do not have this long list of parameters 
-        public void Initialize(string sourceTriggerDetectionTag, IObjectPool<GameObject> sourceObstaclesPool, CameraExtensions.Boundaries cameraBoundaries, float movementSpeed, float osilationSpeed, float osilationDistance, Vector3 startingPosition, Quaternion startingRotation)
+        public void Initialize(string sourceTriggerDetectionTag, IObjectPool<BasePoolableObject> sourceObstaclesPool, CameraExtensions.Boundaries cameraBoundaries, float movementSpeed, float osilationSpeed, float osilationDistance, Vector3 startingPosition, Quaternion startingRotation)
         {
             triggerDetectionTag = sourceTriggerDetectionTag;
             obstaclesPool = sourceObstaclesPool;
@@ -101,13 +101,6 @@ namespace PlanesRemake.Runtime.Gameplay
             osilateMovement.ChangeOsilationDistance(osilationDistance);
             osilateMovement.ChangeSpeed(osilationSpeed);
             SetMovementEnabled(true);
-            EventDispatcher.Instance.AddListener(this, typeof(UiEvents), typeof(GameplayEvents));
-        }
-
-        public override void ReleaseObject()
-        {
-            EventDispatcher.Instance.RemoveListener(this, typeof(UiEvents), typeof(GameplayEvents));
-            base.ReleaseObject();
         }
 
         private void OnWallTriggerEntered(Collider other)
