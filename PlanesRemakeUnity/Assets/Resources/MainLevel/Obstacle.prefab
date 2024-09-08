@@ -54,6 +54,9 @@ MonoBehaviour:
   wallColliders:
   - {fileID: 2888637907229211505}
   - {fileID: 419777595556622023}
+  directionalMovement: {fileID: 7256633263927046020}
+  osilateMovement: {fileID: -1085651238310573750}
+  objectPoolReleaser: {fileID: 381591591129070029}
 --- !u!114 &7256633263927046020
 MonoBehaviour:
   m_ObjectHideFlags: 0

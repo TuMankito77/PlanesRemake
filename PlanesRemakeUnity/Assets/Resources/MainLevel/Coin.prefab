@@ -155,6 +155,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 098980be9c681a6459bd691b0422ce1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collisionEventNotifier: {fileID: -6426306679631353247}
+  directionalMovement: {fileID: -433340286096653637}
+  directionalSpinning: {fileID: 8073224409989380935}
+  objectPoolReleaser: {fileID: -228672230060306833}
 --- !u!65 &-7572474321189022231
 BoxCollider:
   m_ObjectHideFlags: 0
