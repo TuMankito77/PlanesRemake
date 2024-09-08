@@ -1,11 +1,12 @@
 namespace PlanesRemake.Runtime.Gameplay
 {
+    using System;
+    
     using UnityEngine;
     
     using PlanesRemake.Runtime.Input;
     using PlanesRemake.Runtime.Utils;
     using PlanesRemake.Runtime.Events;
-    using System;
 
     public class Aircraft : MonoBehaviour, IInputControlableEntity, IListener
     {
@@ -42,7 +43,12 @@ namespace PlanesRemake.Runtime.Gameplay
                 transform.position.z);
         }
 
-        private void OnDestroy()
+        private void OnEnable()
+        {
+            EventDispatcher.Instance.AddListener(this, typeof(GameplayEvents));
+        }
+
+        private void OnDisable()
         {
             EventDispatcher.Instance.RemoveListener(this, typeof(GameplayEvents));
         }
@@ -69,7 +75,6 @@ namespace PlanesRemake.Runtime.Gameplay
         {
             boundaries = sourceIsometricCamera.GetScreenBoundariesInWorld(transform.position);
             transform.position = boundaries.center;
-            EventDispatcher.Instance.AddListener(this, typeof(GameplayEvents));
         }
 
         public void UpdateDirection(Vector2 sourceDirection)
@@ -88,7 +93,6 @@ namespace PlanesRemake.Runtime.Gameplay
         private void SendAircraftDestroyedEvent()
         {
             timer.OnTimerCompleted -= SendAircraftDestroyedEvent;
-            EventDispatcher.Instance.RemoveListener(this, typeof(GameplayEvents));
             EventDispatcher.Instance.Dispatch(GameplayEvents.OnAircraftDestroyed, this);
         }
 
