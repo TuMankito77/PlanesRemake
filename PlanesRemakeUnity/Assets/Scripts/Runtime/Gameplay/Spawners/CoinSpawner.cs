@@ -2,7 +2,7 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
 {
     using UnityEngine;
     
-    public class CoinSpawner : BaseSpawner
+    public class CoinSpawner : TimerSpawner
     {
         protected override Vector3 StartingPosition => GetRandomHeightPosition();
         protected override Quaternion StartingRotation => Quaternion.identity;

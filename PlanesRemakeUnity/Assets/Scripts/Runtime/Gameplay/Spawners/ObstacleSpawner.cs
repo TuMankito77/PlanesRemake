@@ -2,7 +2,7 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
 {
     using UnityEngine;
 
-    public class ObstacleSpawner : BaseSpawner
+    public class ObstacleSpawner : TimerSpawner
     {
         protected override Vector3 StartingPosition => 
             new Vector3(boundaries.right, boundaries.center.y, 0);
