@@ -101,6 +101,7 @@ namespace PlanesRemake.Runtime.Gameplay
             osilateMovement.ChangeOsilationDistance(osilationDistance);
             osilateMovement.ChangeSpeed(osilationSpeed);
             SetMovementEnabled(true);
+            wasCrossed = false;
         }
 
         private void OnWallTriggerEntered(Collider other)
@@ -117,7 +118,7 @@ namespace PlanesRemake.Runtime.Gameplay
                 other.transform.position.x > transform.position.x)
             {
                 wasCrossed = true;
-                EventDispatcher.Instance.Dispatch(GameplayEvents.OnWallEvaded, other);
+                EventDispatcher.Instance.Dispatch(GameplayEvents.OnWallEvaded, this);
             }
         }
 

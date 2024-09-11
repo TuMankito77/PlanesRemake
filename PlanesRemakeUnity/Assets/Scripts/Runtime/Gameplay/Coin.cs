@@ -89,7 +89,7 @@ namespace PlanesRemake.Runtime.Gameplay
         {
             if(other.tag == triggerDetectionTag)
             {
-                EventDispatcher.Instance.Dispatch(GameplayEvents.OnCoinCollected, other);
+                EventDispatcher.Instance.Dispatch(GameplayEvents.OnCoinCollected, this);
                 StartDestroySequence();
             }
         }
