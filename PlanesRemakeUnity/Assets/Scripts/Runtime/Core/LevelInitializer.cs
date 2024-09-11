@@ -15,6 +15,7 @@ namespace PlanesRemake.Runtime.Core
         private const string AIRCRAFT_PREFAB_PATH = "MainLevel/Aircraft";
         private const string OBSTACLE_PREFAB_PATH = "MainLevel/Obstacle";
         private const string COIN_PREFAB_PATH = "MainLevel/Coin";
+        private const string COIN_VFX_PREFAB_PATH = "MainLevel/VFX_CoinCollected";
         private const int SPAWNER_POOL_SIZE = 10;
         private const int SPAWNER_POOL_MAX_CAPACITY = 100;
 
@@ -54,6 +55,11 @@ namespace PlanesRemake.Runtime.Core
                 (COIN_PREFAB_PATH,
                 (assetLoaded) => spawners.Add(new CoinSpawner(assetLoaded, SPAWNER_POOL_SIZE, SPAWNER_POOL_MAX_CAPACITY, isometricCamera)),
                 () => DisplayAssetNotLoadedError(COIN_PREFAB_PATH));
+
+            contentLoader.LoadAsset<TimerPoolableObject>
+                (COIN_VFX_PREFAB_PATH,
+                (assetLoaded) => spawners.Add(new CoinParticleSpawner(assetLoaded, SPAWNER_POOL_SIZE, SPAWNER_POOL_MAX_CAPACITY)),
+                () => DisplayAssetNotLoadedError(COIN_VFX_PREFAB_PATH));
         }
 
         public void Dispose()
