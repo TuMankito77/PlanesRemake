@@ -17,6 +17,12 @@ namespace PlanesRemake.Runtime.Gameplay
         [SerializeField, Min(1)]
         private float movementSpeed = 10;
 
+        [SerializeField]
+        private ParticleSystem vfxAircraftCrashed = null;
+
+        [SerializeField]
+        private MeshRenderer[] meshRenderersToHideWhenCrashing = null;
+
         private Vector2 direction = Vector2.zero;
         private CameraExtensions.Boundaries boundaries = default(CameraExtensions.Boundaries);
         //NOTE: Remove this timer once we have an animation an we know when the destroy animation finishes.
@@ -85,7 +91,15 @@ namespace PlanesRemake.Runtime.Gameplay
         private void DestroyAircraft()
         {
             direction = Vector2.zero;
-            timer = new Timer(5);
+
+            foreach(MeshRenderer meshRenderer in meshRenderersToHideWhenCrashing)
+            {
+                meshRenderer.enabled = false;
+            }
+            
+            ParticleSystem explosionParticlesInstance = Instantiate(vfxAircraftCrashed, transform.position, Quaternion.identity);
+            explosionParticlesInstance.Play();
+            timer = new Timer(explosionParticlesInstance.main.startLifetimeMultiplier);
             timer.OnTimerCompleted += SendAircraftDestroyedEvent;
             timer.Start();
         }

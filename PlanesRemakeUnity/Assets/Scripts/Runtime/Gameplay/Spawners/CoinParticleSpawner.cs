@@ -41,9 +41,9 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
 
         private void SpawnParticles(Vector3 position)
         {
-            var vfx = prefabInstancesPool.Get();
+            BasePoolableObject vfx = prefabInstancesPool.Get();
             vfx.gameObject.transform.position = position;
-            var component = vfx.GetComponent<ParticleSystem>();
+            ParticleSystem component = vfx.GetComponent<ParticleSystem>();
             Timer durationTimer = new Timer(component.main.startLifetimeMultiplier);
             durationTimer.OnTimerCompleted += () => vfx.ReleaseObject();
             component.Play();
