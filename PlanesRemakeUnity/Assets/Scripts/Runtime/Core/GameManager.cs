@@ -11,6 +11,7 @@ namespace PlanesRemake.Runtime.Core
     using PlanesRemake.Runtime.Input;
     using PlanesRemake.Runtime.UI;
     using PlanesRemake.Runtime.UI.Views;
+    using PlanesRemake.Runtime.Sound;
 
     public class GameManager : IListener
     {
@@ -24,6 +25,7 @@ namespace PlanesRemake.Runtime.Core
         private List<BaseSystem> baseSystems = null;
         private ContentLoader contentLoader = null;
         private UiManager uiManager = null;
+        private AudioManager audioManager = null;
         private InputManager inputManager = null;
         private LevelInitializer currentLevelInitializer = null;
         private PlayerData playerData = default(PlayerData);
@@ -35,6 +37,7 @@ namespace PlanesRemake.Runtime.Core
             baseSystems = new List<BaseSystem>();
             baseSystems.Add(new ContentLoader());
             baseSystems.Add(new UiManager().AddDependency<ContentLoader>());
+            baseSystems.Add(new AudioManager().AddDependency<ContentLoader>());
             systemsInitializer = new SystemsInitializer();
             systemsInitializer.OnSystemsInitialized += OnSystemsInitialized;
             systemsInitializer.InitializeSystems(baseSystems);
@@ -73,6 +76,7 @@ namespace PlanesRemake.Runtime.Core
         {
             contentLoader = systemsInitializer.GetSystem<ContentLoader>();
             uiManager = systemsInitializer.GetSystem<UiManager>();
+            audioManager = systemsInitializer.GetSystem<AudioManager>();
             playerData = new PlayerData();
             playerData.coinsCollected = 0;
             playerData.wallsEvaded = 0;
