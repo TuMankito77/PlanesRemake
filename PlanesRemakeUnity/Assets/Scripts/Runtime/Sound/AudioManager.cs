@@ -4,6 +4,7 @@ namespace PlanesRemake.Runtime.Sound
     using System.Collections.Generic;
 
     using PlanesRemake.Runtime.Core;
+    using UnityEngine;
 
     public class AudioManager : BaseSystem
     {
@@ -16,12 +17,16 @@ namespace PlanesRemake.Runtime.Sound
         public override async Task<bool> Initialize(IEnumerable<BaseSystem> sourceDependencies)
         {
             await base.Initialize(sourceDependencies);
-            audioPlayer = await LoadAsset<AudioPlayer>(AUDIO_PLAYER_PREFAB_PATH);
+            AudioPlayer audioPlayerPrefab = await LoadAsset<AudioPlayer>(AUDIO_PLAYER_PREFAB_PATH);
             
-            if(audioPlayer == null)
+            if(audioPlayerPrefab == null)
             {
                 return false;
             }
+
+            audioPlayer = GameObject.Instantiate(audioPlayerPrefab);
+            audioPlayer.name = audioPlayerPrefab.name;
+            GameObject.DontDestroyOnLoad(audioPlayer);
 
             clipsContainer = await LoadAsset<ClipsContanier>(CLIPS_CONTAINER_SPRITABLE_OBJECT_PATH);
             
@@ -33,6 +38,63 @@ namespace PlanesRemake.Runtime.Sound
             clipsContainer.Initialize();
             
             return true;
+        }
+
+        public void PlayGameplayClip(string clipId)
+        {
+            Debug.Assert(clipsContainer.ClipsById.ContainsKey(clipId),
+                $"{GetType().Name} - The clip {clipId} id does not exist!");
+
+            AudioClip audioClip = clipsContainer.ClipsById[clipId];
+            audioPlayer.PlayGameplayClip(audioClip);
+        }
+
+        public void PauseGameplayClips()
+        {
+            audioPlayer.PauseGameplayAudioSource();
+        }
+
+        public void UnPauseGameplayClips()
+        {
+            audioPlayer.UnPauseGameplayAudioSource();
+        }
+
+        public void PlayGeneralClip(string clipId)
+        {
+            Debug.Assert(clipsContainer.ClipsById.ContainsKey(clipId),
+                $"{GetType().Name} - The clip {clipId} id does not exist!");
+
+            AudioClip audioClip = clipsContainer.ClipsById[clipId];
+            audioPlayer.PlayGeneralClip(audioClip);
+        }
+
+        public void PuaseGeneralClips()
+        {
+            audioPlayer.PauseGeneralAudioSource();
+        }
+
+        public void UnPauseGeneralClips()
+        {
+            audioPlayer.PauseGeneralAudioSource();
+        }
+
+        public void PlayBackgroundMusic(string clipId)
+        {
+            Debug.Assert(clipsContainer.ClipsById.ContainsKey(clipId),
+                $"{GetType().Name} - The clip {clipId} id does not exist!");
+
+            AudioClip audioClip = clipsContainer.ClipsById[clipId];
+            audioPlayer.PlayBackgroundMusic(audioClip);
+        }
+
+        public void PauseBackgroundMusic()
+        {
+            audioPlayer.PauseBackgroundMusic();
+        }
+
+        public void UnPaseBackgroundMusic()
+        {
+            audioPlayer.UnPauseBackgroundMusic();
         }
 
         private async Task<T> LoadAsset<T>(string address) where T : UnityEngine.Object

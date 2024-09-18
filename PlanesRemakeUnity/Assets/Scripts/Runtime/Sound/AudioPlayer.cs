@@ -45,6 +45,7 @@ namespace PlanesRemake.Runtime.Sound
 
         public void PlayBackgroundMusic(AudioClip musicClip)
         {
+            backGroundMusicAudioSource.Stop();
             backGroundMusicAudioSource.clip = musicClip;
             backGroundMusicAudioSource.loop = true;
             backGroundMusicAudioSource.Play();
