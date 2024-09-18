@@ -8,6 +8,7 @@ namespace PlanesRemake.Runtime.Gameplay
     using PlanesRemake.Runtime.Events;
     using PlanesRemake.Runtime.Utils;
     using UnityEngine.Pool;
+    using PlanesRemake.Runtime.Sound;
 
     public class Coin : BasePoolableObject, IListener
     {
@@ -25,6 +26,7 @@ namespace PlanesRemake.Runtime.Gameplay
         
         private IObjectPool<BasePoolableObject> coinsPool = null;
         private string triggerDetectionTag = string.Empty;
+        private AudioManager audioManager = null;
 
         protected override IObjectPool<BasePoolableObject> ObjectPool => coinsPool;
 
@@ -77,10 +79,14 @@ namespace PlanesRemake.Runtime.Gameplay
 
         #endregion
 
-        public void Initialize(string sourceTriggerDetectionTag, IObjectPool<BasePoolableObject> sourceCoinPool, CameraExtensions.Boundaries cameraBoundaries)
+        public void Initialize(string sourceTriggerDetectionTag, 
+            IObjectPool<BasePoolableObject> sourceCoinPool, 
+            CameraExtensions.Boundaries cameraBoundaries,
+            AudioManager sourceAudioManager)
         {
             triggerDetectionTag = sourceTriggerDetectionTag;
             coinsPool = sourceCoinPool;
+            audioManager = sourceAudioManager;
             objectPoolReleaser.SetCameraBoundaries(cameraBoundaries);
             SetMovementEnabled(true);
         }
@@ -98,6 +104,7 @@ namespace PlanesRemake.Runtime.Gameplay
         {
             SetMovementEnabled(false);
             //Play destroy animation or spawn VFX.
+            audioManager.PlayGameplayClip(ClipIds.COIN_CLIP);
             ReleaseObject();
         }
 

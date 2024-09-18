@@ -10,6 +10,7 @@ namespace PlanesRemake.Runtime.UI
     using PlanesRemake.Runtime.Core;
     using PlanesRemake.Runtime.UI.Views;
     using PlanesRemake.Runtime.Input;
+    using PlanesRemake.Runtime.Sound;
 
     public class UiManager : BaseSystem, IInputControlableEntity
     {
@@ -19,6 +20,7 @@ namespace PlanesRemake.Runtime.UI
         private GameObject uiManagerGO = null;
         private Camera uiCamera = null;
         private List<BaseView> viewsOpened = null;
+        private AudioManager audioManager = null;
 
         //To-do: Create a request class that will be sent through an event in order to request a view.
         public override async Task<bool> Initialize(IEnumerable<BaseSystem> sourceDependencies)
@@ -26,8 +28,9 @@ namespace PlanesRemake.Runtime.UI
             await base.Initialize(sourceDependencies);
 
             viewsOpened = new List<BaseView>();
+            audioManager = GetDependency<AudioManager>();
             //To-do: Create a database that categorizes the objects loaded based on a list that groups what is needed to be loaded depending on what needs to be shown.
-            bool isLoadingViewsContainer = true; 
+            bool isLoadingViewsContainer = true;
             ContentLoader contentLoader = GetDependency<ContentLoader>();
             contentLoader.LoadAsset<ViewsContainer>
                 (VIEWS_CONTAINER_SCRIPTABLE_OBJECT_PATH,
@@ -72,7 +75,7 @@ namespace PlanesRemake.Runtime.UI
                 $"{GetType().Name} - The view {viewId} id does not exist!");
             
             BaseView viewFound = GameObject.Instantiate(viewsContainer.ViewsById[viewId], uiManagerGO.transform);
-            viewFound.Initialize(uiCamera);
+            viewFound.Initialize(uiCamera, audioManager);
             viewFound.Canvas.sortingOrder = viewsOpened.Count;
             viewFound.TransitionIn();
             viewFound.transform.SetParent(uiManagerGO.transform);

@@ -36,7 +36,9 @@ namespace PlanesRemake.Runtime.Core
         {
             baseSystems = new List<BaseSystem>();
             baseSystems.Add(new ContentLoader());
-            baseSystems.Add(new UiManager().AddDependency<ContentLoader>());
+            baseSystems.Add(new UiManager()
+                .AddDependency<ContentLoader>()
+                .AddDependency<AudioManager>());
             baseSystems.Add(new AudioManager().AddDependency<ContentLoader>());
             systemsInitializer = new SystemsInitializer();
             systemsInitializer.OnSystemsInitialized += OnSystemsInitialized;
@@ -107,7 +109,7 @@ namespace PlanesRemake.Runtime.Core
                                 uiManager.RemoveView(ViewIds.MainMenu);
                                 uiManager.DisplayView(ViewIds.Hud);
                                 inputManager.DisableInput(uiManager);
-                                currentLevelInitializer = new LevelInitializer(contentLoader, inputManager);
+                                currentLevelInitializer = new LevelInitializer(contentLoader, inputManager, audioManager);
                             });
                         break;
                     }
@@ -116,6 +118,8 @@ namespace PlanesRemake.Runtime.Core
                     {
                         uiManager.DisplayView(ViewIds.PauseMenu);
                         inputManager.EnableInput(uiManager);
+                        audioManager.PauseGameplayClips();
+                        audioManager.PauseBackgroundMusic();
                         IsGamePaused = true;
                         break;
                     }
@@ -124,6 +128,8 @@ namespace PlanesRemake.Runtime.Core
                     {
                         uiManager.RemoveView(ViewIds.PauseMenu);
                         inputManager.DisableInput(uiManager);
+                        audioManager.UnPauseGameplayClips();
+                        audioManager.UnPaseBackgroundMusic();
                         IsGamePaused = false;
                         break;
                     }

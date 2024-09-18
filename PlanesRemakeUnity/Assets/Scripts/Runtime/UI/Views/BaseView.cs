@@ -1,5 +1,6 @@
 namespace PlanesRemake.Runtime.UI.Views 
 {
+    using PlanesRemake.Runtime.Sound;
     using UnityEngine;
 
     [RequireComponent(typeof (Canvas),typeof(CanvasGroup))]
@@ -8,12 +9,38 @@ namespace PlanesRemake.Runtime.UI.Views
         public Canvas Canvas { get; private set; } = null;
         public CanvasGroup CanvasGroup { get; private set; } = null;
 
-        public virtual void Initialize(Camera uiCamera)
+        private AudioManager audioManager = null;
+        private BaseButton[] buttons = new BaseButton[0];
+
+        #region Unity Methods
+
+        protected virtual void Awake()
+        {
+            buttons = GetComponentsInChildren<BaseButton>();
+
+            foreach(BaseButton button in buttons)
+            {
+                button.onButtonPressed += OnButtonPressed;
+            }
+        }
+
+        protected virtual void OnDestroy()
+        {
+            foreach(BaseButton button in buttons)
+            {
+                button.onButtonPressed -= OnButtonPressed;
+            }
+        }
+
+        #endregion
+
+        public virtual void Initialize(Camera uiCamera, AudioManager sourceAudioManager)
         {
             Canvas = GetComponent<Canvas>();
             CanvasGroup = GetComponent<CanvasGroup>();
             Canvas.renderMode = RenderMode.ScreenSpaceCamera;
             Canvas.worldCamera = uiCamera;
+            audioManager = sourceAudioManager;
         }
 
         public virtual void Dispose()
@@ -32,6 +59,11 @@ namespace PlanesRemake.Runtime.UI.Views
         {
             CanvasGroup.alpha = 0;
             CanvasGroup.interactable = false;
+        }
+
+        private void OnButtonPressed()
+        {
+            audioManager.PlayGeneralClip(ClipIds.BUTTON_CLICK_CLIP);
         }
     }
 }

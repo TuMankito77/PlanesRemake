@@ -14,14 +14,16 @@ namespace PlanesRemake.Runtime.UI.Views
 
         #region Unity Methods
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             continueButton.onButtonPressed += OnContinueButtonPressed;
             mainMenuButton.onButtonPressed += OnMainMenuButtonPressed;
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
+            base.Awake();
             continueButton.onButtonPressed -= OnContinueButtonPressed;
             mainMenuButton.onButtonPressed -= OnMainMenuButtonPressed;
         }

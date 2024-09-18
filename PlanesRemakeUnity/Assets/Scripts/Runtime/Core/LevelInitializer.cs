@@ -6,6 +6,7 @@ namespace PlanesRemake.Runtime.Core
     using PlanesRemake.Runtime.Input;
     using PlanesRemake.Runtime.Gameplay.Spawners;
     using System.Collections.Generic;
+    using PlanesRemake.Runtime.Sound;
 
     //NOTE: Should we make this a system?
     //Probably yes, as it loads data asynchronously and sometimes we need to know when we have access to this data.
@@ -24,7 +25,7 @@ namespace PlanesRemake.Runtime.Core
 
         public Aircraft Aircraft { get; private set; } = null;
 
-        public LevelInitializer(ContentLoader contentLoader, InputManager inputManager)
+        public LevelInitializer(ContentLoader contentLoader, InputManager inputManager, AudioManager audioManager)
         {
             spawners = new List<BaseSpawner>();
             //NOTE: Update this so that we do not look for this object by name, but rather by reference 
@@ -53,13 +54,15 @@ namespace PlanesRemake.Runtime.Core
 
             contentLoader.LoadAsset<Coin>
                 (COIN_PREFAB_PATH,
-                (assetLoaded) => spawners.Add(new CoinSpawner(assetLoaded, SPAWNER_POOL_SIZE, SPAWNER_POOL_MAX_CAPACITY, isometricCamera)),
+                (assetLoaded) => spawners.Add(new CoinSpawner(assetLoaded, SPAWNER_POOL_SIZE, SPAWNER_POOL_MAX_CAPACITY, isometricCamera, audioManager)),
                 () => DisplayAssetNotLoadedError(COIN_PREFAB_PATH));
 
             contentLoader.LoadAsset<TimerPoolableObject>
                 (COIN_VFX_PREFAB_PATH,
                 (assetLoaded) => spawners.Add(new CoinParticleSpawner(assetLoaded, SPAWNER_POOL_SIZE, SPAWNER_POOL_MAX_CAPACITY)),
                 () => DisplayAssetNotLoadedError(COIN_VFX_PREFAB_PATH));
+
+            audioManager.PlayBackgroundMusic(ClipIds.MUSIC_CLIP);
         }
 
         public void Dispose()

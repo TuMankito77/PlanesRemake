@@ -6,6 +6,7 @@ namespace PlanesRemake.Runtime.UI.Views
     using UnityEngine.UI;
     
     using PlanesRemake.Runtime.Events;
+    using PlanesRemake.Runtime.Sound;
 
     public class HudView : BaseView, IListener
     {
@@ -15,9 +16,9 @@ namespace PlanesRemake.Runtime.UI.Views
         [SerializeField]
         private Text wallsTextComponent = null;
 
-        public override void Initialize(Camera uiCamera)
+        public override void Initialize(Camera uiCamera, AudioManager audioManager)
         {
-            base.Initialize(uiCamera);
+            base.Initialize(uiCamera, audioManager);
             EventDispatcher.Instance.AddListener(this, typeof(UiEvents));
         }
 
