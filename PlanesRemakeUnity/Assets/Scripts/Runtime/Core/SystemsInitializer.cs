@@ -26,8 +26,7 @@ namespace PlanesRemake.Runtime.Core
                 systemsToInitialize.Add(baseSystem.GetType(), baseSystem);
             }
             
-            List<Task> initializationTasks = new List<Task>();
-            List<BaseSystem> systemsInitializing = new List<BaseSystem>();
+            Dictionary<Task<bool>, BaseSystem> initializationTaskPerSystem = new Dictionary<Task<bool>, BaseSystem>();
             List<Type> dependenciesToVerify = new List<Type>(systemsToInitialize.Count);
 
             foreach (Type baseSystemType in systemsToInitialize.Keys)
@@ -60,21 +59,22 @@ namespace PlanesRemake.Runtime.Core
                         continue;
                     }
 
-                    systemsInitializing.Add(baseSystem);
-                    initializationTasks.Add(baseSystem.Initialize(systemsInitialized.Values));
+                    initializationTaskPerSystem.Add(baseSystem.Initialize(systemsInitialized.Values), baseSystem);
                 }
 
-                await Task.WhenAll(initializationTasks);
+                await Task.WhenAll(initializationTaskPerSystem.Keys);
 
-                foreach(BaseSystem systemInitiailized in systemsInitializing)
+                foreach(Task<bool> task in initializationTaskPerSystem.Keys)
                 {
-                    Type systemType = systemInitiailized.GetType();
+                    BaseSystem systemInitialized = initializationTaskPerSystem[task];
+                    Type systemType = systemInitialized.GetType();
+                    Debug.Assert(task.Result, $"{GetType()} - Failed to initialize {systemType}.");
                     systemsToInitialize.Remove(systemType);
                     dependenciesToVerify.Remove(systemType);
-                    systemsInitialized.Add(systemType, systemInitiailized);
+                    systemsInitialized.Add(systemType, systemInitialized);
                 }
 
-                systemsInitializing.Clear();
+                initializationTaskPerSystem.Clear();
             }
 
             OnSystemsInitialized?.Invoke();
