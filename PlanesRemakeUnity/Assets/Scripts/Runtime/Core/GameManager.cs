@@ -89,8 +89,8 @@ namespace PlanesRemake.Runtime.Core
         {
             InputController[] inputControllers =
             {
-                new UiController(),
-                new GameplayController(this)
+                new UiController(this),
+                new GameplayController()
             };
 
             inputManager = new InputManager(inputControllers);
@@ -118,6 +118,7 @@ namespace PlanesRemake.Runtime.Core
                     {
                         uiManager.DisplayView(ViewIds.PauseMenu);
                         inputManager.EnableInput(uiManager);
+                        inputManager.DisableInput(currentLevelInitializer.Aircraft);
                         audioManager.PauseGameplayClips();
                         audioManager.PauseAllLoopingClips();
                         IsGamePaused = true;
@@ -128,6 +129,7 @@ namespace PlanesRemake.Runtime.Core
                     {
                         uiManager.RemoveView(ViewIds.PauseMenu);
                         inputManager.DisableInput(uiManager);
+                        inputManager.EnableInput(currentLevelInitializer.Aircraft);
                         audioManager.UnPauseGameplayClips();
                         audioManager.UnPauseAllLoopingClips();
                         IsGamePaused = false;

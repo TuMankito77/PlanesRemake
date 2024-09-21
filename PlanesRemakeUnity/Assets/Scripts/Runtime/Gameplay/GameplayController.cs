@@ -14,20 +14,9 @@ namespace PlanesRemake.Runtime.Gameplay
         public override Type EntityToControlType => typeof(Aircraft);
 
         private Aircraft aircraft = null;
-        private GameManager gameManager = null;
-
-        public GameplayController(GameManager sourceGameManager)
-        {
-            gameManager = sourceGameManager;
-        }
 
         public override void Update()
         {
-            if(gameManager.IsGamePaused)
-            {
-                return;
-            }
-
             Vector2 movementDirection = inputActions.GameplayController.Movement.ReadValue<Vector2>();
             aircraft.UpdateDirection(movementDirection);
         }
@@ -42,12 +31,12 @@ namespace PlanesRemake.Runtime.Gameplay
 
         private void OnPuaseActionTriggered(InputAction.CallbackContext obj)
         {
-            IComparable eventToDispatch = gameManager.IsGamePaused ? UiEvents.OnUnpauseButtonPressed : UiEvents.OnPauseButtonPressed;
-            EventDispatcher.Instance.Dispatch(eventToDispatch);
+            EventDispatcher.Instance.Dispatch(UiEvents.OnPauseButtonPressed);
         }
 
         public override void Disable()
         {
+            inputActions.GameplayController.Pause.performed -= OnPuaseActionTriggered;
             inputActions.GameplayController.Disable();
         }
     }
