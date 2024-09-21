@@ -3,30 +3,51 @@ namespace PlanesRemake.Runtime.Sound
     using System.Threading.Tasks;
     using System.Collections.Generic;
 
-    using PlanesRemake.Runtime.Core;
     using UnityEngine;
+    using UnityEngine.Pool;
+
+    using PlanesRemake.Runtime.Core;
 
     public class AudioManager : BaseSystem
     {
         private const string CLIPS_CONTAINER_SPRITABLE_OBJECT_PATH = "Sound/ClipsContainer";
         private const string AUDIO_PLAYER_PREFAB_PATH = "Sound/AudioPlayer";
 
-        private AudioPlayer audioPlayer = null;
+        private Dictionary<int, AudioPlayer> loopingAudioPlayers = new Dictionary<int, AudioPlayer>();
+        private AudioPlayer audioPlayerPrefab = null;
+        private AudioPlayer gameplayAudioPlayer = null;
+        private AudioPlayer generalAudioPlayer = null;
+        private AudioPlayer backgroundMusicAudioPlayer = null;
+        private GameObject audioManagerGO = null;
+        private IObjectPool<AudioPlayer> audioPlayersPool = null; 
+        private List<AudioPlayer> loopingClipsPlaying = null;
         private ClipsContanier clipsContainer = null;
 
         public override async Task<bool> Initialize(IEnumerable<BaseSystem> sourceDependencies)
         {
             await base.Initialize(sourceDependencies);
-            AudioPlayer audioPlayerPrefab = await LoadAsset<AudioPlayer>(AUDIO_PLAYER_PREFAB_PATH);
+
+            audioPlayersPool = new ObjectPool<AudioPlayer>(OnCreateAudioPlayerForPool);
+            loopingClipsPlaying = new List<AudioPlayer>();
+            audioManagerGO = new GameObject(GetType().Name);
+            GameObject.DontDestroyOnLoad(audioManagerGO);
+            audioPlayerPrefab = await LoadAsset<AudioPlayer>(AUDIO_PLAYER_PREFAB_PATH);
             
-            if(audioPlayerPrefab == null)
+            if (audioPlayerPrefab == null)
             {
                 return false;
             }
 
-            audioPlayer = GameObject.Instantiate(audioPlayerPrefab);
-            audioPlayer.name = audioPlayerPrefab.name;
-            GameObject.DontDestroyOnLoad(audioPlayer);
+            gameplayAudioPlayer = audioPlayersPool.Get();
+            gameplayAudioPlayer.SetIsLooping(false);
+
+            generalAudioPlayer = audioPlayersPool.Get();
+            gameplayAudioPlayer.SetIsLooping(false);
+
+            backgroundMusicAudioPlayer = audioPlayersPool.Get();
+            backgroundMusicAudioPlayer.SetIsLooping(true);
+            
+            loopingClipsPlaying.Add(backgroundMusicAudioPlayer);
 
             clipsContainer = await LoadAsset<ClipsContanier>(CLIPS_CONTAINER_SPRITABLE_OBJECT_PATH);
             
@@ -46,17 +67,17 @@ namespace PlanesRemake.Runtime.Sound
                 $"{GetType().Name} - The clip {clipId} id does not exist!");
 
             AudioClip audioClip = clipsContainer.ClipsById[clipId];
-            audioPlayer.PlayGameplayClip(audioClip);
+            gameplayAudioPlayer.PlayClipOneShot(audioClip);
         }
 
         public void PauseGameplayClips()
         {
-            audioPlayer.PauseGameplayAudioSource();
+            gameplayAudioPlayer.Pause();
         }
 
         public void UnPauseGameplayClips()
         {
-            audioPlayer.UnPauseGameplayAudioSource();
+            gameplayAudioPlayer.UnPause();
         }
 
         public void PlayGeneralClip(string clipId)
@@ -65,17 +86,17 @@ namespace PlanesRemake.Runtime.Sound
                 $"{GetType().Name} - The clip {clipId} id does not exist!");
 
             AudioClip audioClip = clipsContainer.ClipsById[clipId];
-            audioPlayer.PlayGeneralClip(audioClip);
+            generalAudioPlayer.PlayClipOneShot(audioClip);
         }
 
         public void PuaseGeneralClips()
         {
-            audioPlayer.PauseGeneralAudioSource();
+            generalAudioPlayer.Pause();
         }
 
         public void UnPauseGeneralClips()
         {
-            audioPlayer.PauseGeneralAudioSource();
+            generalAudioPlayer.UnPause();
         }
 
         public void PlayBackgroundMusic(string clipId)
@@ -84,17 +105,94 @@ namespace PlanesRemake.Runtime.Sound
                 $"{GetType().Name} - The clip {clipId} id does not exist!");
 
             AudioClip audioClip = clipsContainer.ClipsById[clipId];
-            audioPlayer.PlayBackgroundMusic(audioClip);
+            backgroundMusicAudioPlayer.UpdateDefaultClip(audioClip);
+            backgroundMusicAudioPlayer.Play();
         }
 
         public void PauseBackgroundMusic()
         {
-            audioPlayer.PauseBackgroundMusic();
+            backgroundMusicAudioPlayer.UnPause();
         }
 
         public void UnPaseBackgroundMusic()
         {
-            audioPlayer.UnPauseBackgroundMusic();
+            backgroundMusicAudioPlayer.Pause();
+        }
+
+        public void PlayLoopingClip(int idRetreiver, string clipId, Transform parent = null, bool isSpatial = false, bool isGameplaySound = true)
+        {
+            Debug.Assert(clipsContainer.ClipsById.ContainsKey(clipId),
+                $"{GetType().Name} - The clip {clipId} id does not exist!");
+
+            AudioClip audioClip = clipsContainer.ClipsById[clipId];
+            AudioPlayer audioPlayer = null;
+
+            //Checking if the object retrived from the dictionary was destroyed in the scene 
+            if (!loopingAudioPlayers.TryGetValue(idRetreiver, out audioPlayer) || audioPlayer == null)
+            {
+                audioPlayer = audioPlayersPool.Get();
+                loopingAudioPlayers.Add(idRetreiver, audioPlayer);
+            }
+
+            if(isGameplaySound)
+            {
+                loopingClipsPlaying.Add(audioPlayer);
+            }
+
+            audioPlayer.transform.parent = parent;
+            audioPlayer.SetIsSpatial(isSpatial);
+            audioPlayer.UpdateDefaultClip(audioClip);
+            audioPlayer.SetIsLooping(true);
+            audioPlayer.Play();
+        }
+
+        public void PauseLoopingClip(int idRetreiver)
+        {
+            if(loopingAudioPlayers.TryGetValue(idRetreiver, out AudioPlayer audioPlayer))
+            {
+                audioPlayer.Pause();
+                loopingClipsPlaying.Remove(audioPlayer);
+            }
+        }
+
+        public void UnPauseLoopingClip(int idRetreiver)
+        {
+            if(loopingAudioPlayers.TryGetValue(idRetreiver, out AudioPlayer audioPlayer))
+            {
+                audioPlayer.UnPause();
+                loopingClipsPlaying.Add(audioPlayer);
+            }
+        }
+
+        public void StopLoopingClip(int idRetreiver)
+        {
+            if(loopingAudioPlayers.TryGetValue(idRetreiver, out AudioPlayer audioPlayer))
+            {
+                audioPlayer.Pause();
+                loopingAudioPlayers.Remove(idRetreiver);
+                audioPlayersPool.Release(audioPlayer);
+            }
+        }
+
+        public void PauseAllLoopingClips()
+        {
+            foreach(AudioPlayer audioPlayer in loopingClipsPlaying)
+            {
+                audioPlayer.Pause();
+            }
+        }
+
+        public void UnPauseAllLoopingClips()
+        {
+            foreach(AudioPlayer audioPlayer in loopingClipsPlaying)
+            {
+                audioPlayer.UnPause();
+            }
+        }
+
+        private AudioPlayer OnCreateAudioPlayerForPool()
+        {
+            return GameObject.Instantiate(audioPlayerPrefab, audioManagerGO.transform);
         }
 
         private async Task<T> LoadAsset<T>(string address) where T : UnityEngine.Object

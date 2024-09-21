@@ -2,63 +2,54 @@ namespace PlanesRemake.Runtime.Sound
 {
     using UnityEngine;
 
+    [RequireComponent(typeof(AudioSource))]
     public class AudioPlayer : MonoBehaviour
     {
-        [SerializeField]
-        private AudioSource gameplayAudioSource = null;
+        private AudioSource audioSource = null;
 
-        [SerializeField]
-        private AudioSource generalAudioSource = null;
+        #region Unity Methods
 
-        [SerializeField]
-        private AudioSource backGroundMusicAudioSource = null;
-
-        public void PlayGameplayClip(AudioClip clip)
+        private void Awake()
         {
-            gameplayAudioSource.PlayOneShot(clip);
+            audioSource = GetComponent<AudioSource>();
         }
 
-        public void PauseGameplayAudioSource()
+        #endregion
+
+        public void UpdateDefaultClip(AudioClip clip)
         {
-            gameplayAudioSource.Pause();
+            audioSource.Stop();
+            audioSource.clip = clip;
         }
 
-        public void UnPauseGameplayAudioSource()
+        public void Play()
         {
-            gameplayAudioSource.UnPause();
+            audioSource.Play();
         }
 
-        public void PlayGeneralClip(AudioClip clip)
+        public void PlayClipOneShot(AudioClip clip)
         {
-            generalAudioSource.PlayOneShot(clip);
+            audioSource.PlayOneShot(clip);
         }
 
-        public void PauseGeneralAudioSource()
+        public void Pause()
         {
-            generalAudioSource.Pause();
+            audioSource.Pause();
         }
 
-        public void UnPauseGenericAudioSource()
+        public void UnPause()
         {
-            generalAudioSource.UnPause();
+            audioSource.UnPause();
         }
 
-        public void PlayBackgroundMusic(AudioClip musicClip)
+        public void SetIsSpatial(bool isSpatial)
         {
-            backGroundMusicAudioSource.Stop();
-            backGroundMusicAudioSource.clip = musicClip;
-            backGroundMusicAudioSource.loop = true;
-            backGroundMusicAudioSource.Play();
+            audioSource.spatialBlend = isSpatial ? 1 : 0;
         }
 
-        public void PauseBackgroundMusic()
+        public void SetIsLooping(bool isLooping)
         {
-            backGroundMusicAudioSource.Pause();
-        }
-
-        public void UnPauseBackgroundMusic()
-        {
-            backGroundMusicAudioSource.UnPause();
+            audioSource.loop = isLooping;
         }
     }
 }
