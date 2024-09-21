@@ -92,10 +92,15 @@ namespace PlanesRemake.Runtime.Gameplay
            direction = sourceDirection.normalized;
         }
 
+        public void Dispose()
+        {
+            audioManager.StopLoopingClip(GetInstanceID());
+        }
+
         private void DestroyAircraft()
         {
             direction = Vector2.zero;
-            audioManager.StopLoopingClip(GetInstanceID());
+            audioManager.PauseLoopingClip(GetInstanceID());
 
             foreach(MeshRenderer meshRenderer in meshRenderersToHideWhenCrashing)
             {

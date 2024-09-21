@@ -1,13 +1,13 @@
 namespace PlanesRemake.Runtime.Core
 {
+    using System.Collections.Generic;
+    
     using UnityEngine;
 
     using PlanesRemake.Runtime.Gameplay;
     using PlanesRemake.Runtime.Input;
     using PlanesRemake.Runtime.Gameplay.Spawners;
-    using System.Collections.Generic;
     using PlanesRemake.Runtime.Sound;
-    using PlanesRemake.Runtime.Utils;
 
     //NOTE: Should we make this a system?
     //Probably yes, as it loads data asynchronously and sometimes we need to know when we have access to this data.
@@ -23,8 +23,9 @@ namespace PlanesRemake.Runtime.Core
 
         private GameObject skyDomeBackground = null;
         private List<BaseSpawner> spawners = null;
+        private Aircraft aircraft = null;
 
-        public Aircraft Aircraft { get; private set; } = null;
+        public Aircraft Aircraft => aircraft;
 
         public LevelInitializer(ContentLoader contentLoader, InputManager inputManager, AudioManager audioManager)
         {
@@ -42,8 +43,8 @@ namespace PlanesRemake.Runtime.Core
                 (AIRCRAFT_PREFAB_PATH,
                 (assetLoaded) =>
                 {
-                    Aircraft = GameObject.Instantiate(assetLoaded, Vector3.zero, Quaternion.Euler(0, 115, -25));
-                    Aircraft.Initialize(isometricCamera, audioManager);
+                    aircraft = GameObject.Instantiate(assetLoaded, Vector3.zero, Quaternion.Euler(0, 115, -25));
+                    aircraft.Initialize(isometricCamera, audioManager);
                     inputManager.EnableInput(Aircraft);
                 },
                 null);
@@ -72,6 +73,8 @@ namespace PlanesRemake.Runtime.Core
             {
                 spawner.Dispose();
             }
+
+            aircraft.Dispose();
         }
     }
 }

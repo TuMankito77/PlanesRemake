@@ -170,6 +170,8 @@ namespace PlanesRemake.Runtime.Sound
             {
                 audioPlayer.Pause();
                 loopingAudioPlayers.Remove(idRetreiver);
+                loopingClipsPlaying.Remove(audioPlayer);
+                audioPlayer.transform.parent = audioManagerGO.transform;
                 audioPlayersPool.Release(audioPlayer);
             }
         }
