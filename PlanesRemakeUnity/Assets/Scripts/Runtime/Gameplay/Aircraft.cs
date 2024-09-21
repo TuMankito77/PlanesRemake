@@ -7,6 +7,7 @@ namespace PlanesRemake.Runtime.Gameplay
     using PlanesRemake.Runtime.Input;
     using PlanesRemake.Runtime.Utils;
     using PlanesRemake.Runtime.Events;
+    using PlanesRemake.Runtime.Sound;
 
     public class Aircraft : MonoBehaviour, IInputControlableEntity, IListener
     {
@@ -25,6 +26,7 @@ namespace PlanesRemake.Runtime.Gameplay
 
         private Vector2 direction = Vector2.zero;
         private CameraExtensions.Boundaries boundaries = default(CameraExtensions.Boundaries);
+        private AudioManager audioManager = null;
         //NOTE: Remove this timer once we have an animation an we know when the destroy animation finishes.
         private Timer timer = null;
 
@@ -77,9 +79,11 @@ namespace PlanesRemake.Runtime.Gameplay
 
         #endregion
 
-        public void Initialize(Camera sourceIsometricCamera)
+        public void Initialize(Camera sourceIsometricCamera, AudioManager sourceAudioManager)
         {
             boundaries = sourceIsometricCamera.GetScreenBoundariesInWorld(transform.position);
+            audioManager = sourceAudioManager;
+            audioManager.PlayLoopingClip(GetInstanceID(), ClipIds.AIRCRAFT_ENGINE_CLIP, transform, true);
             transform.position = boundaries.center;
         }
 
@@ -91,6 +95,7 @@ namespace PlanesRemake.Runtime.Gameplay
         private void DestroyAircraft()
         {
             direction = Vector2.zero;
+            audioManager.StopLoopingClip(GetInstanceID());
 
             foreach(MeshRenderer meshRenderer in meshRenderersToHideWhenCrashing)
             {

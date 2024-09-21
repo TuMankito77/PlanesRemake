@@ -119,7 +119,7 @@ namespace PlanesRemake.Runtime.Core
                         uiManager.DisplayView(ViewIds.PauseMenu);
                         inputManager.EnableInput(uiManager);
                         audioManager.PauseGameplayClips();
-                        audioManager.PauseBackgroundMusic();
+                        audioManager.PauseAllLoopingClips();
                         IsGamePaused = true;
                         break;
                     }
@@ -129,7 +129,7 @@ namespace PlanesRemake.Runtime.Core
                         uiManager.RemoveView(ViewIds.PauseMenu);
                         inputManager.DisableInput(uiManager);
                         audioManager.UnPauseGameplayClips();
-                        audioManager.UnPaseBackgroundMusic();
+                        audioManager.UnPauseAllLoopingClips();
                         IsGamePaused = false;
                         break;
                     }
