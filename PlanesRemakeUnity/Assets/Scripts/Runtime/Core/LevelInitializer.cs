@@ -7,6 +7,7 @@ namespace PlanesRemake.Runtime.Core
     using PlanesRemake.Runtime.Gameplay.Spawners;
     using System.Collections.Generic;
     using PlanesRemake.Runtime.Sound;
+    using PlanesRemake.Runtime.Utils;
 
     //NOTE: Should we make this a system?
     //Probably yes, as it loads data asynchronously and sometimes we need to know when we have access to this data.
@@ -35,32 +36,32 @@ namespace PlanesRemake.Runtime.Core
             contentLoader.LoadAsset<GameObject>
                 (SPHERICAL_BACKGROUND_PREFAB_PATH,
                 (assetLoaded) => skyDomeBackground = GameObject.Instantiate(assetLoaded, Vector3.zero, Quaternion.identity),
-                () => DisplayAssetNotLoadedError(SPHERICAL_BACKGROUND_PREFAB_PATH));
+                null);
 
             contentLoader.LoadAsset<Aircraft>
                 (AIRCRAFT_PREFAB_PATH,
                 (assetLoaded) =>
                 {
                     Aircraft = GameObject.Instantiate(assetLoaded, Vector3.zero, Quaternion.Euler(0, 115, -25));
-                    Aircraft.Initialize(isometricCamera);
+                    Aircraft.Initialize(isometricCamera, audioManager);
                     inputManager.EnableInput(Aircraft);
                 },
-                () => DisplayAssetNotLoadedError(AIRCRAFT_PREFAB_PATH));
+                null);
 
             contentLoader.LoadAsset<Obstacle>
                 (OBSTACLE_PREFAB_PATH,
                 (assetLoaded) => spawners.Add(new ObstacleSpawner(assetLoaded, SPAWNER_POOL_SIZE, SPAWNER_POOL_MAX_CAPACITY, isometricCamera)),
-                () => DisplayAssetNotLoadedError(OBSTACLE_PREFAB_PATH));
+                null);
 
             contentLoader.LoadAsset<Coin>
                 (COIN_PREFAB_PATH,
                 (assetLoaded) => spawners.Add(new CoinSpawner(assetLoaded, SPAWNER_POOL_SIZE, SPAWNER_POOL_MAX_CAPACITY, isometricCamera, audioManager)),
-                () => DisplayAssetNotLoadedError(COIN_PREFAB_PATH));
+                null);
 
             contentLoader.LoadAsset<TimerPoolableObject>
                 (COIN_VFX_PREFAB_PATH,
                 (assetLoaded) => spawners.Add(new CoinParticleSpawner(assetLoaded, SPAWNER_POOL_SIZE, SPAWNER_POOL_MAX_CAPACITY)),
-                () => DisplayAssetNotLoadedError(COIN_VFX_PREFAB_PATH));
+                null);
 
             audioManager.PlayBackgroundMusic(ClipIds.MUSIC_CLIP);
         }
@@ -71,12 +72,6 @@ namespace PlanesRemake.Runtime.Core
             {
                 spawner.Dispose();
             }
-        }
-
-        //To-do: Consider moving this function to the ContentLoader class.
-        private void DisplayAssetNotLoadedError(string assetAddress)
-        {
-            Debug.LogError($"Failed to load asset with address {assetAddress}");
         }
     }
 }

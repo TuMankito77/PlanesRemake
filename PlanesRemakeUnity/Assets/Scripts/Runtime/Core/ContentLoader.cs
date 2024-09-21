@@ -41,6 +41,7 @@ namespace PlanesRemake.Runtime.Core
             {
                 if(resourceRequest.asset == null)
                 {
+                    Debug.LogError($"Failed to load asset with address {address}");
                     onFailedToLoadAsset?.Invoke();
                 }
                 else
