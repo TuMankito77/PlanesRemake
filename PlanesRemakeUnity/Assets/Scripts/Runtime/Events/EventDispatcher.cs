@@ -3,6 +3,8 @@ namespace PlanesRemake.Runtime.Events
     using System;
     using System.Collections.Generic;
 
+    using PlanesRemake.Runtime.Utils;
+    
     public class EventDispatcher
     {
         private struct EventQueuedInfo
@@ -102,7 +104,14 @@ namespace PlanesRemake.Runtime.Events
             for(int i = 0; i < listeners.Count; i++)
             {
                 //To-do: Send the data by allowing the senders to send an event request that will contain data
-                listeners[i].HandleEvent(eventName, data);
+                try
+                {
+                    listeners[i].HandleEvent(eventName, data);
+                }
+                catch(Exception exception)
+                {
+                    LoggerUtil.LogError(exception);
+                }
             }
 
             isDispatchingEvent = false;
