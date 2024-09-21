@@ -4,8 +4,6 @@ namespace PlanesRemake.Runtime.Sound
 
     using UnityEngine;
 
-    using PlanesRemake.Runtime.UI.Views;
-
     [CreateAssetMenu(fileName = "ClipsContainer", menuName = "Sounds/ClipsContainer")]
     public class ClipsContanier : ScriptableObject
     {
@@ -27,7 +25,8 @@ namespace PlanesRemake.Runtime.Sound
             {
                 { ClipIds.COIN_CLIP, clips[0] },
                 { ClipIds.MUSIC_CLIP, clips[1] },
-                { ClipIds.BUTTON_CLICK_CLIP, clips[2] }
+                { ClipIds.BUTTON_CLICK_CLIP, clips[2] },
+                { ClipIds.AIRCRAFT_ENGINE_CLIP, clips[3] }
             };
         }
     }
