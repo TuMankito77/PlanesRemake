@@ -26,7 +26,8 @@ namespace PlanesRemake.Runtime.Sound
                 { ClipIds.COIN_CLIP, clips[0] },
                 { ClipIds.MUSIC_CLIP, clips[1] },
                 { ClipIds.BUTTON_CLICK_CLIP, clips[2] },
-                { ClipIds.AIRCRAFT_ENGINE_CLIP, clips[3] }
+                { ClipIds.AIRCRAFT_ENGINE_CLIP, clips[3] },
+                { ClipIds.AIRCRAFT_EXPLOSION_CLIP, clips[4] }
             };
         }
     }

@@ -6,5 +6,6 @@ namespace PlanesRemake.Runtime.Sound
         public const string MUSIC_CLIP = "MusicClip";
         public const string BUTTON_CLICK_CLIP = "ButtonClickClip";
         public const string AIRCRAFT_ENGINE_CLIP = "AircraftEngineClip";
+        public const string AIRCRAFT_EXPLOSION_CLIP = "AircraftExplosionClip";
     }
 }

@@ -106,7 +106,8 @@ namespace PlanesRemake.Runtime.Gameplay
             {
                 meshRenderer.enabled = false;
             }
-            
+
+            audioManager.PlayGameplayClip(ClipIds.AIRCRAFT_EXPLOSION_CLIP);
             ParticleSystem explosionParticlesInstance = Instantiate(vfxAircraftCrashed, transform.position, Quaternion.identity);
             explosionParticlesInstance.Play();
             timer = new Timer(explosionParticlesInstance.main.startLifetimeMultiplier);
