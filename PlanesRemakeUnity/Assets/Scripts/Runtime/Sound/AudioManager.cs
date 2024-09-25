@@ -48,7 +48,7 @@ namespace PlanesRemake.Runtime.Sound
             
             loopingClipsPlaying.Add(backgroundMusicAudioPlayer);
 
-            clipsDatabase = await LoadAsset<ClipsDatabase>(ClipsDatabase.CLIPS_DATABASE_SPRITABLE_OBJECT_PATH);
+            clipsDatabase = await LoadAsset<ClipsDatabase>(ClipsDatabase.CLIPS_DATABASE_SCRIPTABLE_OBJECT_PATH);
             
             if(clipsDatabase == null)
             {
