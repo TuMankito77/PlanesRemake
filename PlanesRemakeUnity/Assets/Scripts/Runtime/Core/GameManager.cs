@@ -106,8 +106,8 @@ namespace PlanesRemake.Runtime.Core
                         contentLoader.LoadScene("MainLevel", LoadSceneMode.Additive,
                             () =>
                             {
-                                uiManager.RemoveView(ViewIds.MainMenu);
-                                uiManager.DisplayView(ViewIds.Hud);
+                                uiManager.RemoveView(ViewIds.MAIN_MENU);
+                                uiManager.DisplayView(ViewIds.HUD);
                                 inputManager.DisableInput(uiManager);
                                 currentLevelInitializer = new LevelInitializer(contentLoader, inputManager, audioManager);
                             });
@@ -116,7 +116,7 @@ namespace PlanesRemake.Runtime.Core
 
                 case UiEvents.OnPauseButtonPressed:
                     {
-                        uiManager.DisplayView(ViewIds.PauseMenu);
+                        uiManager.DisplayView(ViewIds.PAUSE_MENU);
                         inputManager.EnableInput(uiManager);
                         inputManager.DisableInput(currentLevelInitializer.Aircraft);
                         audioManager.PauseGameplayClips();
@@ -127,7 +127,7 @@ namespace PlanesRemake.Runtime.Core
 
                 case UiEvents.OnUnpauseButtonPressed:
                     {
-                        uiManager.RemoveView(ViewIds.PauseMenu);
+                        uiManager.RemoveView(ViewIds.PAUSE_MENU);
                         inputManager.DisableInput(uiManager);
                         inputManager.EnableInput(currentLevelInitializer.Aircraft);
                         audioManager.UnPauseGameplayClips();
@@ -139,7 +139,7 @@ namespace PlanesRemake.Runtime.Core
                 case UiEvents.OnMainMenuButtonPressed:
                     {
                         IsGamePaused = false;
-                        uiManager.RemoveView(ViewIds.PauseMenu);
+                        uiManager.RemoveView(ViewIds.PAUSE_MENU);
                         UnloadMainLevel();
                         break;
                     }
@@ -193,14 +193,14 @@ namespace PlanesRemake.Runtime.Core
 
         private void UnloadMainLevel()
         {
-            uiManager.RemoveView(ViewIds.Hud);
+            uiManager.RemoveView(ViewIds.HUD);
             currentLevelInitializer.Dispose();
             currentLevelInitializer = null;
             contentLoader.UnloadScene("MainLevel",
             () =>
             {
                 ResetPlayerData();
-                uiManager.DisplayView(ViewIds.MainMenu);
+                uiManager.DisplayView(ViewIds.MAIN_MENU);
             });
         }
 

@@ -14,9 +14,7 @@ namespace PlanesRemake.Runtime.UI
 
     public class UiManager : BaseSystem, IInputControlableEntity
     {
-        private const string VIEWS_CONTAINER_SCRIPTABLE_OBJECT_PATH = "Ui/ViewsContainer";
-
-        private ViewsContainer viewsContainer = null;
+        private ViewsDatabase viewsDatabase = null;
         private GameObject uiManagerGO = null;
         private Camera uiCamera = null;
         private List<BaseView> viewsOpened = null;
@@ -32,11 +30,11 @@ namespace PlanesRemake.Runtime.UI
             //To-do: Create a database that categorizes the objects loaded based on a list that groups what is needed to be loaded depending on what needs to be shown.
             bool isLoadingViewsContainer = true;
             ContentLoader contentLoader = GetDependency<ContentLoader>();
-            contentLoader.LoadAsset<ViewsContainer>
-                (VIEWS_CONTAINER_SCRIPTABLE_OBJECT_PATH,
+            contentLoader.LoadAsset<ViewsDatabase>
+                (ViewsDatabase.VIEWS_DATABASE_SCRIPTABLE_OBJECT_PATH,
                 (assetLoaded) =>
                 {
-                    viewsContainer = assetLoaded;
+                    viewsDatabase = assetLoaded;
                     isLoadingViewsContainer = false;
                 },
                 () => isLoadingViewsContainer = false);
@@ -46,13 +44,13 @@ namespace PlanesRemake.Runtime.UI
                 await Task.Yield();
             }
 
-            viewsContainer.Initialize();
+            viewsDatabase.Initialize();
 
             uiManagerGO = new GameObject("UI Manager");
             GameObject.DontDestroyOnLoad(uiManagerGO);
 
             uiCamera = new GameObject("UI Camera").AddComponent<Camera>();
-            uiCamera.cullingMask = viewsContainer.ViewsLayerMask;
+            uiCamera.cullingMask = viewsDatabase.ViewsLayerMask;
             uiCamera.clearFlags = CameraClearFlags.Depth;
             //Have a system that manages the order of derendering for the cameras
             uiCamera.depth = 1;
@@ -64,17 +62,14 @@ namespace PlanesRemake.Runtime.UI
             eventSystem.transform.SetParent(uiManagerGO.transform);
 
             //To-do: Move the showing of the main menu view to the game manager.
-            DisplayView(ViewIds.MainMenu);
+            DisplayView(ViewIds.MAIN_MENU);
 
             return true;
         }
 
         public void DisplayView(string viewId)
-        {
-            Debug.Assert(viewsContainer.ViewsById.ContainsKey(viewId), 
-                $"{GetType().Name} - The view {viewId} id does not exist!");
-            
-            BaseView viewFound = GameObject.Instantiate(viewsContainer.ViewsById[viewId], uiManagerGO.transform);
+        {   
+            BaseView viewFound = GameObject.Instantiate(viewsDatabase.GetFile(viewId), uiManagerGO.transform);
             viewFound.Initialize(uiCamera, audioManager);
             viewFound.Canvas.sortingOrder = viewsOpened.Count;
             viewFound.TransitionIn();
@@ -84,10 +79,7 @@ namespace PlanesRemake.Runtime.UI
 
         public void RemoveView(string viewId)
         {
-            Debug.Assert(viewsContainer.ViewsById.ContainsKey(viewId), 
-                $"{GetType().Name} - The view {viewId} id does not exist!");
-            
-            Type viewType = viewsContainer.ViewsById[viewId].GetType();
+            Type viewType = viewsDatabase.GetFile(viewId).GetType();
             
             if(!viewsOpened.Exists((view) => view.GetType() == viewType))
             {
