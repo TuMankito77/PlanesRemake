@@ -10,7 +10,6 @@ namespace PlanesRemake.Runtime.Sound
 
     public class AudioManager : BaseSystem
     {
-        private const string CLIPS_CONTAINER_SPRITABLE_OBJECT_PATH = "Sound/ClipsContainer";
         private const string AUDIO_PLAYER_PREFAB_PATH = "Sound/AudioPlayer";
 
         private Dictionary<int, AudioPlayer> loopingAudioPlayers = new Dictionary<int, AudioPlayer>();
@@ -21,7 +20,7 @@ namespace PlanesRemake.Runtime.Sound
         private GameObject audioManagerGO = null;
         private IObjectPool<AudioPlayer> audioPlayersPool = null; 
         private List<AudioPlayer> loopingClipsPlaying = null;
-        private ClipsContanier clipsContainer = null;
+        private ClipsDatabase clipsDatabase = null;
 
         public override async Task<bool> Initialize(IEnumerable<BaseSystem> sourceDependencies)
         {
@@ -49,24 +48,21 @@ namespace PlanesRemake.Runtime.Sound
             
             loopingClipsPlaying.Add(backgroundMusicAudioPlayer);
 
-            clipsContainer = await LoadAsset<ClipsContanier>(CLIPS_CONTAINER_SPRITABLE_OBJECT_PATH);
+            clipsDatabase = await LoadAsset<ClipsDatabase>(ClipsDatabase.CLIPS_DATABASE_SPRITABLE_OBJECT_PATH);
             
-            if(clipsContainer == null)
+            if(clipsDatabase == null)
             {
                 return false;
             }
 
-            clipsContainer.Initialize();
+            clipsDatabase.Initialize();
             
             return true;
         }
 
         public void PlayGameplayClip(string clipId)
         {
-            Debug.Assert(clipsContainer.ClipsById.ContainsKey(clipId),
-                $"{GetType().Name} - The clip {clipId} id does not exist!");
-
-            AudioClip audioClip = clipsContainer.ClipsById[clipId];
+            AudioClip audioClip = clipsDatabase.GetFile(clipId);
             gameplayAudioPlayer.PlayClipOneShot(audioClip);
         }
 
@@ -82,10 +78,7 @@ namespace PlanesRemake.Runtime.Sound
 
         public void PlayGeneralClip(string clipId)
         {
-            Debug.Assert(clipsContainer.ClipsById.ContainsKey(clipId),
-                $"{GetType().Name} - The clip {clipId} id does not exist!");
-
-            AudioClip audioClip = clipsContainer.ClipsById[clipId];
+            AudioClip audioClip = clipsDatabase.GetFile(clipId);
             generalAudioPlayer.PlayClipOneShot(audioClip);
         }
 
@@ -101,10 +94,7 @@ namespace PlanesRemake.Runtime.Sound
 
         public void PlayBackgroundMusic(string clipId)
         {
-            Debug.Assert(clipsContainer.ClipsById.ContainsKey(clipId),
-                $"{GetType().Name} - The clip {clipId} id does not exist!");
-
-            AudioClip audioClip = clipsContainer.ClipsById[clipId];
+            AudioClip audioClip = clipsDatabase.GetFile(clipId);
             backgroundMusicAudioPlayer.UpdateDefaultClip(audioClip);
             backgroundMusicAudioPlayer.Play();
         }
@@ -121,10 +111,7 @@ namespace PlanesRemake.Runtime.Sound
 
         public void PlayLoopingClip(int idRetreiver, string clipId, Transform parent = null, bool isSpatial = false, bool isGameplaySound = true)
         {
-            Debug.Assert(clipsContainer.ClipsById.ContainsKey(clipId),
-                $"{GetType().Name} - The clip {clipId} id does not exist!");
-
-            AudioClip audioClip = clipsContainer.ClipsById[clipId];
+            AudioClip audioClip = clipsDatabase.GetFile(clipId);
             AudioPlayer audioPlayer = null;
 
             //Checking if the object retrived from the dictionary was destroyed in the scene 
