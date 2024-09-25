@@ -116,6 +116,8 @@ namespace PlanesRemake.Runtime.Database
             string customDataConstantTemplate = templateText.Substring(contextMenuStartIndex, contextMenuEndIndex - contextMenuStartIndex);
             StringBuilder customDataConstants = new StringBuilder();
 
+            LoggerUtil.Assert(AreIdsUnique(), $"{GetType().Name} - There are duplicate {typeof(T)} ids, please make sure to not repeat any id on the list.");
+            idFileLookup = GetIdFileLookup(idFilePairs);
             int currentIndex = 0;
 
             foreach (string uniqueFileId in idFileLookup.Keys)
