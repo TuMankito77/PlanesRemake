@@ -12,15 +12,11 @@ namespace PlanesRemake.Runtime.Core
     using PlanesRemake.Runtime.UI;
     using PlanesRemake.Runtime.UI.Views;
     using PlanesRemake.Runtime.Sound;
+    using PlanesRemake.Runtime.Gameplay.StorableClasses;
+    using PlanesRemake.Runtime.SaveTool;
 
     public class GameManager : IListener
     {
-        public struct PlayerData
-        {
-            public int coinsCollected;
-            public int wallsEvaded;
-        }
-
         private SystemsInitializer systemsInitializer = null;
         private List<BaseSystem> baseSystems = null;
         private ContentLoader contentLoader = null;
@@ -28,12 +24,15 @@ namespace PlanesRemake.Runtime.Core
         private AudioManager audioManager = null;
         private InputManager inputManager = null;
         private LevelInitializer currentLevelInitializer = null;
-        private PlayerData playerData = default(PlayerData);
+        private PlayerInformation playerInformation = null;
+        private StorageAccessor storageAccessor = null;
 
         public bool IsGamePaused { get; private set; } = false;
 
         public GameManager()
         {
+            playerInformation = new PlayerInformation(0, 0);
+            storageAccessor = new StorageAccessor();
             baseSystems = new List<BaseSystem>();
             baseSystems.Add(new ContentLoader());
             baseSystems.Add(new UiManager()
@@ -79,9 +78,6 @@ namespace PlanesRemake.Runtime.Core
             contentLoader = systemsInitializer.GetSystem<ContentLoader>();
             uiManager = systemsInitializer.GetSystem<UiManager>();
             audioManager = systemsInitializer.GetSystem<AudioManager>();
-            playerData = new PlayerData();
-            playerData.coinsCollected = 0;
-            playerData.wallsEvaded = 0;
             CreateInputControllers();
         }
 
@@ -146,6 +142,7 @@ namespace PlanesRemake.Runtime.Core
 
                 case UiEvents.OnQuitButtonPressed:
                     {
+                        Debug.LogWarning(storageAccessor.Load<PlayerInformation>(playerInformation.Key).coinsCollected);
                         Application.Quit();
                         break;
                     }
@@ -164,22 +161,23 @@ namespace PlanesRemake.Runtime.Core
 
                 case GameplayEvents.OnWallEvaded:
                     {
-                        playerData.wallsEvaded++;
-                        string wallsEvadedAsString = playerData.wallsEvaded.ToString();
+                        playerInformation.wallsEvaded++;
+                        string wallsEvadedAsString = playerInformation.wallsEvaded.ToString();
                         EventDispatcher.Instance.Dispatch(UiEvents.OnWallsValueChanged, wallsEvadedAsString);
                         break;
                     }
 
                 case GameplayEvents.OnCoinCollected:
                     {
-                        playerData.coinsCollected++;
-                        string coinsCollectedAsString = playerData.coinsCollected.ToString();
+                        playerInformation.coinsCollected++;
+                        string coinsCollectedAsString = playerInformation.coinsCollected.ToString();
                         EventDispatcher.Instance.Dispatch(UiEvents.OnCoinsValueChanged, coinsCollectedAsString);
                         break;
                     }
 
                 case GameplayEvents.OnAircraftDestroyed:
                     {
+                        storageAccessor.Save(playerInformation);
                         UnloadMainLevel();
                         break;
                     }
@@ -206,8 +204,7 @@ namespace PlanesRemake.Runtime.Core
 
         private void ResetPlayerData()
         {
-            playerData.coinsCollected = 0;
-            playerData.wallsEvaded = 0;
+            playerInformation = new PlayerInformation(0, 0);
         }
     }
 
