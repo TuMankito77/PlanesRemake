@@ -40,7 +40,6 @@ namespace PlanesRemake.Runtime.Gameplay
         private void Update()
         {
             Vector3 currentVelocity = CalculateVelocity();
-            Debug.LogWarning(currentVelocity.magnitude);
             Vector3 velocityOverTime = currentVelocity * Time.deltaTime;
             Vector3 newPosition = transform.position + velocityOverTime;
 
@@ -141,32 +140,26 @@ namespace PlanesRemake.Runtime.Gameplay
 
         private Vector3 CalculateVelocity()
         {
-            if (direction.x != 0)
+            float desiredHorizontalSpeed = direction.x * movementSpeed;
+
+            if(horizontalSpeed < desiredHorizontalSpeed)
             {
-                horizontalSpeed = Mathf.Clamp(horizontalSpeed + acceleration * Time.deltaTime * direction.x, -movementSpeed, movementSpeed);
+                horizontalSpeed = Mathf.Min(horizontalSpeed + acceleration * Time.deltaTime, desiredHorizontalSpeed);
             }
-            else
+            else if(horizontalSpeed > desiredHorizontalSpeed)
             {
-                if (horizontalSpeed != 0)
-                {
-                    horizontalSpeed = horizontalSpeed > 0 ?
-                        Mathf.Max(horizontalSpeed - acceleration * Time.deltaTime, 0) :
-                        Mathf.Min(horizontalSpeed + acceleration * Time.deltaTime, 0);
-                }
+                horizontalSpeed = Mathf.Max(horizontalSpeed - acceleration * Time.deltaTime, desiredHorizontalSpeed);
             }
 
-            if (direction.y != 0)
+            float desiredVerticalSpeed = direction.y * movementSpeed;
+
+            if (verticalSpeed < desiredVerticalSpeed)
             {
-                verticalSpeed = Mathf.Clamp(verticalSpeed + acceleration * Time.deltaTime * direction.y, -movementSpeed, movementSpeed);
+                verticalSpeed = Mathf.Min(verticalSpeed + acceleration * Time.deltaTime, desiredVerticalSpeed);
             }
-            else
+            else if (verticalSpeed > desiredVerticalSpeed)
             {
-                if (verticalSpeed != 0)
-                {
-                    verticalSpeed = verticalSpeed > 0 ?
-                        Mathf.Max(verticalSpeed - acceleration * Time.deltaTime, 0) :
-                        Mathf.Min(verticalSpeed + acceleration * Time.deltaTime, 0);
-                }
+                verticalSpeed = Mathf.Max(verticalSpeed - acceleration * Time.deltaTime, desiredVerticalSpeed);
             }
 
             Vector3 velocity = new Vector3(horizontalSpeed, verticalSpeed);
