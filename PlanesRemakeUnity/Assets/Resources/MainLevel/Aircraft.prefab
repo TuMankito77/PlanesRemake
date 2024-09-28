@@ -198,6 +198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 10
+  acceleration: 50
   vfxAircraftCrashed: {fileID: 19821056, guid: 079954accd64b32419ec069129c81273, type: 3}
   meshRenderersToHideWhenCrashing:
   - {fileID: 4837489700874154162}
