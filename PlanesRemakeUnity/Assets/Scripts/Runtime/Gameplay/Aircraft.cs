@@ -16,7 +16,10 @@ namespace PlanesRemake.Runtime.Gameplay
         public static string AIRCRAFT_TAG = "Aircraft";
 
         [SerializeField, Min(1)]
-        private float movementSpeed = 10;
+        private float movementSpeed = 30;
+
+        [SerializeField, Min(1)]
+        private float acceleration = 10;
 
         [SerializeField]
         private ParticleSystem vfxAircraftCrashed = null;
@@ -27,6 +30,8 @@ namespace PlanesRemake.Runtime.Gameplay
         private Vector2 direction = Vector2.zero;
         private CameraExtensions.Boundaries boundaries = default(CameraExtensions.Boundaries);
         private AudioManager audioManager = null;
+        private float horizontalSpeed = 0;
+        private float verticalSpeed = 0;
         //NOTE: Remove this timer once we have an animation an we know when the destroy animation finishes.
         private Timer timer = null;
 
@@ -34,16 +39,10 @@ namespace PlanesRemake.Runtime.Gameplay
 
         private void Update()
         {
-            if(direction.magnitude <= 0)
-            {
-                return;
-            }
-
-            float speedOverTime = movementSpeed * Time.deltaTime;
-            Vector3 forwardSpeedChange = Vector3.right * speedOverTime * direction.x;
-            Vector3 upwardSpeedChange = Vector3.up * speedOverTime * direction.y;
-            Vector3 velocity = forwardSpeedChange + upwardSpeedChange;
-            Vector3 newPosition = transform.position + velocity;
+            Vector3 currentVelocity = CalculateVelocity();
+            Debug.LogWarning(currentVelocity.magnitude);
+            Vector3 velocityOverTime = currentVelocity * Time.deltaTime;
+            Vector3 newPosition = transform.position + velocityOverTime;
 
             transform.position = new Vector3(
                 Mathf.Clamp(newPosition.x, boundaries.left, boundaries.right),
@@ -138,6 +137,44 @@ namespace PlanesRemake.Runtime.Gameplay
                     break;
                 }
             }
+        }
+
+        private Vector3 CalculateVelocity()
+        {
+            if (direction.x != 0)
+            {
+                horizontalSpeed = Mathf.Clamp(horizontalSpeed + acceleration * Time.deltaTime * direction.x, -movementSpeed, movementSpeed);
+            }
+            else
+            {
+                if (horizontalSpeed != 0)
+                {
+                    horizontalSpeed = horizontalSpeed > 0 ?
+                        Mathf.Max(horizontalSpeed - acceleration * Time.deltaTime, 0) :
+                        Mathf.Min(horizontalSpeed + acceleration * Time.deltaTime, 0);
+                }
+            }
+
+            if (direction.y != 0)
+            {
+                verticalSpeed = Mathf.Clamp(verticalSpeed + acceleration * Time.deltaTime * direction.y, -movementSpeed, movementSpeed);
+            }
+            else
+            {
+                if (verticalSpeed != 0)
+                {
+                    verticalSpeed = verticalSpeed > 0 ?
+                        Mathf.Max(verticalSpeed - acceleration * Time.deltaTime, 0) :
+                        Mathf.Min(verticalSpeed + acceleration * Time.deltaTime, 0);
+                }
+            }
+
+            Vector3 velocity = new Vector3(horizontalSpeed, verticalSpeed);
+            //We are clamping the magnitude since going diagonally gives us a velocity magnitude that goes 
+            //higher than the movement speed which, in turn, makes the movement fater than what it should be.
+            //And yes, the direction also has this constraint, but the problem comes back when calculating 
+            //the speed for each axis (-_-) 
+            return Vector3.ClampMagnitude(velocity, movementSpeed);
         }
     }
 }
