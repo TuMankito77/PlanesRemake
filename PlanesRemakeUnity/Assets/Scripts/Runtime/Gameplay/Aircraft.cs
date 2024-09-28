@@ -16,10 +16,10 @@ namespace PlanesRemake.Runtime.Gameplay
         public static string AIRCRAFT_TAG = "Aircraft";
 
         [SerializeField, Min(1)]
-        private float movementSpeed = 30;
+        private float movementSpeed = 10;
 
         [SerializeField, Min(1)]
-        private float acceleration = 10;
+        private float acceleration = 50;
 
         [SerializeField]
         private ParticleSystem vfxAircraftCrashed = null;
