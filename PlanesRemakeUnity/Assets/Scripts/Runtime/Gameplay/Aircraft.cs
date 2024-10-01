@@ -13,7 +13,9 @@ namespace PlanesRemake.Runtime.Gameplay
     {
         //NOTE: This is momentaneous, we have to make this tag
         //changeble from a drop-down menu on each object that uses it.
-        public static string AIRCRAFT_TAG = "Aircraft";
+        public const string AIRCRAFT_TAG = "Aircraft";
+        private const string HORIZONTAL_SPEED_ANIM_VAR_NAME = "HorizontalSpeed";
+        private const string VERTICAL_SPEED_ANIM_VAR_NAME = "VerticalSpeed";
 
         [SerializeField, Min(1)]
         private float movementSpeed = 10;
@@ -26,6 +28,9 @@ namespace PlanesRemake.Runtime.Gameplay
 
         [SerializeField]
         private MeshRenderer[] meshRenderersToHideWhenCrashing = null;
+
+        [SerializeField]
+        private Animator animator = null;
 
         private Vector2 direction = Vector2.zero;
         private CameraExtensions.Boundaries boundaries = default(CameraExtensions.Boundaries);
@@ -40,13 +45,8 @@ namespace PlanesRemake.Runtime.Gameplay
         private void Update()
         {
             Vector3 currentVelocity = CalculateVelocity();
-            Vector3 velocityOverTime = currentVelocity * Time.deltaTime;
-            Vector3 newPosition = transform.position + velocityOverTime;
-
-            transform.position = new Vector3(
-                Mathf.Clamp(newPosition.x, boundaries.left, boundaries.right),
-                Mathf.Clamp(newPosition.y, boundaries.bottom, boundaries.top),
-                transform.position.z);
+            UpdateAnimation(currentVelocity);
+            UpdatePosition(currentVelocity);
         }
 
         private void OnEnable()
@@ -93,6 +93,25 @@ namespace PlanesRemake.Runtime.Gameplay
         public void Dispose()
         {
             audioManager.StopLoopingClip(GetInstanceID());
+        }
+
+        private void UpdatePosition(Vector3 currentVelocity)
+        {
+            Vector3 velocityOverTime = currentVelocity * Time.deltaTime;
+            Vector3 newPosition = transform.position + velocityOverTime;
+
+            transform.position = new Vector3(
+                Mathf.Clamp(newPosition.x, boundaries.left, boundaries.right),
+                Mathf.Clamp(newPosition.y, boundaries.bottom, boundaries.top),
+                transform.position.z);
+        }
+
+        private void UpdateAnimation(Vector3 currentVelocity)
+        {
+            float horizontalSpeedNormalized = currentVelocity.x / movementSpeed;
+            float verticalSpeedNormalized = currentVelocity.y / movementSpeed;
+            animator.SetFloat(HORIZONTAL_SPEED_ANIM_VAR_NAME, horizontalSpeedNormalized);
+            animator.SetFloat(VERTICAL_SPEED_ANIM_VAR_NAME, verticalSpeedNormalized);
         }
 
         private void DestroyAircraft()
