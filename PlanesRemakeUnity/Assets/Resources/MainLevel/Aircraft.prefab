@@ -112,6 +112,7 @@ GameObject:
   - component: {fileID: 23568146648127300}
   - component: {fileID: 3211565370048440531}
   - component: {fileID: 1213488579361636036}
+  - component: {fileID: 3748680821208295502}
   m_Layer: 6
   m_Name: Aircraft
   m_TagString: Aircraft
@@ -199,10 +200,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 10
   acceleration: 50
+  upwardTurnAngle: 30
   vfxAircraftCrashed: {fileID: 19821056, guid: 079954accd64b32419ec069129c81273, type: 3}
   meshRenderersToHideWhenCrashing:
   - {fileID: 4837489700874154162}
   - {fileID: 4837489700874154160}
+  animator: {fileID: 3748680821208295502}
 --- !u!64 &3211565370048440531
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -252,3 +255,24 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!95 &3748680821208295502
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4837489700871892594}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: dd52cbea16c4eeb4198799d130dbc0e5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
