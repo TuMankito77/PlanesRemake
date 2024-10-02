@@ -134,6 +134,17 @@ namespace PlanesRemake.Runtime.Input
                 },
                 {
                     ""name"": """",
+                    ""id"": ""d4507f04-3fc0-4ca9-880e-42baafd7a2d4"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""ca733166-6590-4573-b21e-debf9a003db0"",
                     ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",

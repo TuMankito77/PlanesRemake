@@ -11,4 +11,4 @@ ScriptedImporter:
   generateWrapperCode: 1
   wrapperCodePath: Assets/Scripts/Runtime/Input/InputActions.cs
   wrapperClassName: 
-  wrapperCodeNamespace: PlanesRemastered.Runtime.Input
+  wrapperCodeNamespace: PlanesRemake.Runtime.Input
