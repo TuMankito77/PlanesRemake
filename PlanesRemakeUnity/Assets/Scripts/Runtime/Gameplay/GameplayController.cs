@@ -7,7 +7,6 @@ namespace PlanesRemake.Runtime.Gameplay
 
     using PlanesRemake.Runtime.Events;
     using PlanesRemake.Runtime.Input;
-    using PlanesRemake.Runtime.Core;
 
     public class GameplayController : InputController
     {
