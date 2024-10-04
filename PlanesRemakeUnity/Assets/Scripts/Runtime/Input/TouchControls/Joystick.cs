@@ -27,22 +27,6 @@ namespace PlanesRemake.Runtime.Input.TouchControls
             set => controlPathSelected = value;
         }
 
-        #region Unity Methods
-
-        protected override void OnEnable()
-        {
-            base.OnEnable();
-            RegisterToTouchEvents();
-        }
-
-        protected override void OnDisable()
-        {
-            base.OnDisable();
-            DeregisterFromTouchEvents();
-        }
-
-        #endregion
-
         public void RegisterToTouchEvents()
         {
             ETouch.Touch.onFingerDown += OnFingerDown;
