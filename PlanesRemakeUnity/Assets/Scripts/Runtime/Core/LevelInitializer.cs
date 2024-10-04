@@ -18,7 +18,6 @@ namespace PlanesRemake.Runtime.Core
         private const string OBSTACLE_PREFAB_PATH = "MainLevel/Obstacle";
         private const string COIN_PREFAB_PATH = "MainLevel/Coin";
         private const string COIN_VFX_PREFAB_PATH = "MainLevel/VFX_CoinCollected";
-        private const string JOYSTICK_INPUT_PREFAB_PATH = "TouchControls/JoystickInput";
         private const int SPAWNER_POOL_SIZE = 10;
         private const int SPAWNER_POOL_MAX_CAPACITY = 100;
 
