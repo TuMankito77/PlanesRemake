@@ -8,7 +8,6 @@ namespace PlanesRemake.Runtime.Core
     using PlanesRemake.Runtime.Input;
     using PlanesRemake.Runtime.Gameplay.Spawners;
     using PlanesRemake.Runtime.Sound;
-    using PlanesRemake.Runtime.Input.TouchControls;
 
     //NOTE: Should we make this a system?
     //Probably yes, as it loads data asynchronously and sometimes we need to know when we have access to this data.
@@ -64,11 +63,6 @@ namespace PlanesRemake.Runtime.Core
             contentLoader.LoadAsset<TimerPoolableObject>
                 (COIN_VFX_PREFAB_PATH,
                 (assetLoaded) => spawners.Add(new CoinParticleSpawner(assetLoaded, SPAWNER_POOL_SIZE, SPAWNER_POOL_MAX_CAPACITY)),
-                null);
-
-            contentLoader.LoadAsset<Joystick>
-                (JOYSTICK_INPUT_PREFAB_PATH,
-                (assetLoaded) => GameObject.Instantiate(assetLoaded, Vector3.zero, Quaternion.identity),
                 null);
 
             audioManager.PlayBackgroundMusic(ClipIds.MUSIC_CLIP);

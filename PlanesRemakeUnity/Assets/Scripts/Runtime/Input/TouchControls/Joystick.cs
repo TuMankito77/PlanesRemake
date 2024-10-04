@@ -19,11 +19,15 @@ namespace PlanesRemake.Runtime.Input.TouchControls
         private Vector2 initialPosition = Vector2.zero;
         private Vector2 movementAmount = Vector2.zero;
 
+        public float DeadzoneRadius { get => deadzoneRadius; set => deadzoneRadius = value; }
+
         protected override string controlPathInternal 
         { 
             get => controlPathSelected;
             set => controlPathSelected = value;
         }
+
+        #region Unity Methods
 
         protected override void OnEnable()
         {
@@ -37,24 +41,26 @@ namespace PlanesRemake.Runtime.Input.TouchControls
             DeregisterFromTouchEvents();
         }
 
-        private void RegisterToTouchEvents()
+        #endregion
+
+        public void RegisterToTouchEvents()
         {
-            //NOTE: Maybe this should be enabled somewhere else since we will not only have this class that 
-            //enables the enhanced touch support.
-            EnhancedTouchSupport.Enable();
             ETouch.Touch.onFingerDown += OnFingerDown;
             ETouch.Touch.onFingerMove += OnFingerMove;
             ETouch.Touch.onFingerUp += OnFingerUp;
+            //Making sure the movement is cleaned up when we are start
+            movementAmount = Vector2.zero;
+            SendValueToControl(movementAmount);
         }
 
-        private void DeregisterFromTouchEvents()
+        public void DeregisterFromTouchEvents()
         {
             ETouch.Touch.onFingerDown -= OnFingerDown;
             ETouch.Touch.onFingerMove -= OnFingerMove;
             ETouch.Touch.onFingerUp -= OnFingerUp;
-            //NOTE: Same as with enable, maybe this should be disabled somewhere else.
-            //REMINDER: This should be called after all the classes have unsubscribed from the touch events.
-            EnhancedTouchSupport.Disable();
+            //Making sure the movement is cleaned up when we are done
+            movementAmount = Vector2.zero;
+            SendValueToControl(movementAmount);
         }
 
         private void OnFingerDown(Finger finger)
@@ -80,6 +86,10 @@ namespace PlanesRemake.Runtime.Input.TouchControls
             if(movementAmount.magnitude > deadzoneRadius)
             {
                 SendValueToControl(movementAmount.normalized);
+            }
+            else
+            {
+                SendValueToControl(Vector2.zero);
             }
         }
 

@@ -83,13 +83,20 @@ namespace PlanesRemake.Runtime.Core
 
         private void CreateInputControllers()
         {
+
+#if UNITY_ANDROID || UNITY_IOS || UNITY_EDITOR
+            inputManager = new InputManager(enableTouchControls: true);
+#else     
+            inputManager = new InputManager(enableTouchControls: false);
+#endif
+
             InputController[] inputControllers =
             {
                 new UiController(this),
-                new GameplayController()
+                new GameplayController(contentLoader)
             };
 
-            inputManager = new InputManager(inputControllers);
+            inputManager.AddInput(inputControllers);
             inputManager.EnableInput(uiManager);
         }
 
