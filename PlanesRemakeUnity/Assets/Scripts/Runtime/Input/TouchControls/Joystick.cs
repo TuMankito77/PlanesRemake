@@ -1,5 +1,7 @@
 namespace PlanesRemake.Runtime.Input.TouchControls
 {
+    using System;
+    
     using UnityEngine;
     using UnityEngine.InputSystem.EnhancedTouch;
     using UnityEngine.InputSystem.Layouts;
@@ -8,6 +10,10 @@ namespace PlanesRemake.Runtime.Input.TouchControls
 
     public class Joystick : OnScreenControl
     {
+        public event Action<Vector2> OnTouchStart = null;
+        public event Action<Vector2> OnTouchDrag = null;
+        public event Action<Vector2> OnTouchEnd = null;
+
         [InputControl(layout = "Button")]
         [SerializeField]
         private string controlPathSelected;
@@ -56,6 +62,7 @@ namespace PlanesRemake.Runtime.Input.TouchControls
             
             fingerMovement = finger;
             initialPosition = finger.screenPosition;
+            OnTouchStart?.Invoke(initialPosition);
         }
 
         private void OnFingerMove(Finger finger)
@@ -66,6 +73,7 @@ namespace PlanesRemake.Runtime.Input.TouchControls
             }
 
             movementAmount = finger.screenPosition - initialPosition;
+            OnTouchDrag?.Invoke(finger.screenPosition);
             
             if(movementAmount.magnitude > deadzoneRadius)
             {
@@ -87,7 +95,23 @@ namespace PlanesRemake.Runtime.Input.TouchControls
             fingerMovement = null;
             movementAmount = Vector2.zero;
             SendValueToControl(movementAmount);
+            OnTouchEnd?.Invoke(finger.screenPosition);
         }
+
+        //NOTE: We are deregistering when the object is destroyed since the editor could be stopped at any point
+        //but this class will still be listening to the simulated touch input.
+#if UNITY_EDITOR
+
+        #region Unity Methods
+
+        private void OnDestroy()
+        {
+            DeregisterFromTouchEvents();
+        }
+
+        #endregion
     }
+
+#endif
 }
 
