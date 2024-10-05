@@ -26,7 +26,7 @@ namespace PlanesRemake.Runtime.Input
             }
         }
 
-        public void AddInput(params InputController[] inputControllers)
+        public void AddInputController(params InputController[] inputControllers)
         {
             foreach(InputController inputController in inputControllers)
             {
@@ -36,7 +36,7 @@ namespace PlanesRemake.Runtime.Input
             }
         }
 
-        public void RemoveInput(params InputController[] inputControllers)
+        public void RemoveInputContoller(params InputController[] inputControllers)
         {
             foreach (InputController inputController in inputControllers)
             {
@@ -57,11 +57,12 @@ namespace PlanesRemake.Runtime.Input
             }
         }
 
-        public void EnableInput(IInputControlableEntity entityToControl)
+        public InputController EnableInput(IInputControlableEntity entityToControl)
         {
             LoggerUtil.Assert(typeInputControllerPairs.TryGetValue(entityToControl.GetType(), out InputController inputControllerFound), 
                 $"{GetType().Name}: No input controller was found for the {entityToControl.GetType().Name} entity.");
             playerInput.AddActiveInputController(inputControllerFound, entityToControl);
+            return inputControllerFound;
         }
 
         public void DisableInput(IInputControlableEntity entityControlled)
