@@ -61,13 +61,10 @@ namespace PlanesRemake.Runtime.UI
             eventSystem.AddComponent<StandaloneInputModule>();
             eventSystem.transform.SetParent(uiManagerGO.transform);
 
-            //To-do: Move the showing of the main menu view to the game manager.
-            DisplayView(ViewIds.MAIN_MENU);
-
             return true;
         }
 
-        public void DisplayView(string viewId)
+        public BaseView DisplayView(string viewId)
         {   
             BaseView viewFound = GameObject.Instantiate(viewsDatabase.GetFile(viewId), uiManagerGO.transform);
             viewFound.Initialize(uiCamera, audioManager);
@@ -75,6 +72,7 @@ namespace PlanesRemake.Runtime.UI
             viewFound.TransitionIn();
             viewFound.transform.SetParent(uiManagerGO.transform);
             viewsOpened.Add(viewFound);
+            return viewFound;
         }
 
         public void RemoveView(string viewId)
