@@ -19,6 +19,8 @@ MonoBehaviour:
     file: {fileID: 3946539626003716656, guid: 221dcadb563096f428fea32f0c247a78, type: 3}
   - id: PauseMenu
     file: {fileID: 2545423290515232809, guid: 1a23596bee906234cbac7fabfd1c506c, type: 3}
+  - id: TouchControls
+    file: {fileID: 4680101471839379955, guid: 687216a49c2a124439102dcadac8ce9a, type: 3}
   viewsLayerMask:
     serializedVersion: 2
     m_Bits: 32
