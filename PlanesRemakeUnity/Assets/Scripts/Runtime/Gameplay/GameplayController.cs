@@ -20,6 +20,9 @@ namespace PlanesRemake.Runtime.Gameplay
         private Aircraft aircraft = null;
         private VirtualJoystick virtualJoystick = null;
 
+        public VirtualJoystick VirtualJoystick => virtualJoystick;
+        public bool VirtualJoystickEnabled => virtualJoystick != null;
+
         public GameplayController(ContentLoader contentLoader)
         {
             if(EnhancedTouchSupport.enabled)
@@ -54,11 +57,6 @@ namespace PlanesRemake.Runtime.Gameplay
             }
         }
 
-        private void OnPuaseActionTriggered(InputAction.CallbackContext obj)
-        {
-            EventDispatcher.Instance.Dispatch(UiEvents.OnPauseButtonPressed);
-        }
-
         public override void Disable()
         {
             inputActions.GameplayController.Pause.performed -= OnPuaseActionTriggered;
@@ -68,6 +66,11 @@ namespace PlanesRemake.Runtime.Gameplay
             {
                 virtualJoystick.DeregisterFromTouchEvents();
             }
+        }
+
+        private void OnPuaseActionTriggered(InputAction.CallbackContext obj)
+        {
+            EventDispatcher.Instance.Dispatch(UiEvents.OnPauseButtonPressed);
         }
     }
 }
