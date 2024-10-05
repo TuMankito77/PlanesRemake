@@ -8,6 +8,8 @@ namespace PlanesRemake.Runtime.Core
     using PlanesRemake.Runtime.Input;
     using PlanesRemake.Runtime.Gameplay.Spawners;
     using PlanesRemake.Runtime.Sound;
+    using PlanesRemake.Runtime.UI;
+    using PlanesRemake.Runtime.UI.Views;
 
     //NOTE: Should we make this a system?
     //Probably yes, as it loads data asynchronously and sometimes we need to know when we have access to this data.
@@ -24,10 +26,13 @@ namespace PlanesRemake.Runtime.Core
         private GameObject skyDomeBackground = null;
         private List<BaseSpawner> spawners = null;
         private Aircraft aircraft = null;
+        private GameplayController gameplayContoller = null;
+        private TouchCotrolsView touchControlsView = null;
+        private UiManager uiManager = null;
 
         public Aircraft Aircraft => aircraft;
 
-        public LevelInitializer(ContentLoader contentLoader, InputManager inputManager, AudioManager audioManager)
+        public LevelInitializer(ContentLoader contentLoader, InputManager inputManager, AudioManager audioManager, UiManager uiManager)
         {
             spawners = new List<BaseSpawner>();
             //NOTE: Update this so that we do not look for this object by name, but rather by reference 
@@ -45,7 +50,15 @@ namespace PlanesRemake.Runtime.Core
                 {
                     aircraft = GameObject.Instantiate(assetLoaded, Vector3.zero, Quaternion.Euler(0, 115, -25));
                     aircraft.Initialize(isometricCamera, audioManager);
-                    inputManager.EnableInput(Aircraft);
+                    gameplayContoller = inputManager.EnableInput(Aircraft) as GameplayController;
+                    
+                    if(gameplayContoller.VirtualJoystickEnabled)
+                    {
+                        touchControlsView = uiManager.DisplayView(ViewIds.TOUCH_CONTROLS) as TouchCotrolsView;
+                        gameplayContoller.VirtualJoystick.OnTouchStart += touchControlsView.SetInitialPosition;
+                        gameplayContoller.VirtualJoystick.OnTouchDrag += touchControlsView.SetDragPosition;
+                        gameplayContoller.VirtualJoystick.OnTouchEnd += touchControlsView.SetEndPosition;
+                    }
                 },
                 null);
 
@@ -69,6 +82,14 @@ namespace PlanesRemake.Runtime.Core
 
         public void Dispose()
         {
+            if (gameplayContoller.VirtualJoystickEnabled)
+            {
+                gameplayContoller.VirtualJoystick.OnTouchStart -= touchControlsView.SetInitialPosition;
+                gameplayContoller.VirtualJoystick.OnTouchDrag -= touchControlsView.SetInitialPosition;
+                gameplayContoller.VirtualJoystick.OnTouchEnd -= touchControlsView.SetEndPosition;
+                uiManager.RemoveView(ViewIds.TOUCH_CONTROLS);
+            }
+
             foreach (BaseSpawner spawner in spawners)
             {
                 spawner.Dispose();

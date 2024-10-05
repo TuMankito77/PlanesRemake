@@ -79,6 +79,7 @@ namespace PlanesRemake.Runtime.Core
             uiManager = systemsInitializer.GetSystem<UiManager>();
             audioManager = systemsInitializer.GetSystem<AudioManager>();
             CreateInputControllers();
+            uiManager.DisplayView(ViewIds.MAIN_MENU);
         }
 
         private void CreateInputControllers()
@@ -96,7 +97,7 @@ namespace PlanesRemake.Runtime.Core
                 new GameplayController(contentLoader)
             };
 
-            inputManager.AddInput(inputControllers);
+            inputManager.AddInputController(inputControllers);
             inputManager.EnableInput(uiManager);
         }
 
@@ -112,7 +113,7 @@ namespace PlanesRemake.Runtime.Core
                                 uiManager.RemoveView(ViewIds.MAIN_MENU);
                                 uiManager.DisplayView(ViewIds.HUD);
                                 inputManager.DisableInput(uiManager);
-                                currentLevelInitializer = new LevelInitializer(contentLoader, inputManager, audioManager);
+                                currentLevelInitializer = new LevelInitializer(contentLoader, inputManager, audioManager, uiManager);
                             });
                         break;
                     }
