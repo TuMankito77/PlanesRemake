@@ -32,9 +32,10 @@ namespace PlanesRemake.Runtime.Core
 
         public Aircraft Aircraft => aircraft;
 
-        public LevelInitializer(ContentLoader contentLoader, InputManager inputManager, AudioManager audioManager, UiManager uiManager)
+        public LevelInitializer(ContentLoader contentLoader, InputManager inputManager, AudioManager audioManager, UiManager sourceUiManager)
         {
             spawners = new List<BaseSpawner>();
+            uiManager = sourceUiManager;
             //NOTE: Update this so that we do not look for this object by name, but rather by reference 
             //as it could cause performance issues. 
             Camera isometricCamera = GameObject.Find("IsometricCamera").GetComponent<Camera>();
@@ -85,7 +86,7 @@ namespace PlanesRemake.Runtime.Core
             if (gameplayContoller.VirtualJoystickEnabled)
             {
                 gameplayContoller.VirtualJoystick.OnTouchStart -= touchControlsView.SetInitialPosition;
-                gameplayContoller.VirtualJoystick.OnTouchDrag -= touchControlsView.SetInitialPosition;
+                gameplayContoller.VirtualJoystick.OnTouchDrag -= touchControlsView.SetDragPosition;
                 gameplayContoller.VirtualJoystick.OnTouchEnd -= touchControlsView.SetEndPosition;
                 uiManager.RemoveView(ViewIds.TOUCH_CONTROLS);
             }
