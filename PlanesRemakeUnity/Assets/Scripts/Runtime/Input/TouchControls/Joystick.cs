@@ -38,9 +38,13 @@ namespace PlanesRemake.Runtime.Input.TouchControls
             ETouch.Touch.onFingerDown += OnFingerDown;
             ETouch.Touch.onFingerMove += OnFingerMove;
             ETouch.Touch.onFingerUp += OnFingerUp;
+
             //Making sure the movement is cleaned up when we are start
-            movementAmount = Vector2.zero;
-            SendValueToControl(movementAmount);
+            if(movementAmount.magnitude > 0)
+            {
+                movementAmount = Vector2.zero;
+                SendValueToControl(movementAmount);
+            }
         }
 
         public void DeregisterFromTouchEvents()
@@ -48,9 +52,15 @@ namespace PlanesRemake.Runtime.Input.TouchControls
             ETouch.Touch.onFingerDown -= OnFingerDown;
             ETouch.Touch.onFingerMove -= OnFingerMove;
             ETouch.Touch.onFingerUp -= OnFingerUp;
+            
             //Making sure the movement is cleaned up when we are done
-            movementAmount = Vector2.zero;
-            SendValueToControl(movementAmount);
+            if(movementAmount.magnitude > 0)
+            {
+                movementAmount = Vector2.zero;
+                SendValueToControl(movementAmount);
+                //In case the last touch end is not sent becuase it was cut all of a sudden.
+                OnTouchEnd?.Invoke(movementAmount);
+            }
         }
 
         private void OnFingerDown(Finger finger)
