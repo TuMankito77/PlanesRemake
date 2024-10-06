@@ -56,9 +56,9 @@ namespace PlanesRemake.Runtime.Core
                     if(gameplayContoller.VirtualJoystickEnabled)
                     {
                         touchControlsView = uiManager.DisplayView(ViewIds.TOUCH_CONTROLS) as TouchCotrolsView;
-                        gameplayContoller.VirtualJoystick.OnTouchStart += touchControlsView.SetInitialPosition;
-                        gameplayContoller.VirtualJoystick.OnTouchDrag += touchControlsView.SetDragPosition;
-                        gameplayContoller.VirtualJoystick.OnTouchEnd += touchControlsView.SetEndPosition;
+                        gameplayContoller.VirtualJoystick.OnTouchStart += touchControlsView.OnInitialPositionUpdated;
+                        gameplayContoller.VirtualJoystick.OnTouchDrag += touchControlsView.OnDragPositionUpdated;
+                        gameplayContoller.VirtualJoystick.OnTouchEnd += touchControlsView.OnEndPositionUpdated;
                     }
                 },
                 null);
@@ -85,9 +85,9 @@ namespace PlanesRemake.Runtime.Core
         {
             if (gameplayContoller.VirtualJoystickEnabled)
             {
-                gameplayContoller.VirtualJoystick.OnTouchStart -= touchControlsView.SetInitialPosition;
-                gameplayContoller.VirtualJoystick.OnTouchDrag -= touchControlsView.SetDragPosition;
-                gameplayContoller.VirtualJoystick.OnTouchEnd -= touchControlsView.SetEndPosition;
+                gameplayContoller.VirtualJoystick.OnTouchStart -= touchControlsView.OnInitialPositionUpdated;
+                gameplayContoller.VirtualJoystick.OnTouchDrag -= touchControlsView.OnDragPositionUpdated;
+                gameplayContoller.VirtualJoystick.OnTouchEnd -= touchControlsView.OnEndPositionUpdated;
                 uiManager.RemoveView(ViewIds.TOUCH_CONTROLS);
             }
 

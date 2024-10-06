@@ -22,7 +22,7 @@ namespace PlanesRemake.Runtime.UI.Views
 
         #endregion
 
-        public void SetInitialPosition(Vector2 position)
+        public void OnInitialPositionUpdated(Vector2 position)
         {
             Vector2 middleAchoredPosition = GetLowerLeftCornerAnchoredPosition() + position;
             joystickOuterCircle.anchoredPosition = middleAchoredPosition;
@@ -30,7 +30,7 @@ namespace PlanesRemake.Runtime.UI.Views
             initialPosition = position;
         }
 
-        public void SetDragPosition(Vector2 position)
+        public void OnDragPositionUpdated(Vector2 position)
         {
             //NOTE: Since the inner circle is a child of the outer circle, to new position needs to be local, 
             //hense the subtraction.
@@ -39,7 +39,7 @@ namespace PlanesRemake.Runtime.UI.Views
             joystickInnerCircle.anchoredPosition = Vector2.ClampMagnitude(newPosition, joystickOuterCircle.sizeDelta.x / 2);
         }
 
-        public void SetEndPosition(Vector2 position)
+        public void OnEndPositionUpdated(Vector2 position)
         {
             joystickOuterCircle.anchoredPosition = defaultJoystickPosition;
             joystickInnerCircle.anchoredPosition = Vector2.zero;
