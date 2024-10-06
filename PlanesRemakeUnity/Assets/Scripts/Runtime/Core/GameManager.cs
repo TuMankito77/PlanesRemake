@@ -14,6 +14,7 @@ namespace PlanesRemake.Runtime.Core
     using PlanesRemake.Runtime.Sound;
     using PlanesRemake.Runtime.Gameplay.StorableClasses;
     using PlanesRemake.Runtime.SaveTool;
+    using PlanesRemake.Runtime.Utils;
 
     public class GameManager : IListener
     {
@@ -66,6 +67,12 @@ namespace PlanesRemake.Runtime.Core
                 case GameplayEvents gameplayEvent:
                     {
                         HandleGameplayEvents(gameplayEvent, data);
+                        break;
+                    }
+
+                default:
+                    {
+                        LoggerUtil.LogError($"{GetType()} - The event {eventName} is not handled by this class. You may need to unsubscribe.");
                         break;
                     }
             }
