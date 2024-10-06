@@ -1,9 +1,9 @@
 namespace PlanesRemake.Runtime.Gameplay
 {
     using System;
-    
+
     using UnityEngine;
-    
+
     using PlanesRemake.Runtime.Input;
     using PlanesRemake.Runtime.Utils;
     using PlanesRemake.Runtime.Events;
@@ -51,12 +51,12 @@ namespace PlanesRemake.Runtime.Gameplay
 
         private void OnEnable()
         {
-            EventDispatcher.Instance.AddListener(this, typeof(GameplayEvents));
+            EventDispatcher.Instance.AddListener(this, typeof(GameplayEvents), typeof(UiEvents));
         }
 
         private void OnDisable()
         {
-            EventDispatcher.Instance.RemoveListener(this, typeof(GameplayEvents));
+            EventDispatcher.Instance.RemoveListener(this, typeof(GameplayEvents), typeof(UiEvents));
         }
 
         #endregion
@@ -65,13 +65,25 @@ namespace PlanesRemake.Runtime.Gameplay
 
         public void HandleEvent(IComparable eventName, object data)
         {
-            switch(eventName)
+            switch (eventName)
             {
                 case GameplayEvents gameplayEvent:
-                {
-                    HandleGameplayEvents(gameplayEvent, data);
-                    break;
-                }
+                    {
+                        HandleGameplayEvents(gameplayEvent, data);
+                        break;
+                    }
+
+                case UiEvents uiEvent:
+                    {
+                        HandleUiEvents(uiEvent, data);
+                        break;
+                    }
+
+                default:
+                    {
+                        LoggerUtil.LogError($"{GetType()} - The event {eventName} is not handled by this class. You may need to unsubscribe.");
+                        break;
+                    }
             }
         }
 
@@ -87,7 +99,7 @@ namespace PlanesRemake.Runtime.Gameplay
 
         public void UpdateDirection(Vector2 sourceDirection)
         {
-           direction = sourceDirection.normalized;
+            direction = sourceDirection.normalized;
         }
 
         public void Dispose()
@@ -119,7 +131,7 @@ namespace PlanesRemake.Runtime.Gameplay
             direction = Vector2.zero;
             audioManager.PauseLoopingClip(GetInstanceID());
 
-            foreach(MeshRenderer meshRenderer in meshRenderersToHideWhenCrashing)
+            foreach (MeshRenderer meshRenderer in meshRenderersToHideWhenCrashing)
             {
                 meshRenderer.enabled = false;
             }
@@ -140,20 +152,37 @@ namespace PlanesRemake.Runtime.Gameplay
 
         private void HandleGameplayEvents(GameplayEvents gameplayEvent, object data)
         {
-            switch(gameplayEvent)
+            switch (gameplayEvent)
             {
                 case GameplayEvents.OnWallcollision:
-                {
-                    Collider collider = data as Collider;
-                    
-                    if(collider.gameObject != gameObject)
                     {
-                        return;
+                        Collider collider = data as Collider;
+
+                        if (collider.gameObject != gameObject)
+                        {
+                            return;
+                        }
+
+                        DestroyAircraft();
+                        break;
+                    }
+            }
+        }
+
+        private void HandleUiEvents(UiEvents uiEvent, object data)
+        {
+            switch (uiEvent)
+            {
+                case UiEvents.OnPauseButtonPressed:
+                    {
+                        UpdateDirection(Vector2.zero);
+                        break;
                     }
 
-                    DestroyAircraft();
-                    break;
-                }
+                default:
+                    {
+                        break;
+                    }
             }
         }
 
@@ -161,11 +190,11 @@ namespace PlanesRemake.Runtime.Gameplay
         {
             float desiredHorizontalSpeed = direction.x * movementSpeed;
 
-            if(horizontalSpeed < desiredHorizontalSpeed)
+            if (horizontalSpeed < desiredHorizontalSpeed)
             {
                 horizontalSpeed = Mathf.Min(horizontalSpeed + acceleration * Time.deltaTime, desiredHorizontalSpeed);
             }
-            else if(horizontalSpeed > desiredHorizontalSpeed)
+            else if (horizontalSpeed > desiredHorizontalSpeed)
             {
                 horizontalSpeed = Mathf.Max(horizontalSpeed - acceleration * Time.deltaTime, desiredHorizontalSpeed);
             }
