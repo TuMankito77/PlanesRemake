@@ -10,10 +10,9 @@ namespace PlanesRemake.Runtime.Core
     using PlanesRemake.Runtime.Sound;
     using PlanesRemake.Runtime.UI;
     using PlanesRemake.Runtime.UI.Views;
+    using System.Threading.Tasks;
 
-    //NOTE: Should we make this a system?
-    //Probably yes, as it loads data asynchronously and sometimes we need to know when we have access to this data.
-    public class LevelInitializer
+    public class LevelInitializer : BaseSystem
     {
         private const string SPHERICAL_BACKGROUND_PREFAB_PATH = "MainLevel/SphericalBackground";
         private const string AIRCRAFT_PREFAB_PATH = "MainLevel/Aircraft";
@@ -26,71 +25,43 @@ namespace PlanesRemake.Runtime.Core
         private GameObject skyDomeBackground = null;
         private List<BaseSpawner> spawners = null;
         private Aircraft aircraft = null;
-        private GameplayController gameplayContoller = null;
-        private TouchCotrolsView touchControlsView = null;
-        private UiManager uiManager = null;
+        private ContentLoader contentLoader = null;
+        private AudioManager audioManager = null;
+        private Camera isometricCamera = null;
 
         public Aircraft Aircraft => aircraft;
 
-        public LevelInitializer(ContentLoader contentLoader, InputManager inputManager, AudioManager audioManager, UiManager sourceUiManager)
+        public LevelInitializer(ContentLoader sourceContentLoader, AudioManager sourceAudioManager)
         {
             spawners = new List<BaseSpawner>();
-            uiManager = sourceUiManager;
+            contentLoader = sourceContentLoader;
+            audioManager = sourceAudioManager;
             //NOTE: Update this so that we do not look for this object by name, but rather by reference 
             //as it could cause performance issues. 
-            Camera isometricCamera = GameObject.Find("IsometricCamera").GetComponent<Camera>();
+            isometricCamera = GameObject.Find("IsometricCamera").GetComponent<Camera>();
+        }
+
+        public override async Task<bool> Initialize(IEnumerable<BaseSystem> sourceDependencies)
+        {
+            await base.Initialize(sourceDependencies);
+
             //To-do: Use the assets loaded here to grab the information about the players choice for the background and the aircraft chosen.
-            contentLoader.LoadAsset<GameObject>
-                (SPHERICAL_BACKGROUND_PREFAB_PATH,
-                (assetLoaded) => skyDomeBackground = GameObject.Instantiate(assetLoaded, Vector3.zero, Quaternion.identity),
-                null);
-
-            contentLoader.LoadAsset<Aircraft>
-                (AIRCRAFT_PREFAB_PATH,
-                (assetLoaded) =>
-                {
-                    aircraft = GameObject.Instantiate(assetLoaded, Vector3.zero, Quaternion.Euler(0, 115, -25));
-                    aircraft.Initialize(isometricCamera, audioManager);
-                    gameplayContoller = inputManager.EnableInput(Aircraft) as GameplayController;
-                    
-                    if(gameplayContoller.VirtualJoystickEnabled)
-                    {
-                        touchControlsView = uiManager.DisplayView(ViewIds.TOUCH_CONTROLS) as TouchCotrolsView;
-                        gameplayContoller.VirtualJoystick.OnTouchStart += touchControlsView.OnInitialPositionUpdated;
-                        gameplayContoller.VirtualJoystick.OnTouchDrag += touchControlsView.OnDragPositionUpdated;
-                        gameplayContoller.VirtualJoystick.OnTouchEnd += touchControlsView.OnEndPositionUpdated;
-                    }
-                },
-                null);
-
-            contentLoader.LoadAsset<Obstacle>
-                (OBSTACLE_PREFAB_PATH,
-                (assetLoaded) => spawners.Add(new ObstacleSpawner(assetLoaded, SPAWNER_POOL_SIZE, SPAWNER_POOL_MAX_CAPACITY, isometricCamera)),
-                null);
-
-            contentLoader.LoadAsset<Coin>
-                (COIN_PREFAB_PATH,
-                (assetLoaded) => spawners.Add(new CoinSpawner(assetLoaded, SPAWNER_POOL_SIZE, SPAWNER_POOL_MAX_CAPACITY, isometricCamera, audioManager)),
-                null);
-
-            contentLoader.LoadAsset<TimerPoolableObject>
-                (COIN_VFX_PREFAB_PATH,
-                (assetLoaded) => spawners.Add(new CoinParticleSpawner(assetLoaded, SPAWNER_POOL_SIZE, SPAWNER_POOL_MAX_CAPACITY)),
-                null);
-
-            audioManager.PlayBackgroundMusic(ClipIds.MUSIC_CLIP);
+            GameObject skyDomeBackgroundPrefab = await contentLoader.LoadAsset<GameObject>(SPHERICAL_BACKGROUND_PREFAB_PATH);
+            skyDomeBackground = GameObject.Instantiate(skyDomeBackgroundPrefab, Vector3.zero, Quaternion.identity);
+            Aircraft aircraftPrefab = await contentLoader.LoadAsset<Aircraft>(AIRCRAFT_PREFAB_PATH);
+            aircraft = GameObject.Instantiate(aircraftPrefab, Vector3.zero, Quaternion.Euler(0, 115, -25));
+            aircraft.Initialize(isometricCamera, audioManager);
+            Obstacle obstaclePrefab = await contentLoader.LoadAsset<Obstacle>(OBSTACLE_PREFAB_PATH);
+            spawners.Add(new ObstacleSpawner(obstaclePrefab, SPAWNER_POOL_SIZE, SPAWNER_POOL_MAX_CAPACITY, isometricCamera));
+            Coin coinPrefab = await contentLoader.LoadAsset<Coin>(COIN_PREFAB_PATH);
+            spawners.Add(new CoinSpawner(coinPrefab, SPAWNER_POOL_SIZE, SPAWNER_POOL_MAX_CAPACITY, isometricCamera, audioManager));
+            TimerPoolableObject timerPoolableObjectPrefab = await contentLoader.LoadAsset<TimerPoolableObject>(COIN_VFX_PREFAB_PATH);
+            spawners.Add(new CoinParticleSpawner(timerPoolableObjectPrefab, SPAWNER_POOL_SIZE, SPAWNER_POOL_MAX_CAPACITY));
+            return true;
         }
 
         public void Dispose()
         {
-            if (gameplayContoller.VirtualJoystickEnabled)
-            {
-                gameplayContoller.VirtualJoystick.OnTouchStart -= touchControlsView.OnInitialPositionUpdated;
-                gameplayContoller.VirtualJoystick.OnTouchDrag -= touchControlsView.OnDragPositionUpdated;
-                gameplayContoller.VirtualJoystick.OnTouchEnd -= touchControlsView.OnEndPositionUpdated;
-                uiManager.RemoveView(ViewIds.TOUCH_CONTROLS);
-            }
-
             foreach (BaseSpawner spawner in spawners)
             {
                 spawner.Dispose();

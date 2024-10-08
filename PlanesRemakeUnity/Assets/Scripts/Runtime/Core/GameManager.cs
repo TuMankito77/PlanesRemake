@@ -19,7 +19,9 @@ namespace PlanesRemake.Runtime.Core
     public class GameManager : IListener
     {
         private SystemsInitializer systemsInitializer = null;
+        private SystemsInitializer mainLevelSystemsInitializer = null;
         private List<BaseSystem> baseSystems = null;
+        private List<BaseSystem> mainLevelSystems = null;
         private ContentLoader contentLoader = null;
         private UiManager uiManager = null;
         private AudioManager audioManager = null;
@@ -85,6 +87,8 @@ namespace PlanesRemake.Runtime.Core
             contentLoader = systemsInitializer.GetSystem<ContentLoader>();
             uiManager = systemsInitializer.GetSystem<UiManager>();
             audioManager = systemsInitializer.GetSystem<AudioManager>();
+            mainLevelSystems = new List<BaseSystem>();
+            mainLevelSystemsInitializer = new SystemsInitializer();
             CreateInputControllers();
             uiManager.DisplayView(ViewIds.MAIN_MENU);
         }
@@ -118,9 +122,9 @@ namespace PlanesRemake.Runtime.Core
                             () =>
                             {
                                 uiManager.RemoveView(ViewIds.MAIN_MENU);
-                                uiManager.DisplayView(ViewIds.HUD);
-                                inputManager.DisableInput(uiManager);
-                                currentLevelInitializer = new LevelInitializer(contentLoader, inputManager, audioManager, uiManager);
+                                mainLevelSystems.Add(new LevelInitializer(contentLoader, audioManager));
+                                mainLevelSystemsInitializer.OnSystemsInitialized += OnMainLevelSystemsInitialized;
+                                mainLevelSystemsInitializer.InitializeSystems(mainLevelSystems);
                             });
                         break;
                     }
@@ -161,6 +165,25 @@ namespace PlanesRemake.Runtime.Core
                         Application.Quit();
                         break;
                     }
+            }
+        }
+
+        private void OnMainLevelSystemsInitialized()
+        {
+            mainLevelSystemsInitializer.OnSystemsInitialized -= OnMainLevelSystemsInitialized;
+            currentLevelInitializer = mainLevelSystemsInitializer.GetSystem<LevelInitializer>();
+            uiManager.DisplayView(ViewIds.HUD);
+            inputManager.DisableInput(uiManager);
+            audioManager.PlayBackgroundMusic(ClipIds.MUSIC_CLIP);
+            inputManager.EnableInput(currentLevelInitializer.Aircraft);
+            GameplayController gameplayContoller = inputManager.GetInputController(currentLevelInitializer.Aircraft) as GameplayController;
+
+            if (gameplayContoller.VirtualJoystickEnabled)
+            {
+                TouchCotrolsView touchControlsView = uiManager.DisplayView(ViewIds.TOUCH_CONTROLS) as TouchCotrolsView;
+                gameplayContoller.VirtualJoystick.OnTouchStart += touchControlsView.OnInitialPositionUpdated;
+                gameplayContoller.VirtualJoystick.OnTouchDrag += touchControlsView.OnDragPositionUpdated;
+                gameplayContoller.VirtualJoystick.OnTouchEnd += touchControlsView.OnEndPositionUpdated;
             }
         }
 
@@ -206,9 +229,23 @@ namespace PlanesRemake.Runtime.Core
 
         private void UnloadMainLevel()
         {
+            GameplayController gameplayController = inputManager.GetInputController(currentLevelInitializer.Aircraft) as GameplayController;
+            
+            if (gameplayController.VirtualJoystickEnabled)
+            {
+                TouchCotrolsView touchControlsView = uiManager.GetTopStackView(ViewIds.TOUCH_CONTROLS) as TouchCotrolsView;
+                gameplayController.VirtualJoystick.OnTouchStart -= touchControlsView.OnInitialPositionUpdated;
+                gameplayController.VirtualJoystick.OnTouchDrag -= touchControlsView.OnDragPositionUpdated;
+                gameplayController.VirtualJoystick.OnTouchEnd -= touchControlsView.OnEndPositionUpdated;
+                uiManager.RemoveView(ViewIds.TOUCH_CONTROLS);
+            }
+
             uiManager.RemoveView(ViewIds.HUD);
             currentLevelInitializer.Dispose();
             currentLevelInitializer = null;
+            mainLevelSystems.Clear();
+            mainLevelSystemsInitializer.Dispose();
+
             contentLoader.UnloadScene("MainLevel",
             () =>
             {
