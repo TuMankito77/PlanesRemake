@@ -85,5 +85,10 @@ namespace PlanesRemake.Runtime.Core
             Type systemType = typeof(T);
             return systemsInitialized.ContainsKey(systemType) ? systemsInitialized[systemType] as T : null;
         }
+
+        public void Dispose()
+        {
+            systemsInitialized.Clear();
+        }
     }
 }
