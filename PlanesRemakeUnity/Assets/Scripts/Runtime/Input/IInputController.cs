@@ -24,5 +24,10 @@ namespace PlanesRemake.Runtime.Input
         {
 
         }
+
+        public virtual void Dispose()
+        {
+
+        }
     }
 }
