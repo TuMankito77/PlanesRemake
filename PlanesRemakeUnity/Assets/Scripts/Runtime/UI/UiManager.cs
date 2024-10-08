@@ -11,6 +11,8 @@ namespace PlanesRemake.Runtime.UI
     using PlanesRemake.Runtime.UI.Views;
     using PlanesRemake.Runtime.Input;
     using PlanesRemake.Runtime.Sound;
+    using PlanesRemake.Runtime.Utils;
+    using UnityEngine.InputSystem.UI;
 
     public class UiManager : BaseSystem, IInputControlableEntity
     {
@@ -28,22 +30,8 @@ namespace PlanesRemake.Runtime.UI
             viewsOpened = new List<BaseView>();
             audioManager = GetDependency<AudioManager>();
             //To-do: Create a database that categorizes the objects loaded based on a list that groups what is needed to be loaded depending on what needs to be shown.
-            bool isLoadingViewsContainer = true;
             ContentLoader contentLoader = GetDependency<ContentLoader>();
-            contentLoader.LoadAsset<ViewsDatabase>
-                (ViewsDatabase.VIEWS_DATABASE_SCRIPTABLE_OBJECT_PATH,
-                (assetLoaded) =>
-                {
-                    viewsDatabase = assetLoaded;
-                    isLoadingViewsContainer = false;
-                },
-                () => isLoadingViewsContainer = false);
-
-            while(isLoadingViewsContainer)
-            {
-                await Task.Yield();
-            }
-
+            viewsDatabase = await contentLoader.LoadAsset<ViewsDatabase>(ViewsDatabase.VIEWS_DATABASE_SCRIPTABLE_OBJECT_PATH);
             viewsDatabase.Initialize();
 
             uiManagerGO = new GameObject("UI Manager");
@@ -57,8 +45,7 @@ namespace PlanesRemake.Runtime.UI
             uiCamera.gameObject.transform.SetParent(uiManagerGO.transform);
 
             GameObject eventSystem = new GameObject("Event System");
-            eventSystem.AddComponent<EventSystem>();
-            eventSystem.AddComponent<StandaloneInputModule>();
+            eventSystem.AddComponent<InputSystemUIInputModule>();
             eventSystem.transform.SetParent(uiManagerGO.transform);
 
             return true;
@@ -73,6 +60,22 @@ namespace PlanesRemake.Runtime.UI
             viewFound.transform.SetParent(uiManagerGO.transform);
             viewsOpened.Add(viewFound);
             return viewFound;
+        }
+
+        public BaseView GetTopStackView(string viewId)
+        {
+            Type viewType = viewsDatabase.GetFile(viewId).GetType();
+
+            for (int i = viewsOpened.Count - 1; i >= 0; i--)
+            {
+                if (viewsOpened[i].GetType() == viewType)
+                {
+                    return viewsOpened[i];
+                }
+            }
+
+            LoggerUtil.LogError($"{GetType()}: There is no view with the id {viewId} being displayed currently.");
+            return null;
         }
 
         public void RemoveView(string viewId)
