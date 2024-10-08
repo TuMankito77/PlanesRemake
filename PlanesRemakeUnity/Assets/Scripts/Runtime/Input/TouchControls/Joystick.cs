@@ -54,12 +54,14 @@ namespace PlanesRemake.Runtime.Input.TouchControls
             ETouch.Touch.onFingerUp -= OnFingerUp;
             
             //Making sure the movement is cleaned up when we are done
-            if(movementAmount.magnitude > 0)
+            if(fingerMovement != null)
             {
+                fingerMovement = null;
                 movementAmount = Vector2.zero;
                 SendValueToControl(movementAmount);
                 //In case the last touch end is not sent becuase it was cut all of a sudden.
                 OnTouchEnd?.Invoke(movementAmount);
+
             }
         }
 
@@ -120,8 +122,8 @@ namespace PlanesRemake.Runtime.Input.TouchControls
         }
 
         #endregion
-    }
-
 #endif
+
+    }
 }
 
