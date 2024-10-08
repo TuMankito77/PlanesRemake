@@ -7,6 +7,7 @@ namespace PlanesRemake.Runtime.Input
     using UnityEngine.InputSystem.EnhancedTouch;
 
     using PlanesRemake.Runtime.Utils;
+    using System.Security.Cryptography;
 
     public class InputManager
     {
@@ -36,14 +37,37 @@ namespace PlanesRemake.Runtime.Input
             }
         }
 
+        public InputController GetInputController(IInputControlableEntity entityControlled)
+        {
+            LoggerUtil.Assert(typeInputControllerPairs.TryGetValue(entityControlled.GetType(), out InputController inputControllerFound),
+                $"{GetType().Name}: No input controller was found for the {entityControlled.GetType()} entity.");
+            return inputControllerFound;
+        }
+
         public void RemoveInputContoller(params InputController[] inputControllers)
         {
             foreach (InputController inputController in inputControllers)
             {
-                LoggerUtil.Assert(!typeInputControllerPairs.ContainsKey(inputController.GetType()),
-                    $"{GetType().Name}: You are trying to add the {inputController.GetType().Name} input more than once!");
-                typeInputControllerPairs.Add(inputController.EntityToControlType, inputController);
+                LoggerUtil.Assert(typeInputControllerPairs.TryGetValue(inputController.EntityToControlType, out InputController inputControllerFound),
+                $"{GetType().Name}: No input controller to be removed was found for the {inputController.EntityToControlType} entity.");
+                typeInputControllerPairs.Remove(inputController.EntityToControlType);
+                playerInput.RemoveActiveInputController(inputControllerFound);
+                inputController.Dispose();
             }
+        }
+
+        public void EnableInput(IInputControlableEntity entityToControl)
+        {
+            LoggerUtil.Assert(typeInputControllerPairs.TryGetValue(entityToControl.GetType(), out InputController inputControllerFound), 
+                $"{GetType().Name}: No input controller was found for the {entityToControl.GetType().Name} entity.");
+            playerInput.AddActiveInputController(inputControllerFound, entityToControl);
+        }
+
+        public void DisableInput(IInputControlableEntity entityControlled)
+        {
+            LoggerUtil.Assert(typeInputControllerPairs.TryGetValue(entityControlled.GetType(), out InputController inputControllerFound),
+                $"{GetType().Name}: No input controller was found for the {entityControlled.GetType()} entity.");
+            playerInput.RemoveActiveInputController(inputControllerFound);
         }
 
         public void Dispose()
@@ -55,21 +79,6 @@ namespace PlanesRemake.Runtime.Input
             {
                 EnhancedTouchSupport.Disable();
             }
-        }
-
-        public InputController EnableInput(IInputControlableEntity entityToControl)
-        {
-            LoggerUtil.Assert(typeInputControllerPairs.TryGetValue(entityToControl.GetType(), out InputController inputControllerFound), 
-                $"{GetType().Name}: No input controller was found for the {entityToControl.GetType().Name} entity.");
-            playerInput.AddActiveInputController(inputControllerFound, entityToControl);
-            return inputControllerFound;
-        }
-
-        public void DisableInput(IInputControlableEntity entityControlled)
-        {
-            LoggerUtil.Assert(typeInputControllerPairs.TryGetValue(entityControlled.GetType(), out InputController inputControllerFound),
-                $"{GetType().Name}: No input controller was found for the {entityControlled.GetType()} entity.");
-            playerInput.RemoveActiveInputController(inputControllerFound);
         }
     }
 }
