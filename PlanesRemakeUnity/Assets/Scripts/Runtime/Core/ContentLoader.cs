@@ -1,9 +1,13 @@
 namespace PlanesRemake.Runtime.Core
 {
     using System;
+    using System.Threading.Tasks;
 
     using UnityEngine;
     using UnityEngine.SceneManagement;
+    using UObject = UnityEngine.Object;
+
+    using PlanesRemake.Runtime.Utils;
 
     public class ContentLoader : BaseSystem
     {
@@ -34,14 +38,21 @@ namespace PlanesRemake.Runtime.Core
             };
         }
 
-        public void LoadAsset<T>(string address, Action<T> onAssetLoaded, Action onFailedToLoadAsset) where T : UnityEngine.Object
+        /// <summary>
+        /// Loads object asynchronously, good for heavy objects.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="address"></param>
+        /// <param name="onAssetLoaded"></param>
+        /// <param name="onFailedToLoadAsset"></param>
+        public void LoadAssetAsynchronously<T>(string address, Action<T> onAssetLoaded, Action onFailedToLoadAsset) where T : UnityEngine.Object
         {
             ResourceRequest resourceRequest = Resources.LoadAsync(address);
             resourceRequest.completed += (asyncOperation) =>
             {
                 if(resourceRequest.asset == null)
                 {
-                    Debug.LogError($"Failed to load asset with address {address}");
+                    LoggerUtil.LogError($"{GetType().Name}: Failed to load asset with address {address}");
                     onFailedToLoadAsset?.Invoke();
                 }
                 else
@@ -58,7 +69,46 @@ namespace PlanesRemake.Runtime.Core
             };
         }
 
-        public void UnloadAsset(UnityEngine.Object asset)
+        /// <summary>
+        /// Loads assets asynchronously, good for light objects.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="address"></param>
+        /// <returns></returns>
+        public T LoadAssetSynchronously<T>(string address) where T : UObject
+        {
+            T result = Resources.Load<T>(address);
+
+            if (result == null)
+            {
+                LoggerUtil.LogError($"{GetType().Name}: Failed to load asset with address {address}");
+            }
+
+            return result; 
+        }
+
+        public async Task<T> LoadAsset<T>(string address) where T : UnityEngine.Object
+        {
+            bool isLoadingAsset = true;
+            T assetReference = null;
+            LoadAssetAsynchronously<T>
+                (address,
+                (assetLoaded) =>
+                {
+                    assetReference = assetLoaded;
+                    isLoadingAsset = false;
+                },
+                () => isLoadingAsset = false);
+
+            while (isLoadingAsset)
+            {
+                await Task.Yield();
+            }
+
+            return assetReference;
+        }
+
+        public void UnloadAsset(UObject asset)
         {
             Resources.UnloadAsset(asset);
         }
