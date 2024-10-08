@@ -19,22 +19,21 @@ namespace PlanesRemake.Runtime.Gameplay
 
         private Aircraft aircraft = null;
         private VirtualJoystick virtualJoystick = null;
+        private VirtualJoystick virtualJoystickPrefab = null;
+        private ContentLoader contentLoader = null;
 
         public VirtualJoystick VirtualJoystick => virtualJoystick;
         public bool VirtualJoystickEnabled => virtualJoystick != null;
 
-        public GameplayController(ContentLoader contentLoader)
+        public GameplayController(ContentLoader sourceContentLoader)
         {
+            contentLoader = sourceContentLoader;
+
             if(EnhancedTouchSupport.enabled)
             {
-                contentLoader.LoadAsset<VirtualJoystick>
-                    (VIRTUAL_JOYSTICK_PREFAB_PATH,
-                    (assetLoaded) =>
-                    {
-                        virtualJoystick = GameObject.Instantiate(assetLoaded, Vector3.zero, Quaternion.identity);
-                        GameObject.DontDestroyOnLoad(virtualJoystick);
-                    },
-                    null);
+                virtualJoystickPrefab = contentLoader.LoadAssetSynchronously<VirtualJoystick>(VIRTUAL_JOYSTICK_PREFAB_PATH);
+                virtualJoystick = GameObject.Instantiate(virtualJoystickPrefab, Vector3.zero, Quaternion.identity);
+                GameObject.DontDestroyOnLoad(virtualJoystick);
             }
         }
 
@@ -66,6 +65,14 @@ namespace PlanesRemake.Runtime.Gameplay
             {
                 virtualJoystick.DeregisterFromTouchEvents();
             }
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            virtualJoystick = null;
+            GameObject.Destroy(virtualJoystick.gameObject);
+            contentLoader.UnloadAsset(virtualJoystickPrefab);
         }
 
         private void OnPuaseActionTriggered(InputAction.CallbackContext obj)
