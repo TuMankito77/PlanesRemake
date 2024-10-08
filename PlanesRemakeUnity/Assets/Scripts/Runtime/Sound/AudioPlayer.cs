@@ -32,6 +32,11 @@ namespace PlanesRemake.Runtime.Sound
             audioSource.PlayOneShot(clip);
         }
 
+        public void Stop()
+        {
+            audioSource.Stop();
+        }
+
         public void Pause()
         {
             audioSource.Pause();

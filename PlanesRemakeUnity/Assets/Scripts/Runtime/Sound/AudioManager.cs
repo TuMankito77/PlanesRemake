@@ -30,7 +30,8 @@ namespace PlanesRemake.Runtime.Sound
             loopingClipsPlaying = new List<AudioPlayer>();
             audioManagerGO = new GameObject(GetType().Name);
             GameObject.DontDestroyOnLoad(audioManagerGO);
-            audioPlayerPrefab = await LoadAsset<AudioPlayer>(AUDIO_PLAYER_PREFAB_PATH);
+            ContentLoader contentLoader = GetDependency<ContentLoader>();
+            audioPlayerPrefab = await contentLoader.LoadAsset<AudioPlayer>(AUDIO_PLAYER_PREFAB_PATH);
             
             if (audioPlayerPrefab == null)
             {
@@ -45,10 +46,8 @@ namespace PlanesRemake.Runtime.Sound
 
             backgroundMusicAudioPlayer = audioPlayersPool.Get();
             backgroundMusicAudioPlayer.SetIsLooping(true);
-            
-            loopingClipsPlaying.Add(backgroundMusicAudioPlayer);
 
-            clipsDatabase = await LoadAsset<ClipsDatabase>(ClipsDatabase.CLIPS_DATABASE_SCRIPTABLE_OBJECT_PATH);
+            clipsDatabase = await contentLoader.LoadAsset<ClipsDatabase>(ClipsDatabase.CLIPS_DATABASE_SCRIPTABLE_OBJECT_PATH);
             
             if(clipsDatabase == null)
             {
@@ -97,6 +96,7 @@ namespace PlanesRemake.Runtime.Sound
             AudioClip audioClip = clipsDatabase.GetFile(clipId);
             backgroundMusicAudioPlayer.UpdateDefaultClip(audioClip);
             backgroundMusicAudioPlayer.Play();
+            loopingClipsPlaying.Add(backgroundMusicAudioPlayer);
         }
 
         public void PauseBackgroundMusic()
@@ -163,6 +163,20 @@ namespace PlanesRemake.Runtime.Sound
             }
         }
 
+        public void StopAllLoopingClips()
+        {
+            foreach(KeyValuePair<int, AudioPlayer> idAudioPlayerPair in loopingAudioPlayers)
+            {
+                idAudioPlayerPair.Value.Stop();
+                loopingClipsPlaying.Remove(idAudioPlayerPair.Value);
+                idAudioPlayerPair.Value.transform.parent = audioManagerGO.transform;
+                audioPlayersPool.Release(idAudioPlayerPair.Value);
+            }
+
+            loopingAudioPlayers.Clear();
+            backgroundMusicAudioPlayer.Stop();
+        }
+
         public void PauseAllLoopingClips()
         {
             foreach(AudioPlayer audioPlayer in loopingClipsPlaying)
@@ -182,28 +196,6 @@ namespace PlanesRemake.Runtime.Sound
         private AudioPlayer OnCreateAudioPlayerForPool()
         {
             return GameObject.Instantiate(audioPlayerPrefab, audioManagerGO.transform);
-        }
-
-        private async Task<T> LoadAsset<T>(string address) where T : UnityEngine.Object
-        {
-            bool isLoadingAsset = true;
-            ContentLoader contentLoader = GetDependency<ContentLoader>();
-            T assetReference = null;
-            contentLoader.LoadAsset<T>
-                (address,
-                (assetLoaded) =>
-                {
-                    assetReference = assetLoaded;
-                    isLoadingAsset = false;
-                },
-                () => isLoadingAsset = false);
-
-            while(isLoadingAsset)
-            {
-                await Task.Yield();
-            }
-
-            return assetReference;
         }
     }
 }
