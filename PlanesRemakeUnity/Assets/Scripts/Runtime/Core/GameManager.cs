@@ -240,6 +240,7 @@ namespace PlanesRemake.Runtime.Core
                 uiManager.RemoveView(ViewIds.TOUCH_CONTROLS);
             }
 
+            audioManager.StopAllLoopingClips();
             uiManager.RemoveView(ViewIds.HUD);
             currentLevelInitializer.Dispose();
             currentLevelInitializer = null;
