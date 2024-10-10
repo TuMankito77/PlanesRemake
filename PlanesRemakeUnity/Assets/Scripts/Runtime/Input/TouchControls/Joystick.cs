@@ -20,6 +20,12 @@ namespace PlanesRemake.Runtime.Input.TouchControls
 
         [SerializeField, Min(0)]
         private float deadzoneRadius = 0;
+
+        [SerializeField, Range(0.1f, 1)]
+        private float horizontalUsableSpacePercentage = 0.5f;
+
+        [SerializeField, Range(0.1f, 1)]
+        private float verticalUsableSpacePercentage = 0.5f;
         
         private Finger fingerMovement = null;
         private Vector2 initialPosition = Vector2.zero;
@@ -68,6 +74,12 @@ namespace PlanesRemake.Runtime.Input.TouchControls
         private void OnFingerDown(Finger finger)
         {
             if(fingerMovement != null)
+            {
+                return;
+            }
+
+            if(finger.screenPosition.x > Screen.width * horizontalUsableSpacePercentage ||
+               finger.screenPosition.y > Screen.height * verticalUsableSpacePercentage)
             {
                 return;
             }

@@ -46,3 +46,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controlPathSelected: <Gamepad>/leftStick
   deadzoneRadius: 30
+  horizontalUsableSpacePercentage: 0.5
+  verticalUsableSpacePercentage: 0.5
