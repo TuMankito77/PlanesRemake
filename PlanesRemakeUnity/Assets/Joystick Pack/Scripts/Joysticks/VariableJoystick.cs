@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using UnityEngine;
+using UnityEngine.InputSystem.EnhancedTouch;
+using ETouch = UnityEngine.InputSystem.EnhancedTouch;
 
 public class VariableJoystick : Joystick
 {
@@ -31,22 +30,22 @@ public class VariableJoystick : Joystick
         SetMode(joystickType);
     }
 
-    public override void OnPointerDown(PointerEventData eventData)
+    public override void OnPointerDown(Finger finger)
     {
         if(joystickType != JoystickType.Fixed)
         {
-            background.anchoredPosition = ScreenPointToAnchoredPosition(eventData.position);
+            background.anchoredPosition = ScreenPointToAnchoredPosition(finger.screenPosition);
             background.gameObject.SetActive(true);
         }
-        base.OnPointerDown(eventData);
+        base.OnPointerDown(finger);
     }
 
-    public override void OnPointerUp(PointerEventData eventData)
+    public override void OnPointerUp(Finger finger)
     {
         if(joystickType != JoystickType.Fixed)
             background.gameObject.SetActive(false);
 
-        base.OnPointerUp(eventData);
+        base.OnPointerUp(finger);
     }
 
     protected override void HandleInput(float magnitude, Vector2 normalised, Vector2 radius, Camera cam)

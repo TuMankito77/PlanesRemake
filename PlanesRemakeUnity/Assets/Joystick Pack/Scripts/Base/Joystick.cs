@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using UnityEngine;
+using UnityEngine.InputSystem.EnhancedTouch;
+using ETouch = UnityEngine.InputSystem.EnhancedTouch;
 
-public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
+public class Joystick : MonoBehaviour
 {
     public float Horizontal { get { return (snapX) ? SnapFloat(input.x, AxisOptions.Horizontal) : input.x; } }
     public float Vertical { get { return (snapY) ? SnapFloat(input.y, AxisOptions.Vertical) : input.y; } }
@@ -55,14 +54,26 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
         handle.anchorMax = center;
         handle.pivot = center;
         handle.anchoredPosition = Vector2.zero;
+        EnhancedTouchSupport.Enable();
+        ETouch.Touch.onFingerDown += OnPointerDown;
+        ETouch.Touch.onFingerMove += OnDrag;
+        ETouch.Touch.onFingerUp += OnPointerUp;
     }
 
-    public virtual void OnPointerDown(PointerEventData eventData)
+    protected virtual void OnDestroy()
     {
-        OnDrag(eventData);
+        EnhancedTouchSupport.Disable();
+        ETouch.Touch.onFingerDown -= OnPointerDown;
+        ETouch.Touch.onFingerMove -= OnDrag;
+        ETouch.Touch.onFingerUp -= OnPointerUp;
     }
 
-    public void OnDrag(PointerEventData eventData)
+    public virtual void OnPointerDown(Finger obj)
+    {
+        OnDrag(obj);
+    }
+
+    public virtual void OnDrag(Finger finger)
     {
         cam = null;
         if (canvas.renderMode == RenderMode.ScreenSpaceCamera)
@@ -70,10 +81,16 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
 
         Vector2 position = RectTransformUtility.WorldToScreenPoint(cam, background.position);
         Vector2 radius = background.sizeDelta / 2;
-        input = (eventData.position - position) / (radius * canvas.scaleFactor);
+        input = (finger.screenPosition - position) / (radius * canvas.scaleFactor);
         FormatInput();
         HandleInput(input.magnitude, input.normalized, radius, cam);
         handle.anchoredPosition = input * radius * handleRange;
+    }
+
+    public virtual void OnPointerUp(Finger finger)
+    {
+        input = Vector2.zero;
+        handle.anchoredPosition = Vector2.zero;
     }
 
     protected virtual void HandleInput(float magnitude, Vector2 normalised, Vector2 radius, Camera cam)
@@ -127,12 +144,6 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
                 return -1;
         }
         return 0;
-    }
-
-    public virtual void OnPointerUp(PointerEventData eventData)
-    {
-        input = Vector2.zero;
-        handle.anchoredPosition = Vector2.zero;
     }
 
     protected Vector2 ScreenPointToAnchoredPosition(Vector2 screenPosition)

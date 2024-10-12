@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using UnityEngine.InputSystem.EnhancedTouch;
 
 public class FloatingJoystick : Joystick
 {
@@ -11,16 +8,16 @@ public class FloatingJoystick : Joystick
         background.gameObject.SetActive(false);
     }
 
-    public override void OnPointerDown(PointerEventData eventData)
+    public override void OnPointerDown(Finger finger)
     {
-        background.anchoredPosition = ScreenPointToAnchoredPosition(eventData.position);
+        background.anchoredPosition = ScreenPointToAnchoredPosition(finger.screenPosition);
         background.gameObject.SetActive(true);
-        base.OnPointerDown(eventData);
+        base.OnPointerDown(finger);
     }
 
-    public override void OnPointerUp(PointerEventData eventData)
+    public override void OnPointerUp(Finger finger)
     {
         background.gameObject.SetActive(false);
-        base.OnPointerUp(eventData);
+        base.OnPointerUp(finger);
     }
 }
