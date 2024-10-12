@@ -1,7 +1,9 @@
 namespace PlanesRemake.Runtime.UI.Views 
 {
-    using PlanesRemake.Runtime.Sound;
     using UnityEngine;
+    
+    using PlanesRemake.Runtime.Sound;
+    using PlanesRemake.Runtime.UI.CoreElements;
 
     [RequireComponent(typeof (Canvas),typeof(CanvasGroup))]
     public abstract class BaseView : MonoBehaviour

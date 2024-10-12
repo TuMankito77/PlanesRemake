@@ -3,6 +3,7 @@ namespace PlanesRemake.Runtime.UI.Views
     using UnityEngine;
 
     using PlanesRemake.Runtime.Events;
+    using PlanesRemake.Runtime.UI.CoreElements;
 
     public class PauseMenuView : BaseView
     {

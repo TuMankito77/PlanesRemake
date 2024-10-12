@@ -3,12 +3,16 @@ namespace PlanesRemake.Runtime.UI.Views
     using UnityEngine;
     
     using PlanesRemake.Runtime.Events;
+    using PlanesRemake.Runtime.UI.CoreElements;
 
     public class MainMenuView : BaseView
     {
         [SerializeField]
         private BaseButton playButton = null;
 
+        [SerializeField]
+        private BaseButton optionsButton = null;
+        
         [SerializeField]
         private BaseButton quitButton = null;
 
@@ -18,6 +22,7 @@ namespace PlanesRemake.Runtime.UI.Views
         {
             base.Awake();
             playButton.onButtonPressed += OnPlayButtonPressed;
+            optionsButton.onButtonPressed += OnOptionsButtonPressed;
             quitButton.onButtonPressed += OnQuitButtonPressed;
         }
 
@@ -25,6 +30,7 @@ namespace PlanesRemake.Runtime.UI.Views
         {
             base.Awake();
             playButton.onButtonPressed -= OnPlayButtonPressed;
+            optionsButton.onButtonPressed -= OnOptionsButtonPressed;
             quitButton.onButtonPressed -= OnQuitButtonPressed;
         }
 
@@ -33,6 +39,11 @@ namespace PlanesRemake.Runtime.UI.Views
         private void OnPlayButtonPressed()
         {
             EventDispatcher.Instance.Dispatch(UiEvents.OnPlayButtonPressed);
+        }
+
+        private void OnOptionsButtonPressed()
+        {
+            EventDispatcher.Instance.Dispatch(UiEvents.OnOptionsButtonPressed);
         }
         
         private void OnQuitButtonPressed()
