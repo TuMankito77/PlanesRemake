@@ -22,7 +22,13 @@ namespace PlanesRemake.Runtime.UI
             base.Enable(sourceInputActions, entityToControl);
             inputActions.UiController.Enable();
             inputActions.UiController.Unpause.performed += OnUpauseActionTriggered;
+            inputActions.UiController.GoBack.performed += GoBackActionTriggered;
             uiManager = sourceEntityToControl as UiManager;
+        }
+
+        private void GoBackActionTriggered(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+        {
+            uiManager.RemoveTopStackView();
         }
 
         private void OnUpauseActionTriggered(UnityEngine.InputSystem.InputAction.CallbackContext obj)

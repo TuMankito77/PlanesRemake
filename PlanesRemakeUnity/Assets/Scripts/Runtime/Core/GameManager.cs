@@ -159,10 +159,21 @@ namespace PlanesRemake.Runtime.Core
                         break;
                     }
 
+                case UiEvents.OnOptionsButtonPressed:
+                    {
+                        uiManager.DisplayView(ViewIds.OPTIONS_MENU);
+                        break;
+                    }
+
                 case UiEvents.OnQuitButtonPressed:
                     {
                         Debug.LogWarning(storageAccessor.Load<PlayerInformation>(playerInformation.Key).coinsCollected);
                         Application.Quit();
+                        break;
+                    }
+
+                default:
+                    {
                         break;
                     }
             }

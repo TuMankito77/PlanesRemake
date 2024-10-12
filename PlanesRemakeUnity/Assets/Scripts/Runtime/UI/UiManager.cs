@@ -101,5 +101,21 @@ namespace PlanesRemake.Runtime.UI
             //To-do: Make this be handled by a pool so that it can be reused.
             GameObject.Destroy(viewFound.gameObject);
         }
+
+        public void RemoveTopStackView()
+        {
+            //We make sure that there will always be at least one view opened.
+            if(viewsOpened.Count <= 1)
+            {
+                return;
+            }
+
+            int lastIndex = viewsOpened.Count - 1;
+            BaseView topStackView = viewsOpened[lastIndex];
+            topStackView.TransitionOut();
+            topStackView.Dispose();
+            viewsOpened.RemoveAt(lastIndex);
+            GameObject.Destroy(topStackView.gameObject);
+        }
     }
 }
