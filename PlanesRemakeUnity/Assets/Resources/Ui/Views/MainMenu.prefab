@@ -54,6 +54,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playButton: {fileID: 4861153190466039964}
+  optionsButton: {fileID: 562212425029758521}
   quitButton: {fileID: 7357588549079215816}
 --- !u!223 &1443202982987591837
 Canvas:
@@ -112,7 +113,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &2900652831481229611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -692,6 +693,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b001b050f1df26644accf75aba3a48cb, type: 3}
+--- !u!114 &562212425029758521 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+    type: 3}
+  m_PrefabInstance: {fileID: 6239650528251104439}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bec8debc353ef7d4da92e7fd15668ca9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &5187014416043133311 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1255461106662016456, guid: b001b050f1df26644accf75aba3a48cb,
