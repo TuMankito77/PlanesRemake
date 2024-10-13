@@ -31,7 +31,6 @@ namespace PlanesRemake.Runtime.UI.CoreElements
 
         protected override void OnSubmit(BaseEventData baseEventData)
         {
-            Debug.LogWarning($"{gameObject.name}-Pointer Click.");
             //NOTE: Buttons stay on the selected state for some reason, and we are deselecting them as soon as it happens
             button.OnDeselect(baseEventData);
         }
