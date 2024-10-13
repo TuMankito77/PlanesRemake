@@ -6,15 +6,6 @@
             "id": "a44f8ec9-279d-431b-8b82-e8c34cfc4328",
             "actions": [
                 {
-                    "name": "Unpause",
-                    "type": "Button",
-                    "id": "1ab64b08-a684-42f9-b08a-60e593ed32d8",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "GoBack",
                     "type": "Button",
                     "id": "38529c39-3bb5-4c1d-9aa7-68c1272d5f2c",
@@ -25,17 +16,6 @@
                 }
             ],
             "bindings": [
-                {
-                    "name": "",
-                    "id": "dfdc0925-8148-4d49-ba36-da7661f0133a",
-                    "path": "<Keyboard>/escape",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Unpause",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
                 {
                     "name": "",
                     "id": "b6b94f11-1b2c-40d2-a2a9-e8f058f048bd",

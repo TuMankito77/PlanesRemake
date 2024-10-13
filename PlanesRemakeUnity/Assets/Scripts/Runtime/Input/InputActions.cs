@@ -30,15 +30,6 @@ namespace PlanesRemake.Runtime.Input
             ""id"": ""a44f8ec9-279d-431b-8b82-e8c34cfc4328"",
             ""actions"": [
                 {
-                    ""name"": ""Unpause"",
-                    ""type"": ""Button"",
-                    ""id"": ""1ab64b08-a684-42f9-b08a-60e593ed32d8"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""GoBack"",
                     ""type"": ""Button"",
                     ""id"": ""38529c39-3bb5-4c1d-9aa7-68c1272d5f2c"",
@@ -49,17 +40,6 @@ namespace PlanesRemake.Runtime.Input
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""dfdc0925-8148-4d49-ba36-da7661f0133a"",
-                    ""path"": ""<Keyboard>/escape"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Unpause"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
                 {
                     ""name"": """",
                     ""id"": ""b6b94f11-1b2c-40d2-a2a9-e8f058f048bd"",
@@ -181,7 +161,6 @@ namespace PlanesRemake.Runtime.Input
 }");
             // UiController
             m_UiController = asset.FindActionMap("UiController", throwIfNotFound: true);
-            m_UiController_Unpause = m_UiController.FindAction("Unpause", throwIfNotFound: true);
             m_UiController_GoBack = m_UiController.FindAction("GoBack", throwIfNotFound: true);
             // GameplayController
             m_GameplayController = asset.FindActionMap("GameplayController", throwIfNotFound: true);
@@ -248,13 +227,11 @@ namespace PlanesRemake.Runtime.Input
         // UiController
         private readonly InputActionMap m_UiController;
         private List<IUiControllerActions> m_UiControllerActionsCallbackInterfaces = new List<IUiControllerActions>();
-        private readonly InputAction m_UiController_Unpause;
         private readonly InputAction m_UiController_GoBack;
         public struct UiControllerActions
         {
             private @InputActions m_Wrapper;
             public UiControllerActions(@InputActions wrapper) { m_Wrapper = wrapper; }
-            public InputAction @Unpause => m_Wrapper.m_UiController_Unpause;
             public InputAction @GoBack => m_Wrapper.m_UiController_GoBack;
             public InputActionMap Get() { return m_Wrapper.m_UiController; }
             public void Enable() { Get().Enable(); }
@@ -265,9 +242,6 @@ namespace PlanesRemake.Runtime.Input
             {
                 if (instance == null || m_Wrapper.m_UiControllerActionsCallbackInterfaces.Contains(instance)) return;
                 m_Wrapper.m_UiControllerActionsCallbackInterfaces.Add(instance);
-                @Unpause.started += instance.OnUnpause;
-                @Unpause.performed += instance.OnUnpause;
-                @Unpause.canceled += instance.OnUnpause;
                 @GoBack.started += instance.OnGoBack;
                 @GoBack.performed += instance.OnGoBack;
                 @GoBack.canceled += instance.OnGoBack;
@@ -275,9 +249,6 @@ namespace PlanesRemake.Runtime.Input
 
             private void UnregisterCallbacks(IUiControllerActions instance)
             {
-                @Unpause.started -= instance.OnUnpause;
-                @Unpause.performed -= instance.OnUnpause;
-                @Unpause.canceled -= instance.OnUnpause;
                 @GoBack.started -= instance.OnGoBack;
                 @GoBack.performed -= instance.OnGoBack;
                 @GoBack.canceled -= instance.OnGoBack;
@@ -354,7 +325,6 @@ namespace PlanesRemake.Runtime.Input
         public GameplayControllerActions @GameplayController => new GameplayControllerActions(this);
         public interface IUiControllerActions
         {
-            void OnUnpause(InputAction.CallbackContext context);
             void OnGoBack(InputAction.CallbackContext context);
         }
         public interface IGameplayControllerActions
