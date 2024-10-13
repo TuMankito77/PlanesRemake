@@ -172,6 +172,16 @@ namespace PlanesRemake.Runtime.Core
                         break;
                     }
 
+                case UiEvents.OnMusicVolumeSliderUpdated:
+                    {
+                        break;
+                    }
+
+                case UiEvents.OnVfxVolumeSliderUpdated:
+                    {
+                        break;
+                    }
+
                 default:
                     {
                         break;

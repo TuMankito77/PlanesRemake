@@ -3,6 +3,7 @@ namespace PlanesRemake.Runtime.UI.Views
     using UnityEngine;
     
     using PlanesRemake.Runtime.UI.CoreElements;
+    using PlanesRemake.Runtime.Events;
 
     public class OptionsMenuView : BaseView
     {
@@ -20,5 +21,29 @@ namespace PlanesRemake.Runtime.UI.Views
         }
 
         #endregion
+
+        public override void TransitionIn()
+        {
+            base.TransitionIn();
+            musicSlider.OnValueChanged += OnMusicVolumeChanged;
+            vfxSlider.OnValueChanged += OnVfxVolumeChanged;
+        }
+
+        public override void TransitionOut()
+        {
+            base.TransitionOut();
+            musicSlider.OnValueChanged -= OnMusicVolumeChanged;
+            vfxSlider.OnValueChanged -= OnVfxVolumeChanged;
+        }
+
+        private void OnVfxVolumeChanged(float volume)
+        {
+            EventDispatcher.Instance.Dispatch(UiEvents.OnMusicVolumeSliderUpdated, volume);
+        }
+
+        private void OnMusicVolumeChanged(float volume)
+        {
+            EventDispatcher.Instance.Dispatch(UiEvents.OnVfxVolumeSliderUpdated, volume);
+        }
     }
 }
