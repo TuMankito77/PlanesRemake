@@ -12,6 +12,8 @@ namespace PlanesRemake.Runtime.Sound
     {
         private const string AUDIO_PLAYER_PREFAB_PATH = "Sound/AudioPlayer";
 
+        private float currentMusicVolume = 1;
+        private float currentVfxVolume = 1;
         private Dictionary<int, AudioPlayer> loopingAudioPlayers = new Dictionary<int, AudioPlayer>();
         private AudioPlayer audioPlayerPrefab = null;
         private AudioPlayer gameplayAudioPlayer = null;
@@ -21,6 +23,15 @@ namespace PlanesRemake.Runtime.Sound
         private IObjectPool<AudioPlayer> audioPlayersPool = null; 
         private List<AudioPlayer> loopingClipsPlaying = null;
         private ClipsDatabase clipsDatabase = null;
+
+        public float CurrentMusicVolume => currentMusicVolume;
+        public float CurrentVfxVolume => currentVfxVolume;
+
+        public AudioManager(float sourceCurrentMusicVolume, float sourceCurrentVfxVolume)
+        {
+            currentMusicVolume = sourceCurrentMusicVolume;
+            currentVfxVolume = sourceCurrentVfxVolume;
+        }
 
         public override async Task<bool> Initialize(IEnumerable<BaseSystem> sourceDependencies)
         {
@@ -40,12 +51,15 @@ namespace PlanesRemake.Runtime.Sound
 
             gameplayAudioPlayer = audioPlayersPool.Get();
             gameplayAudioPlayer.SetIsLooping(false);
+            gameplayAudioPlayer.UpdateVolume(currentVfxVolume);
 
             generalAudioPlayer = audioPlayersPool.Get();
             gameplayAudioPlayer.SetIsLooping(false);
+            gameplayAudioPlayer.UpdateVolume(currentVfxVolume);
 
             backgroundMusicAudioPlayer = audioPlayersPool.Get();
             backgroundMusicAudioPlayer.SetIsLooping(true);
+            backgroundMusicAudioPlayer.UpdateVolume(currentMusicVolume);
 
             clipsDatabase = await contentLoader.LoadAsset<ClipsDatabase>(ClipsDatabase.CLIPS_DATABASE_SCRIPTABLE_OBJECT_PATH);
             
@@ -130,6 +144,7 @@ namespace PlanesRemake.Runtime.Sound
             audioPlayer.SetIsSpatial(isSpatial);
             audioPlayer.UpdateDefaultClip(audioClip);
             audioPlayer.SetIsLooping(true);
+            audioPlayer.UpdateVolume(currentVfxVolume);
             audioPlayer.Play();
         }
 
@@ -191,6 +206,24 @@ namespace PlanesRemake.Runtime.Sound
             {
                 audioPlayer.UnPause();
             }
+        }
+
+        public void UpdateMusicVolume(float volume)
+        {
+            currentMusicVolume = volume;
+            backgroundMusicAudioPlayer.UpdateVolume(volume);
+        }
+
+        public void UpdateVFXMusicVolume(float volume)
+        {
+            currentVfxVolume = volume;
+            gameplayAudioPlayer.UpdateVolume(volume);
+            generalAudioPlayer.UpdateVolume(volume);
+
+            foreach(AudioPlayer audioPlayer in loopingAudioPlayers.Values)
+            {
+                audioPlayer.UpdateVolume(volume);
+            }    
         }
 
         private AudioPlayer OnCreateAudioPlayerForPool()

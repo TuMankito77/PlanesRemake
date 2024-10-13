@@ -56,6 +56,11 @@ namespace PlanesRemake.Runtime.Sound
         {
             audioSource.loop = isLooping;
         }
+
+        public void UpdateVolume(float volume)
+        {
+            audioSource.volume = Mathf.Clamp01(volume);
+        }
     }
 }
 
