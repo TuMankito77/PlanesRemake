@@ -11,21 +11,26 @@ namespace PlanesRemake.Runtime.UI.Views
         private BaseButton continueButton = null;
 
         [SerializeField]
+        private BaseButton optionsButton = null;
+
+        [SerializeField]
         private BaseButton mainMenuButton = null;
 
         #region Unity Methods
 
-        protected override void Awake()
+        public override void TransitionIn()
         {
-            base.Awake();
+            base.TransitionIn();
             continueButton.onButtonPressed += OnContinueButtonPressed;
+            optionsButton.onButtonPressed += OnOptionsButtonPressed;
             mainMenuButton.onButtonPressed += OnMainMenuButtonPressed;
         }
 
-        protected override void OnDestroy()
+        public override void TransitionOut()
         {
-            base.Awake();
+            base.TransitionOut();
             continueButton.onButtonPressed -= OnContinueButtonPressed;
+            optionsButton.onButtonPressed -= OnOptionsButtonPressed;
             mainMenuButton.onButtonPressed -= OnMainMenuButtonPressed;
         }
 
@@ -34,6 +39,11 @@ namespace PlanesRemake.Runtime.UI.Views
         private void OnContinueButtonPressed()
         {
             EventDispatcher.Instance.Dispatch(UiEvents.OnUnpauseButtonPressed);
+        }
+
+        private void OnOptionsButtonPressed()
+        {
+            EventDispatcher.Instance.Dispatch(UiEvents.OnOptionsButtonPressed);
         }
 
         private void OnMainMenuButtonPressed()
