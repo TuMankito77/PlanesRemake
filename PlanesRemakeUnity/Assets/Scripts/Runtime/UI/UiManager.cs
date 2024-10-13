@@ -78,6 +78,11 @@ namespace PlanesRemake.Runtime.UI
             return null;
         }
 
+        public BaseView CurrentViewDisplayed()
+        {
+            return viewsOpened[viewsOpened.Count - 1];
+        }
+
         public void RemoveView(string viewId)
         {
             Type viewType = viewsDatabase.GetFile(viewId).GetType();
