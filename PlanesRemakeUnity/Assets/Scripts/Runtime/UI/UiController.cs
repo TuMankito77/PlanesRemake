@@ -4,7 +4,8 @@ namespace PlanesRemake.Runtime.UI
     using PlanesRemake.Runtime.Core;
     using PlanesRemake.Runtime.Events;
     using PlanesRemake.Runtime.Input;
-    
+    using PlanesRemake.Runtime.UI.Views;
+
     public class UiController : InputController
     {
         public override Type EntityToControlType => typeof(UiManager);
@@ -21,27 +22,24 @@ namespace PlanesRemake.Runtime.UI
         {
             base.Enable(sourceInputActions, entityToControl);
             inputActions.UiController.Enable();
-            inputActions.UiController.Unpause.performed += OnUpauseActionTriggered;
             inputActions.UiController.GoBack.performed += GoBackActionTriggered;
             uiManager = sourceEntityToControl as UiManager;
         }
 
         private void GoBackActionTriggered(UnityEngine.InputSystem.InputAction.CallbackContext obj)
         {
-            uiManager.RemoveTopStackView();
-        }
-
-        private void OnUpauseActionTriggered(UnityEngine.InputSystem.InputAction.CallbackContext obj)
-        {
-            if(gameManager.IsGamePaused)
+            if(uiManager.CurrentViewDisplayed().GetType() == typeof(PauseMenuView))
             {
                 EventDispatcher.Instance.Dispatch(UiEvents.OnUnpauseButtonPressed);
+                return;
             }
+
+            uiManager.RemoveTopStackView();
         }
 
         public override void Disable()
         {
-            inputActions.UiController.Unpause.performed -= OnUpauseActionTriggered;
+            inputActions.UiController.GoBack.performed -= GoBackActionTriggered;
             inputActions.UiController.Disable();
         }
     }
