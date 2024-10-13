@@ -24,10 +24,18 @@ namespace PlanesRemake.Runtime.Gameplay.StorableClasses
         [JsonProperty]
         public int wallsEvaded = 0;
 
-        public PlayerInformation(int sourceCoinsCollected, int sourceWallsEvaded)
+        [JsonProperty]
+        public float musicVolumeSet = 1;
+
+        [JsonProperty]
+        public float vfxVolumeSet = 1;
+
+        public PlayerInformation(int sourceCoinsCollected, int sourceWallsEvaded, float sourceMusicVolumeSet, float sourceVfxVolumeSet)
         {
             coinsCollected = sourceCoinsCollected;
             wallsEvaded = sourceWallsEvaded;
+            musicVolumeSet = sourceMusicVolumeSet;
+            vfxVolumeSet = sourceVfxVolumeSet;
         }
     }
 }
