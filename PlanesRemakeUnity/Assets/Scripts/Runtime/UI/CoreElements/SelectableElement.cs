@@ -23,6 +23,8 @@ namespace PlanesRemake.Runtime.UI.CoreElements
             eventTriggerController.SubscribeToTiggerEvent(EventTriggerType.Submit, OnSubmit);
             eventTriggerController.SubscribeToTiggerEvent(EventTriggerType.Select, OnSelect);
             eventTriggerController.SubscribeToTiggerEvent(EventTriggerType.Deselect, OnDeselect);
+            eventTriggerController.SubscribeToTiggerEvent(EventTriggerType.PointerDown, OnPointerDown);
+            eventTriggerController.SubscribeToTiggerEvent(EventTriggerType.PointerUp, OnPointerUp);
         }
 
         #endregion
@@ -51,27 +53,37 @@ namespace PlanesRemake.Runtime.UI.CoreElements
 
         protected virtual void OnPointerEnter(BaseEventData baseEventData)
         {
-            LoggerUtil.LogWarning($"{gameObject.name}-Pointer Enter.");
+            
         }
 
         protected virtual void OnPointerExit(BaseEventData baseEventData)
         {
-            LoggerUtil.LogWarning($"{gameObject.name}-Pointer Exit.");
+            
         }
 
         protected virtual void OnSubmit(BaseEventData baseEventData)
         {
-            LoggerUtil.LogWarning($"{gameObject.name}-Pointer Click.");
+            
         }
 
         protected virtual void OnSelect(BaseEventData baseEventData)
         {
-            LoggerUtil.LogWarning($"{gameObject.name}-Pointer Select.");
+            
         }
 
         protected virtual void OnDeselect(BaseEventData baseEventData)
         {
-            LoggerUtil.LogWarning($"{gameObject.name}-Pointer Deselect.");
+            
+        }
+
+        protected virtual void OnPointerDown(BaseEventData baseEventData)
+        {
+
+        }
+
+        protected virtual void OnPointerUp(BaseEventData baseEventData)
+        {
+
         }
     }
 }
