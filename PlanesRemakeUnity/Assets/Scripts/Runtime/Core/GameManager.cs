@@ -34,14 +34,16 @@ namespace PlanesRemake.Runtime.Core
 
         public GameManager()
         {
-            playerInformation = new PlayerInformation(0, 0);
-            storageAccessor = new StorageAccessor();
+            LoadPlayerData();
+            
             baseSystems = new List<BaseSystem>();
             baseSystems.Add(new ContentLoader());
             baseSystems.Add(new UiManager()
                 .AddDependency<ContentLoader>()
                 .AddDependency<AudioManager>());
-            baseSystems.Add(new AudioManager().AddDependency<ContentLoader>());
+            baseSystems.Add(
+                new AudioManager(playerInformation.musicVolumeSet, playerInformation.vfxVolumeSet)
+                .AddDependency<ContentLoader>());
             systemsInitializer = new SystemsInitializer();
             systemsInitializer.OnSystemsInitialized += OnSystemsInitialized;
             systemsInitializer.InitializeSystems(baseSystems);
@@ -155,6 +157,7 @@ namespace PlanesRemake.Runtime.Core
                     {
                         IsGamePaused = false;
                         uiManager.RemoveView(ViewIds.PAUSE_MENU);
+                        inputManager.DisableInput(currentLevelInitializer.Aircraft);
                         UnloadMainLevel();
                         break;
                     }
@@ -167,18 +170,25 @@ namespace PlanesRemake.Runtime.Core
 
                 case UiEvents.OnQuitButtonPressed:
                     {
-                        Debug.LogWarning(storageAccessor.Load<PlayerInformation>(playerInformation.Key).coinsCollected);
                         Application.Quit();
                         break;
                     }
 
                 case UiEvents.OnMusicVolumeSliderUpdated:
                     {
+                        float volume = (float)data;
+                        playerInformation.musicVolumeSet = volume;
+                        storageAccessor.Save(playerInformation);
+                        audioManager.UpdateMusicVolume(volume);
                         break;
                     }
 
                 case UiEvents.OnVfxVolumeSliderUpdated:
                     {
+                        float volume = (float)data;
+                        playerInformation.vfxVolumeSet = volume;
+                        storageAccessor.Save(playerInformation);
+                        audioManager.UpdateVFXMusicVolume(volume);
                         break;
                     }
 
@@ -273,12 +283,34 @@ namespace PlanesRemake.Runtime.Core
             {
                 ResetPlayerData();
                 uiManager.DisplayView(ViewIds.MAIN_MENU);
+                inputManager.EnableInput(uiManager);
             });
         }
 
         private void ResetPlayerData()
         {
-            playerInformation = new PlayerInformation(0, 0);
+            playerInformation = new PlayerInformation(
+                sourceCoinsCollected: 0,
+                sourceWallsEvaded: 0,
+                sourceMusicVolumeSet: 1,
+                sourceVfxVolumeSet: 1);
+        }
+
+        //NOTE: Make this function be part of a system so that other classes can access it.
+        private void LoadPlayerData()
+        {
+            playerInformation = new PlayerInformation(
+                sourceCoinsCollected: 0, 
+                sourceWallsEvaded: 0, 
+                sourceMusicVolumeSet: 1, 
+                sourceVfxVolumeSet: 1);
+
+            storageAccessor = new StorageAccessor();
+
+            if (storageAccessor.DoesInformationExist(playerInformation.Key))
+            {
+                playerInformation = storageAccessor.Load<PlayerInformation>(playerInformation.Key);
+            }
         }
     }
 
