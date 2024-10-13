@@ -27,6 +27,8 @@ namespace PlanesRemake.Runtime.UI.Views
             base.TransitionIn();
             musicSlider.OnValueChanged += OnMusicVolumeChanged;
             vfxSlider.OnValueChanged += OnVfxVolumeChanged;
+            musicSlider.UpdateSliderValue(audioManager.CurrentMusicVolume);
+            vfxSlider.UpdateSliderValue(audioManager.CurrentVfxVolume);
         }
 
         public override void TransitionOut()
@@ -36,12 +38,12 @@ namespace PlanesRemake.Runtime.UI.Views
             vfxSlider.OnValueChanged -= OnVfxVolumeChanged;
         }
 
-        private void OnVfxVolumeChanged(float volume)
+        private void OnMusicVolumeChanged(float volume)
         {
             EventDispatcher.Instance.Dispatch(UiEvents.OnMusicVolumeSliderUpdated, volume);
         }
 
-        private void OnMusicVolumeChanged(float volume)
+        private void OnVfxVolumeChanged(float volume)
         {
             EventDispatcher.Instance.Dispatch(UiEvents.OnVfxVolumeSliderUpdated, volume);
         }

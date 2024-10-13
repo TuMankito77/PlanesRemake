@@ -11,7 +11,7 @@ namespace PlanesRemake.Runtime.UI.Views
         public Canvas Canvas { get; private set; } = null;
         public CanvasGroup CanvasGroup { get; private set; } = null;
 
-        private AudioManager audioManager = null;
+        protected AudioManager audioManager = null;
         private BaseButton[] buttons = new BaseButton[0];
 
         #region Unity Methods

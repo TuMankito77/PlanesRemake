@@ -13,6 +13,11 @@ namespace PlanesRemake.Runtime.UI.CoreElements
         [SerializeField]
         private Slider slider = null;
 
+        public void UpdateSliderValue(float newValue)
+        {
+            slider.value = Mathf.Clamp01(newValue);
+        }
+
         protected override void CheckNeededComponents()
         {
             base.CheckNeededComponents();
