@@ -109,6 +109,7 @@ GameObject:
   - component: {fileID: 3591473433201196268}
   - component: {fileID: 5862226702457496206}
   - component: {fileID: 8592792310359531350}
+  - component: {fileID: 8182241800679834086}
   m_Layer: 5
   m_Name: BaseButton
   m_TagString: Untagged
@@ -242,6 +243,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bec8debc353ef7d4da92e7fd15668ca9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eventTrigger: {fileID: 0}
+  button: {fileID: 0}
 --- !u!114 &8592792310359531350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -255,3 +258,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Delegates: []
+--- !u!114 &8182241800679834086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6715635896082630800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6918040983ab3bc499e8e5740adc73c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectScaleSize: 1.2
+  selectScaleDuration: 0.25
