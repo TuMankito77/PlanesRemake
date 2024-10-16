@@ -1,15 +1,21 @@
 namespace PlanesRemake.Runtime.UI.CoreElements
 {
-    using PlanesRemake.Runtime.Utils;
+    using System;
+    
     using UnityEngine;
     using UnityEngine.EventSystems;
 
     public class SelectableElement : MonoBehaviour
     {
+        public event Action onSubmit = null;
+        public event Action onSelect = null;
+        public event Action onDeselect = null;
+
         [SerializeField]
         private EventTrigger eventTrigger = null;
 
         protected EventTriggerController eventTriggerController = null;
+        private bool isSelected = false;
         
         #region Unity Methods
 
@@ -17,6 +23,10 @@ namespace PlanesRemake.Runtime.UI.CoreElements
         {
             CheckNeededComponents();
             eventTriggerController = new EventTriggerController(eventTrigger);
+        }
+
+        protected virtual void OnEnable()
+        {
             eventTriggerController.SubscribeToTiggerEvent(EventTriggerType.PointerEnter, OnPointerEnter);
             eventTriggerController.SubscribeToTiggerEvent(EventTriggerType.PointerExit, OnPointerExit);
             eventTriggerController.SubscribeToTiggerEvent(EventTriggerType.PointerClick, OnSubmit);
@@ -25,6 +35,23 @@ namespace PlanesRemake.Runtime.UI.CoreElements
             eventTriggerController.SubscribeToTiggerEvent(EventTriggerType.Deselect, OnDeselect);
             eventTriggerController.SubscribeToTiggerEvent(EventTriggerType.PointerDown, OnPointerDown);
             eventTriggerController.SubscribeToTiggerEvent(EventTriggerType.PointerUp, OnPointerUp);
+        }
+
+        protected virtual void OnDisable()
+        {
+            eventTriggerController.UnsubscribeToTriggerEvent(EventTriggerType.PointerEnter, OnPointerEnter);
+            eventTriggerController.UnsubscribeToTriggerEvent(EventTriggerType.PointerExit, OnPointerExit);
+            eventTriggerController.UnsubscribeToTriggerEvent(EventTriggerType.PointerClick, OnSubmit);
+            eventTriggerController.UnsubscribeToTriggerEvent(EventTriggerType.Submit, OnSubmit);
+            eventTriggerController.UnsubscribeToTriggerEvent(EventTriggerType.Select, OnSelect);
+            eventTriggerController.UnsubscribeToTriggerEvent(EventTriggerType.Deselect, OnDeselect);
+            eventTriggerController.UnsubscribeToTriggerEvent(EventTriggerType.PointerDown, OnPointerDown);
+            eventTriggerController.UnsubscribeToTriggerEvent(EventTriggerType.PointerUp, OnPointerUp);
+        }
+
+        protected virtual void OnDestroy()
+        {
+            
         }
 
         #endregion
@@ -53,27 +80,35 @@ namespace PlanesRemake.Runtime.UI.CoreElements
 
         protected virtual void OnPointerEnter(BaseEventData baseEventData)
         {
-            
+            eventTrigger.OnSelect(baseEventData);
         }
 
         protected virtual void OnPointerExit(BaseEventData baseEventData)
         {
-            
+            eventTrigger.OnDeselect(baseEventData);
         }
 
         protected virtual void OnSubmit(BaseEventData baseEventData)
         {
-            
+            onSubmit?.Invoke();
         }
 
         protected virtual void OnSelect(BaseEventData baseEventData)
         {
-            
+            if(!isSelected)
+            {
+                isSelected = true;
+                onSelect?.Invoke();
+            }    
         }
 
         protected virtual void OnDeselect(BaseEventData baseEventData)
         {
-            
+            if(isSelected)
+            {
+                isSelected = false;
+                onDeselect?.Invoke();
+            }
         }
 
         protected virtual void OnPointerDown(BaseEventData baseEventData)
