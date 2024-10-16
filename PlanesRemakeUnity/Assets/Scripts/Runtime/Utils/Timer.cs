@@ -14,6 +14,8 @@ namespace PlanesRemake.Runtime.Utils
         private float timeTranscurred = 0;
         private bool isRepeating = false;
 
+        public bool IsRunning { get; private set; } = false;
+
         public Timer(float sourceDuration, bool sourceIsRepeating = false)
         {
             duration = sourceDuration;
@@ -26,11 +28,13 @@ namespace PlanesRemake.Runtime.Utils
         public void Start()
         {
             TimerManager.Instance.AddTimer(this);
+            IsRunning = true;
         }
 
         public void Pause()
         {
             TimerManager.Instance.RemoveTimer(this);
+            IsRunning = false;
         }
 
         /// <summary>
@@ -40,6 +44,7 @@ namespace PlanesRemake.Runtime.Utils
         {
             TimerManager.Instance.RemoveTimer(this);
             timeTranscurred = 0;
+            IsRunning = false;
         }
 
         public void Tick(float deltaTime)
@@ -48,12 +53,15 @@ namespace PlanesRemake.Runtime.Utils
 
             if (timeTranscurred > duration)
             {
-                Stop();
                 OnTimerCompleted?.Invoke();
 
                 if (isRepeating)
                 {
-                    Start();
+                    timeTranscurred = 0;
+                }
+                else
+                {
+                    Stop();
                 }
             }
 
