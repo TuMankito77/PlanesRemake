@@ -22,7 +22,7 @@ namespace PlanesRemake.Runtime.UI.Views
 
             foreach(BaseButton button in buttons)
             {
-                button.onButtonPressed += OnButtonPressed;
+                button.onSubmit += OnButtonSubmit;
             }
         }
 
@@ -30,7 +30,7 @@ namespace PlanesRemake.Runtime.UI.Views
         {
             foreach(BaseButton button in buttons)
             {
-                button.onButtonPressed -= OnButtonPressed;
+                button.onSubmit -= OnButtonSubmit;
             }
         }
 
@@ -63,7 +63,7 @@ namespace PlanesRemake.Runtime.UI.Views
             CanvasGroup.interactable = false;
         }
 
-        private void OnButtonPressed()
+        private void OnButtonSubmit()
         {
             audioManager.PlayGeneralClip(ClipIds.BUTTON_CLICK_CLIP);
         }
