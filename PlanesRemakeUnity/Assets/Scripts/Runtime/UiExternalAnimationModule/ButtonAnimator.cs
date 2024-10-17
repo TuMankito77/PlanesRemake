@@ -7,6 +7,7 @@ namespace PlanesRemake.Runtime.UiExternalAnimationModule
     using DG.Tweening;
 
     using PlanesRemake.Runtime.UI.CoreElements;
+    using UnityEngine.InputSystem.EnhancedTouch;
 
     public class ButtonAnimator : MonoBehaviour, ISeletableElementAnimator
     {
@@ -21,11 +22,15 @@ namespace PlanesRemake.Runtime.UiExternalAnimationModule
         [SerializeField]
         private AnimationCurve submitAnimationCurve = AnimationCurve.Linear(0, 0.5f, 1, 1);
 
+        [SerializeField]
+        private AnimationCurve submitAnimationWhenTouchEnabled = AnimationCurve.Linear(0, 1, 1, 1);
+
         private bool isDoingSubmitAnimation = false;
         private Tweener currentTween = null;
         private TweenCallback TweenCompletedCallback = null;
         private BaseButton baseButton = null;
         private float timeInAnimationCurve = 0;
+        private AnimationCurve submitAnimationCurveChosen = null;
 
         #region ISelectableElementAnimator
 
@@ -43,8 +48,18 @@ namespace PlanesRemake.Runtime.UiExternalAnimationModule
         {
             baseButton = GetComponent<BaseButton>();
             baseButton.SetAnimationExternalModule(this);
-            baseButton.onSelect += OnElementSelected;
-            baseButton.onDeselect += OnElementDeselected;
+            
+            if(EnhancedTouchSupport.enabled)
+            {
+                submitAnimationCurveChosen = submitAnimationWhenTouchEnabled;
+            }
+            else
+            {
+                baseButton.onSelect += OnElementSelected;
+                baseButton.onDeselect += OnElementDeselected;
+                submitAnimationCurveChosen = submitAnimationCurve;
+            }
+
             baseButton.onSubmit += OnElementSubmit;
             TweenCompletedCallback += OnTweenAnimationCompleted;
         }
@@ -116,7 +131,7 @@ namespace PlanesRemake.Runtime.UiExternalAnimationModule
             float startValue = submitAnimationCurve.keys[0].time;
             float targetValue = submitAnimationCurve.keys[selectAnimationCurve.keys.Length - 1].time;
             currentTween = DOTween.To(UpdateTimeInAnimationCurve, startValue, targetValue, animationDuration).SetEase(Ease.Linear);
-            currentTween.onUpdate += () => transform.localScale = Vector3.one * submitAnimationCurve.Evaluate(timeInAnimationCurve);
+            currentTween.onUpdate += () => transform.localScale = Vector3.one * submitAnimationCurveChosen.Evaluate(timeInAnimationCurve);
             currentTween.onComplete += OnTweenAnimationCompleted;
         }
 
