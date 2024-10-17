@@ -5,7 +5,6 @@ namespace PlanesRemake.Runtime.UI
     using System.Collections.Generic;
 
     using UnityEngine;
-    using UnityEngine.EventSystems;
 
     using PlanesRemake.Runtime.Core;
     using PlanesRemake.Runtime.UI.Views;
