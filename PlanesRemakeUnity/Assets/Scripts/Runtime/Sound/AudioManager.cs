@@ -12,8 +12,6 @@ namespace PlanesRemake.Runtime.Sound
     {
         private const string AUDIO_PLAYER_PREFAB_PATH = "Sound/AudioPlayer";
 
-        private float currentMusicVolume = 1;
-        private float currentVfxVolume = 1;
         private Dictionary<int, AudioPlayer> loopingAudioPlayers = new Dictionary<int, AudioPlayer>();
         private AudioPlayer audioPlayerPrefab = null;
         private AudioPlayer gameplayAudioPlayer = null;
@@ -24,13 +22,13 @@ namespace PlanesRemake.Runtime.Sound
         private List<AudioPlayer> loopingClipsPlaying = null;
         private ClipsDatabase clipsDatabase = null;
 
-        public float CurrentMusicVolume => currentMusicVolume;
-        public float CurrentVfxVolume => currentVfxVolume;
-
-        public AudioManager(float sourceCurrentMusicVolume, float sourceCurrentVfxVolume)
+        public float CurrentMusicVolume { get; private set; } = 1;
+        public float CurrentVfxVolume { get; private set; } = 1;
+        
+        public AudioManager(float currentMusicVolume, float currentVfxVolume)
         {
-            currentMusicVolume = sourceCurrentMusicVolume;
-            currentVfxVolume = sourceCurrentVfxVolume;
+            CurrentMusicVolume = currentMusicVolume;
+            CurrentVfxVolume = currentVfxVolume;
         }
 
         public override async Task<bool> Initialize(IEnumerable<BaseSystem> sourceDependencies)
@@ -40,6 +38,7 @@ namespace PlanesRemake.Runtime.Sound
             audioPlayersPool = new ObjectPool<AudioPlayer>(OnCreateAudioPlayerForPool);
             loopingClipsPlaying = new List<AudioPlayer>();
             audioManagerGO = new GameObject(GetType().Name);
+            audioManagerGO.AddComponent<AudioListener>();
             GameObject.DontDestroyOnLoad(audioManagerGO);
             ContentLoader contentLoader = GetDependency<ContentLoader>();
             audioPlayerPrefab = await contentLoader.LoadAsset<AudioPlayer>(AUDIO_PLAYER_PREFAB_PATH);
@@ -50,16 +49,19 @@ namespace PlanesRemake.Runtime.Sound
             }
 
             gameplayAudioPlayer = audioPlayersPool.Get();
+            gameplayAudioPlayer.name = "GameplayAudioPlayer";
             gameplayAudioPlayer.SetIsLooping(false);
-            gameplayAudioPlayer.UpdateVolume(currentVfxVolume);
+            gameplayAudioPlayer.UpdateVolume(CurrentVfxVolume);
 
             generalAudioPlayer = audioPlayersPool.Get();
-            gameplayAudioPlayer.SetIsLooping(false);
-            gameplayAudioPlayer.UpdateVolume(currentVfxVolume);
+            generalAudioPlayer.name = "GeneralAudioPlayer";
+            generalAudioPlayer.SetIsLooping(false);
+            generalAudioPlayer.UpdateVolume(CurrentVfxVolume);
 
             backgroundMusicAudioPlayer = audioPlayersPool.Get();
+            backgroundMusicAudioPlayer.name = "BackgroundMusicAudioPlayer";
             backgroundMusicAudioPlayer.SetIsLooping(true);
-            backgroundMusicAudioPlayer.UpdateVolume(currentMusicVolume);
+            backgroundMusicAudioPlayer.UpdateVolume(CurrentMusicVolume);
 
             clipsDatabase = await contentLoader.LoadAsset<ClipsDatabase>(ClipsDatabase.CLIPS_DATABASE_SCRIPTABLE_OBJECT_PATH);
             
@@ -144,7 +146,7 @@ namespace PlanesRemake.Runtime.Sound
             audioPlayer.SetIsSpatial(isSpatial);
             audioPlayer.UpdateDefaultClip(audioClip);
             audioPlayer.SetIsLooping(true);
-            audioPlayer.UpdateVolume(currentVfxVolume);
+            audioPlayer.UpdateVolume(CurrentVfxVolume);
             audioPlayer.Play();
         }
 
@@ -210,13 +212,13 @@ namespace PlanesRemake.Runtime.Sound
 
         public void UpdateMusicVolume(float volume)
         {
-            currentMusicVolume = volume;
+            CurrentMusicVolume = volume;
             backgroundMusicAudioPlayer.UpdateVolume(volume);
         }
 
         public void UpdateVFXMusicVolume(float volume)
         {
-            currentVfxVolume = volume;
+            CurrentVfxVolume = volume;
             gameplayAudioPlayer.UpdateVolume(volume);
             generalAudioPlayer.UpdateVolume(volume);
 
