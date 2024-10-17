@@ -5,8 +5,6 @@ namespace PlanesRemake.Runtime.UiExternalAnimationModule
     using UnityEngine;
 
     using DG.Tweening;
-    using DG.Tweening.Core;
-    using DG.Tweening.Plugins.Options;
 
     using PlanesRemake.Runtime.UI.CoreElements;
 
@@ -15,15 +13,19 @@ namespace PlanesRemake.Runtime.UiExternalAnimationModule
         private event Action OnSubmitAnimationFinished = null;
 
         [SerializeField]
-        private float selectScaleSize = 1.2f;
-
-        [SerializeField]
         private float animationDuration = 0.25f;
 
+        [SerializeField]
+        private AnimationCurve selectAnimationCurve = AnimationCurve.Linear(0, 1, 1, 1.2f);
+
+        [SerializeField]
+        private AnimationCurve submitAnimationCurve = AnimationCurve.Linear(0, 0.5f, 1, 1);
+
         private bool isDoingSubmitAnimation = false;
-        private TweenerCore<Vector3, Vector3, VectorOptions> currentTween = null;
+        private Tweener currentTween = null;
         private TweenCallback TweenCompletedCallback = null;
         private BaseButton baseButton = null;
+        private float timeInAnimationCurve = 0;
 
         #region ISelectableElementAnimator
 
@@ -74,7 +76,10 @@ namespace PlanesRemake.Runtime.UiExternalAnimationModule
                 currentTween.Kill();
             }
 
-            currentTween = transform.DOScale(Vector3.one * selectScaleSize, animationDuration);
+            float startValue = selectAnimationCurve.keys[0].time;
+            float targetValue = selectAnimationCurve.keys[selectAnimationCurve.keys.Length - 1].time;
+            currentTween = DOTween.To(UpdateTimeInAnimationCurve, startValue, targetValue, animationDuration).SetEase(Ease.Linear);
+            currentTween.onUpdate += () => transform.localScale = Vector3.one * selectAnimationCurve.Evaluate(timeInAnimationCurve);
         }
 
         private void OnElementDeselected()
@@ -89,7 +94,10 @@ namespace PlanesRemake.Runtime.UiExternalAnimationModule
                 currentTween.Kill();
             }
 
-            currentTween = transform.DOScale(Vector3.one, animationDuration);
+            float startValue = selectAnimationCurve.keys[selectAnimationCurve.keys.Length - 1].time;
+            float targetValue = selectAnimationCurve.keys[0].time;
+            currentTween = DOTween.To(UpdateTimeInAnimationCurve, startValue, targetValue, animationDuration).SetEase(Ease.Linear);
+            currentTween.onUpdate += () => transform.localScale = Vector3.one * selectAnimationCurve.Evaluate(timeInAnimationCurve);
         }
 
         private void OnElementSubmit()
@@ -105,15 +113,24 @@ namespace PlanesRemake.Runtime.UiExternalAnimationModule
             }
 
             isDoingSubmitAnimation = true;
-            currentTween = transform.DOScale(Vector3.one, animationDuration);
+            float startValue = submitAnimationCurve.keys[0].time;
+            float targetValue = submitAnimationCurve.keys[selectAnimationCurve.keys.Length - 1].time;
+            currentTween = DOTween.To(UpdateTimeInAnimationCurve, startValue, targetValue, animationDuration).SetEase(Ease.Linear);
+            currentTween.onUpdate += () => transform.localScale = Vector3.one * submitAnimationCurve.Evaluate(timeInAnimationCurve);
             currentTween.onComplete += OnTweenAnimationCompleted;
         }
 
         private void OnTweenAnimationCompleted()
         {
             isDoingSubmitAnimation = false;
+            transform.localScale = Vector3.one;
             OnSubmitAnimationFinished?.Invoke();
             currentTween.onComplete -= OnTweenAnimationCompleted;
+        }
+
+        private void UpdateTimeInAnimationCurve(float time)
+        {
+            timeInAnimationCurve = time;
         }
     }
 }
