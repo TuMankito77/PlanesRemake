@@ -133,7 +133,6 @@ GameObject:
   m_Component:
   - component: {fileID: 383699284}
   - component: {fileID: 383699283}
-  - component: {fileID: 383699282}
   m_Layer: 0
   m_Name: IsometricCamera
   m_TagString: Untagged
@@ -141,14 +140,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &383699282
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 383699281}
-  m_Enabled: 1
 --- !u!20 &383699283
 Camera:
   m_ObjectHideFlags: 0
@@ -225,7 +216,6 @@ GameObject:
   m_Component:
   - component: {fileID: 606232701}
   - component: {fileID: 606232700}
-  - component: {fileID: 606232699}
   m_Layer: 0
   m_Name: BackgroundRenderingCamera
   m_TagString: MainCamera
@@ -233,14 +223,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &606232699
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 606232698}
-  m_Enabled: 1
 --- !u!20 &606232700
 Camera:
   m_ObjectHideFlags: 0
