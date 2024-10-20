@@ -19,7 +19,7 @@
                 {
                     "name": "",
                     "id": "b6b94f11-1b2c-40d2-a2a9-e8f058f048bd",
-                    "path": "<Keyboard>/{Back}",
+                    "path": "*/{Back}",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

@@ -156,7 +156,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &2900652831481229611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1046,7 +1046,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83f6d307f4c21dd489f451a8cdf3edc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controlPathSelected: <Keyboard>/{Back}
+  controlPathSelected: <Gamepad>/{Back}
   linkedButton: {fileID: 2350651829846004506}
 --- !u!224 &6965285745702909020 stripped
 RectTransform:
