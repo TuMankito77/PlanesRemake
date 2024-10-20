@@ -128,8 +128,8 @@ namespace PlanesRemake.Runtime.UiExternalAnimationModule
             }
 
             isDoingSubmitAnimation = true;
-            float startValue = submitAnimationCurve.keys[0].time;
-            float targetValue = submitAnimationCurve.keys[selectAnimationCurve.keys.Length - 1].time;
+            float startValue = submitAnimationCurveChosen.keys[0].time;
+            float targetValue = submitAnimationCurveChosen.keys[submitAnimationCurveChosen.keys.Length - 1].time;
             currentTween = DOTween.To(UpdateTimeInAnimationCurve, startValue, targetValue, animationDuration).SetEase(Ease.Linear);
             currentTween.onUpdate += () => transform.localScale = Vector3.one * submitAnimationCurveChosen.Evaluate(timeInAnimationCurve);
             currentTween.onComplete += OnTweenAnimationCompleted;
