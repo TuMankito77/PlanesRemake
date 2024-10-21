@@ -34,6 +34,7 @@ namespace PlanesRemake.Runtime.Core
 
         public GameManager()
         {
+            Application.targetFrameRate = 60;
             LoadPlayerData();
             
             baseSystems = new List<BaseSystem>();
@@ -211,7 +212,7 @@ namespace PlanesRemake.Runtime.Core
 
             if (gameplayContoller.VirtualJoystickEnabled)
             {
-                TouchCotrolsView touchControlsView = uiManager.DisplayView(ViewIds.TOUCH_CONTROLS) as TouchCotrolsView;
+                TouchControlsView touchControlsView = uiManager.DisplayView(ViewIds.TOUCH_CONTROLS) as TouchControlsView;
                 gameplayContoller.VirtualJoystick.OnTouchStart += touchControlsView.OnInitialPositionUpdated;
                 gameplayContoller.VirtualJoystick.OnTouchDrag += touchControlsView.OnDragPositionUpdated;
                 gameplayContoller.VirtualJoystick.OnTouchEnd += touchControlsView.OnEndPositionUpdated;
@@ -264,7 +265,7 @@ namespace PlanesRemake.Runtime.Core
             
             if (gameplayController.VirtualJoystickEnabled)
             {
-                TouchCotrolsView touchControlsView = uiManager.GetTopStackView(ViewIds.TOUCH_CONTROLS) as TouchCotrolsView;
+                TouchControlsView touchControlsView = uiManager.GetTopStackView(ViewIds.TOUCH_CONTROLS) as TouchControlsView;
                 gameplayController.VirtualJoystick.OnTouchStart -= touchControlsView.OnInitialPositionUpdated;
                 gameplayController.VirtualJoystick.OnTouchDrag -= touchControlsView.OnDragPositionUpdated;
                 gameplayController.VirtualJoystick.OnTouchEnd -= touchControlsView.OnEndPositionUpdated;
