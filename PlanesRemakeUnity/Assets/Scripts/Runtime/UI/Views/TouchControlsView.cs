@@ -2,7 +2,7 @@ namespace PlanesRemake.Runtime.UI.Views
 {
     using UnityEngine;
 
-    public class TouchCotrolsView : BaseView
+    public class TouchControlsView : BaseView
     {
         [SerializeField]
         private RectTransform joystickOuterCircle = null;
@@ -10,14 +10,32 @@ namespace PlanesRemake.Runtime.UI.Views
         [SerializeField]
         private RectTransform joystickInnerCircle = null;
 
+        [SerializeField, Range(0.01f, 1)]
+        private float screenResolutionScaleFactor = 0.1f;
+        
+        [SerializeField, Range(0, 1)]
+        private float horizontalDefaultPlace = 0.25f;
+
+        [SerializeField, Range(0, 1)]
+        private float verticalDefaultPlace = 0.25f;
+        
         private Vector2 initialPosition = Vector2.zero;
         private Vector2 defaultJoystickPosition = Vector2.zero;
+        private Vector2 screenResolution = new Vector2(Screen.width, Screen.height);
 
         #region Unity Methods
 
         protected void Start()
         {
-            defaultJoystickPosition = joystickOuterCircle.anchoredPosition;
+            float innerJoystickScaleFactor = joystickInnerCircle.sizeDelta.magnitude / joystickOuterCircle.sizeDelta.magnitude;
+            screenResolution = new Vector2(Screen.width, Screen.height);
+            float joystickSize = screenResolution.magnitude * screenResolutionScaleFactor;
+            float innerJoystickSize = joystickSize * innerJoystickScaleFactor;
+            joystickOuterCircle.sizeDelta = new Vector2(joystickSize, joystickSize);
+            joystickInnerCircle.sizeDelta = new Vector2(innerJoystickSize, innerJoystickSize);
+            defaultJoystickPosition = GetLowerLeftCornerAnchoredPosition() +
+                new Vector2(screenResolution.x * horizontalDefaultPlace, screenResolution.y * verticalDefaultPlace);
+            joystickOuterCircle.anchoredPosition = defaultJoystickPosition;
         }
 
         #endregion
@@ -45,10 +63,10 @@ namespace PlanesRemake.Runtime.UI.Views
             joystickInnerCircle.anchoredPosition = Vector2.zero;
         }
 
-        //NOTE: This is based ont he anchored configuration set on the outer joystick circle.
+        //NOTE: This is based on the anchored configuration set on the outer joystick circle.
         public Vector2 GetLowerLeftCornerAnchoredPosition()
         {
-            Vector2 lowerLeftCorner = new Vector2(Screen.width / 2, Screen.height / 2);
+            Vector2 lowerLeftCorner = screenResolution / 2;
             lowerLeftCorner *= -1;
             return lowerLeftCorner;
         }
