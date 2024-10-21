@@ -35,8 +35,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -968.71606, y: -238.71606}
-  m_SizeDelta: {x: 307.56787, y: 306.56787}
+  m_AnchoredPosition: {x: -740, y: -360}
+  m_SizeDelta: {x: 329.16867, y: 329.16867}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1827992392376551632
 CanvasRenderer:
@@ -206,6 +206,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   joystickOuterCircle: {fileID: 6069397707660965438}
   joystickInnerCircle: {fileID: 7320001995878633624}
+  screenResolutionScaleFactor: 0.1
+  horizontalDefaultPlace: 0.25
+  verticalDefaultPlace: 0.25
 --- !u!1 &7032927445258634772
 GameObject:
   m_ObjectHideFlags: 0
@@ -274,10 +277,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 6069397707660965438}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -143.8628, y: -143.3949}
+  m_SizeDelta: {x: 175.55653, y: 175.55653}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8852289890893588320
 CanvasRenderer:
