@@ -4,15 +4,22 @@ namespace PlanesRemake.Runtime.UI.Views
     
     using PlanesRemake.Runtime.Sound;
     using PlanesRemake.Runtime.UI.CoreElements;
+    using UnityEngine.UI;
+    using System;
 
     [RequireComponent(typeof (Canvas),typeof(CanvasGroup))]
     public abstract class BaseView : MonoBehaviour
     {
+        public event Action onTransitionInFinished;
+        public event Action onTransitionOutFinished;
+
         public Canvas Canvas { get; private set; } = null;
         public CanvasGroup CanvasGroup { get; private set; } = null;
+        public CanvasScaler CanvasScaler { get; private set; } = null;
 
         protected AudioManager audioManager = null;
         private BaseButton[] buttons = new BaseButton[0];
+        private IViewAnimator viewAnimator = null;
 
         #region Unity Methods
 
@@ -24,13 +31,28 @@ namespace PlanesRemake.Runtime.UI.Views
             {
                 button.onSubmit += OnButtonSubmit;
             }
+
+            viewAnimator = GetComponent<IViewAnimator>();
+
+            if(viewAnimator != null)
+            {
+                viewAnimator.OnTransitionInAnimationCompleted += OnTransitionInAnimationCompleted;
+                viewAnimator.OnTransitionOutAnimatonCompleted += OnTransitionOutAnimatonCompleted;
+            }
         }
+
 
         protected virtual void OnDestroy()
         {
             foreach(BaseButton button in buttons)
             {
                 button.onSubmit -= OnButtonSubmit;
+            }
+
+            if (viewAnimator != null)
+            {
+                viewAnimator.OnTransitionInAnimationCompleted -= OnTransitionInAnimationCompleted;
+                viewAnimator.OnTransitionOutAnimatonCompleted -= OnTransitionOutAnimatonCompleted;
             }
         }
 
@@ -40,8 +62,10 @@ namespace PlanesRemake.Runtime.UI.Views
         {
             Canvas = GetComponent<Canvas>();
             CanvasGroup = GetComponent<CanvasGroup>();
+            CanvasScaler = GetComponent<CanvasScaler>();
             Canvas.renderMode = RenderMode.ScreenSpaceCamera;
             Canvas.worldCamera = uiCamera;
+            CanvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             audioManager = sourceAudioManager;
         }
 
@@ -54,18 +78,48 @@ namespace PlanesRemake.Runtime.UI.Views
         public virtual void TransitionIn()
         {
             CanvasGroup.alpha = 1;
-            CanvasGroup.interactable = true;
+
+            if(viewAnimator != null)
+            {
+                viewAnimator.PlayTransitionIn();
+            }
+            else
+            {
+                CanvasGroup.interactable = true;
+                onTransitionInFinished?.Invoke();
+            }
         }
 
         public virtual void TransitionOut()
         {
-            CanvasGroup.alpha = 0;
             CanvasGroup.interactable = false;
+
+            if(viewAnimator != null)
+            {
+                viewAnimator.PlayTransitionOut();
+            }
+            else
+            {
+                CanvasGroup.alpha = 0;
+                onTransitionOutFinished?.Invoke();
+            }
         }
 
         private void OnButtonSubmit()
         {
             audioManager.PlayGeneralClip(ClipIds.BUTTON_CLICK_CLIP);
+        }
+
+        private void OnTransitionOutAnimatonCompleted()
+        {
+            CanvasGroup.alpha = 0;
+            onTransitionOutFinished?.Invoke();
+        }
+
+        private void OnTransitionInAnimationCompleted()
+        {
+            CanvasGroup.interactable = true;
+            onTransitionInFinished?.Invoke();
         }
     }
 }

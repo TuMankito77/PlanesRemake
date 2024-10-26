@@ -54,6 +54,9 @@ namespace PlanesRemake.Runtime.UI
         {   
             BaseView viewFound = GameObject.Instantiate(viewsDatabase.GetFile(viewId), uiManagerGO.transform);
             viewFound.Initialize(uiCamera, audioManager);
+            //NOTE: This will update the values like the width and height so that they do not appear as zero,
+            //dunno how I will remind this to myself -_-, BUT remember, we have to do this before trying to access any RectTransform values
+            Canvas.ForceUpdateCanvases();
             viewFound.Canvas.sortingOrder = viewsOpened.Count;
             viewFound.TransitionIn();
             viewFound.transform.SetParent(uiManagerGO.transform);
@@ -92,18 +95,7 @@ namespace PlanesRemake.Runtime.UI
             }
 
             BaseView viewFound = viewsOpened.FindLast((view) => view.GetType() == viewType);
-            int viewIndex = viewFound.Canvas.sortingOrder;
-            viewFound.TransitionOut();
-            viewFound.Dispose();
-            viewsOpened.Remove(viewFound);
-
-            for(int i = viewIndex; i < viewsOpened.Count; i++)
-            {
-                viewsOpened[i].Canvas.sortingOrder = i;
-            }
-
-            //To-do: Make this be handled by a pool so that it can be reused.
-            GameObject.Destroy(viewFound.gameObject);
+            RemoveView(viewFound);
         }
 
         public void RemoveTopStackView()
@@ -116,10 +108,30 @@ namespace PlanesRemake.Runtime.UI
 
             int lastIndex = viewsOpened.Count - 1;
             BaseView topStackView = viewsOpened[lastIndex];
-            topStackView.TransitionOut();
-            topStackView.Dispose();
-            viewsOpened.RemoveAt(lastIndex);
-            GameObject.Destroy(topStackView.gameObject);
+            RemoveView(topStackView);
+        }
+
+        private void RemoveView(BaseView view)
+        {
+            int viewIndex = view.Canvas.sortingOrder;
+
+            void OnTransitionOutFinished()
+            {
+                view.onTransitionOutFinished -= OnTransitionOutFinished;
+                view.Dispose();
+                viewsOpened.Remove(view);
+
+                for (int i = viewIndex; i < viewsOpened.Count; i++)
+                {
+                    viewsOpened[i].Canvas.sortingOrder = i;
+                }
+
+                //To-do: Make this be handled by a pool so that it can be reused.
+                GameObject.Destroy(view.gameObject);
+            }
+
+            view.onTransitionOutFinished += OnTransitionOutFinished;
+            view.TransitionOut();
         }
     }
 }
