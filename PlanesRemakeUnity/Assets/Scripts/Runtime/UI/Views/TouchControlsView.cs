@@ -5,45 +5,34 @@ namespace PlanesRemake.Runtime.UI.Views
     public class TouchControlsView : BaseView
     {
         [SerializeField]
+        private RectTransform joystickParent = null;
+
+        [SerializeField]
         private RectTransform joystickOuterCircle = null;
 
         [SerializeField]
         private RectTransform joystickInnerCircle = null;
-
-        [SerializeField, Range(0.01f, 1)]
-        private float screenResolutionScaleFactor = 0.1f;
-        
-        [SerializeField, Range(0, 1)]
-        private float horizontalDefaultPlace = 0.25f;
-
-        [SerializeField, Range(0, 1)]
-        private float verticalDefaultPlace = 0.25f;
         
         private Vector2 initialPosition = Vector2.zero;
         private Vector2 defaultJoystickPosition = Vector2.zero;
-        private Vector2 screenResolution = new Vector2(Screen.width, Screen.height);
 
         #region Unity Methods
 
         protected void Start()
         {
-            float innerJoystickScaleFactor = joystickInnerCircle.sizeDelta.magnitude / joystickOuterCircle.sizeDelta.magnitude;
-            screenResolution = new Vector2(Screen.width, Screen.height);
-            float joystickSize = screenResolution.magnitude * screenResolutionScaleFactor;
-            float innerJoystickSize = joystickSize * innerJoystickScaleFactor;
-            joystickOuterCircle.sizeDelta = new Vector2(joystickSize, joystickSize);
-            joystickInnerCircle.sizeDelta = new Vector2(innerJoystickSize, innerJoystickSize);
-            defaultJoystickPosition = GetLowerLeftCornerAnchoredPosition() +
-                new Vector2(screenResolution.x * horizontalDefaultPlace, screenResolution.y * verticalDefaultPlace);
-            joystickOuterCircle.anchoredPosition = defaultJoystickPosition;
+            defaultJoystickPosition = joystickOuterCircle.anchoredPosition;
         }
 
         #endregion
 
         public void OnInitialPositionUpdated(Vector2 position)
         {
-            Vector2 middleAchoredPosition = GetLowerLeftCornerAnchoredPosition() + position;
-            joystickOuterCircle.anchoredPosition = middleAchoredPosition;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                joystickParent, 
+                position, 
+                Canvas.worldCamera, 
+                out Vector2 localPosition);
+            joystickOuterCircle.anchoredPosition = localPosition;
             joystickInnerCircle.anchoredPosition = Vector2.zero;
             initialPosition = position;
         }
@@ -61,14 +50,6 @@ namespace PlanesRemake.Runtime.UI.Views
         {
             joystickOuterCircle.anchoredPosition = defaultJoystickPosition;
             joystickInnerCircle.anchoredPosition = Vector2.zero;
-        }
-
-        //NOTE: This is based on the anchored configuration set on the outer joystick circle.
-        public Vector2 GetLowerLeftCornerAnchoredPosition()
-        {
-            Vector2 lowerLeftCorner = screenResolution / 2;
-            lowerLeftCorner *= -1;
-            return lowerLeftCorner;
         }
     }
 }
