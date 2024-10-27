@@ -3,18 +3,17 @@ namespace PlanesRemake.Runtime.UiExternalAnimationModule
     using System;
 
     using UnityEngine;
-    
+
     using PlanesRemake.Runtime.UI.CoreElements;
     using DG.Tweening;
-    using TMPro;
 
     public class ViewAnimator : MonoBehaviour, IViewAnimator
     {
         [SerializeField]
-        private RectTransform buttonsContainer = null;
+        private RectTransform elementsContainerParent = null;
 
         [SerializeField]
-        private RectTransform buttonsContainerSize = null;
+        private RectTransform elementsContainer = null;
 
         [SerializeField]
         private Canvas canvas = null;
@@ -55,16 +54,16 @@ namespace PlanesRemake.Runtime.UiExternalAnimationModule
         public void PlayTransitionIn()
         {
             tweenCallback += OnTransitionInTweenAnimationCompleted;
-            Vector2 startPosition = GetStartPosition(buttonsContainer);
-            Vector2 targetPosition = buttonsContainer.anchoredPosition;
-            buttonsContainer.anchoredPosition = startPosition;
+            Vector2 startPosition = GetOffScreenPosition(elementsContainer);
+            Vector2 targetPosition = elementsContainer.anchoredPosition;
+            elementsContainer.anchoredPosition = startPosition;
             PlayTweenAnimation(startPosition, targetPosition);
         }
         public void PlayTransitionOut()
         {
             tweenCallback += OnTransitionOutTweenAnimationCompleted;
-            Vector2 startPosition = buttonsContainer.anchoredPosition;
-            Vector2 targetPosition = GetStartPosition(buttonsContainer);
+            Vector2 startPosition = elementsContainer.anchoredPosition;
+            Vector2 targetPosition = GetOffScreenPosition(elementsContainer);
             PlayTweenAnimation(startPosition, targetPosition);
         }
 
@@ -93,7 +92,7 @@ namespace PlanesRemake.Runtime.UiExternalAnimationModule
             {
                 float magnitude = Vector2.Distance(startPosition, targetPosition);
                 Vector2 direction = (targetPosition - startPosition).normalized;
-                buttonsContainer.anchoredPosition = startPosition + (direction * magnitude * transitionAnimaitonCurve.Evaluate(timeInAnimationCurve));
+                elementsContainer.anchoredPosition = startPosition + (direction * magnitude * transitionAnimaitonCurve.Evaluate(timeInAnimationCurve));
             };
         }
 
@@ -108,47 +107,27 @@ namespace PlanesRemake.Runtime.UiExternalAnimationModule
             timeInAnimationCurve = 0;
         }
 
-        //TODO: Improve this function by finding out how to transform the start position from screen coordinates to 
-        //local coordinates within a rectangle. (For some reason the rect utility does no return the correct values)
-        private Vector2 GetStartPosition(RectTransform rectTransform)
+        private Vector2 GetOffScreenPosition(RectTransform rectTransform)
         {
-            Rect screenRect = RectTransformUtility.PixelAdjustRect(rectTransform, canvas);
-            Vector2 entranceDirection = new Vector2(horizontalEntranceDirection, verticalEntranceDirection).normalized;
+            Bounds bounds = RectTransformUtility.CalculateRelativeRectTransformBounds(rectTransform, elementsContainerParent);
             float horizontalStartPosition = rectTransform.anchoredPosition.x;
             float verticalStartPosition = rectTransform.anchoredPosition.y;
 
-            if (entranceDirection.x < 0)
+            if (horizontalEntranceDirection != 0)
             {
-                horizontalStartPosition = screenRect.position.x + ((Screen.width - screenRect.position.x + (screenRect.width/2)) * -entranceDirection.x);
-            }
-            else if (entranceDirection.x > 0)
-            {
-                horizontalStartPosition = screenRect.position.x + ((screenRect.position.x + (screenRect.width/2)) * -entranceDirection.x);
+                float distanceToHorizontalCorner = Mathf.Abs(bounds.center.x - (horizontalEntranceDirection * elementsContainerParent.rect.width / 2));
+                distanceToHorizontalCorner += rectTransform.rect.width / 2;
+                horizontalStartPosition = horizontalStartPosition - (horizontalEntranceDirection * distanceToHorizontalCorner);
             }
 
-            if (entranceDirection.y < 0)
+            if (verticalEntranceDirection != 0)
             {
-                verticalStartPosition = screenRect.position.y + ((Screen.height - screenRect.position.y + (screenRect.height/2)) * -entranceDirection.y);
-            }
-            else if (entranceDirection.y > 0)
-            {
-                verticalStartPosition = screenRect.position.y + ((screenRect.position.y + (screenRect.height/2)) * -entranceDirection.y);
+                float distanceToVerticalCorner = Mathf.Abs(bounds.center.y - (verticalEntranceDirection * elementsContainerParent.rect.height / 2));
+                distanceToVerticalCorner += rectTransform.rect.height / 2;
+                verticalStartPosition = verticalStartPosition - (verticalEntranceDirection * distanceToVerticalCorner);
             }
 
-            Vector2 screenSpaceStartPosition = new Vector2(horizontalStartPosition, verticalStartPosition);
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(buttonsContainerSize, screenSpaceStartPosition, canvas.worldCamera, out Vector2 localStartPosition);
-            
-            if(entranceDirection.x == 0)
-            {
-                localStartPosition.x = rectTransform.anchoredPosition.x;
-            }
-
-            if(entranceDirection.y == 0)
-            {
-                localStartPosition.y = rectTransform.anchoredPosition.y;
-            }
-
-            return localStartPosition;
+            return new Vector2(horizontalStartPosition, verticalStartPosition);
         }
     }
 }
