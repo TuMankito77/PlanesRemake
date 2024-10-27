@@ -634,7 +634,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &1464389862671792428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -690,22 +690,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64f6906fa7271f84e892b4eebd3b04bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementsContainer: {fileID: 1815432714152536521}
   elementsContainerParent: {fileID: 7908470765610282712}
+  elementsContainer: {fileID: 1815432714152536521}
   canvas: {fileID: 5966399330817677042}
-  animationDuration: 1
+  animationDuration: 0.5
   transitionAnimaitonCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0
-      outSlope: 0
+      inSlope: 7.172714
+      outSlope: 7.172714
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.15022534
+    - serializedVersion: 3
+      time: 0.11724293
+      value: 0.72367835
+      inSlope: 2.877913
+      outSlope: 2.877913
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.26112753
+    - serializedVersion: 3
+      time: 0.17061643
+      value: 0.8288742
+      inSlope: 1.2284995
+      outSlope: 1.2284995
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.73397225
+    - serializedVersion: 3
+      time: 0.2671486
+      value: 0.89347804
+      inSlope: 0.38778153
+      outSlope: 0.38778153
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.11479295
     - serializedVersion: 3
       time: 1
       value: 1
