@@ -89,13 +89,11 @@ namespace PlanesRemake.Runtime.Gameplay
 
         //NOTE: We can create a container that has all of this information so that it gets passed in
         //and we do not have this long list of parameters 
-        public void Initialize(string sourceTriggerDetectionTag, IObjectPool<BasePoolableObject> sourceObstaclesPool, CameraExtensions.Boundaries cameraBoundaries, float movementSpeed, float osilationSpeed, float osilationDistance, Vector3 startingPosition, Quaternion startingRotation)
+        public void Initialize(string sourceTriggerDetectionTag, IObjectPool<BasePoolableObject> sourceObstaclesPool, CameraBoundaries cameraBoundaries, float movementSpeed, float osilationSpeed, float osilationDistance)
         {
             triggerDetectionTag = sourceTriggerDetectionTag;
             obstaclesPool = sourceObstaclesPool;
             objectPoolReleaser.SetCameraBoundaries(cameraBoundaries);
-            transform.position = startingPosition;
-            transform.rotation = startingRotation;
             Vector3 velocityVector = new Vector3(-movementSpeed, 0, 0);
             directionalMovement.ChangeVelocityVector(velocityVector);
             osilateMovement.ChangeOsilationDistance(osilationDistance);

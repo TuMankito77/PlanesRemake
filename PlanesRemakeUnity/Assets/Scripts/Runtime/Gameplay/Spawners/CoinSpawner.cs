@@ -1,7 +1,9 @@
 namespace PlanesRemake.Runtime.Gameplay.Spawners
 {
-    using PlanesRemake.Runtime.Sound;
     using UnityEngine;
+    
+    using PlanesRemake.Runtime.Sound;
+    using PlanesRemake.Runtime.Utils;
     
     public class CoinSpawner : TimerSpawner
     {
@@ -12,8 +14,8 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
 
         private AudioManager audioManager = null;
     
-        public CoinSpawner(Coin coinPrefab, int coinPoolSize, int coinPoolMaxCapacity, Camera isometricCamera, AudioManager sourceAudioManager) 
-            : base(coinPrefab, coinPoolSize, coinPoolMaxCapacity, isometricCamera)
+        public CoinSpawner(Coin coinPrefab, int coinPoolSize, int coinPoolMaxCapacity, Camera isometricCamera, AudioManager sourceAudioManager, CameraBoundaries cameraBoundariesOffset) 
+            : base(coinPrefab, coinPoolSize, coinPoolMaxCapacity, isometricCamera, cameraBoundariesOffset)
         {
             audioManager = sourceAudioManager;
         }
@@ -27,7 +29,7 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
         protected override void OnGetPoolObject(BasePoolableObject instance)
         {
             base.OnGetPoolObject(instance);
-            Coin coin = instance.GetComponent<Coin>();
+            Coin coin = instance as Coin;
             coin.Initialize(Aircraft.AIRCRAFT_TAG, prefabInstancesPool, boundaries, audioManager);
         }
     }

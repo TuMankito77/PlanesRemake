@@ -33,7 +33,7 @@ namespace PlanesRemake.Runtime.Gameplay
         private Animator animator = null;
 
         private Vector2 direction = Vector2.zero;
-        private CameraExtensions.Boundaries boundaries = default(CameraExtensions.Boundaries);
+        private CameraBoundaries boundaries = default(CameraBoundaries);
         private AudioManager audioManager = null;
         private float horizontalSpeed = 0;
         private float verticalSpeed = 0;
@@ -89,9 +89,10 @@ namespace PlanesRemake.Runtime.Gameplay
 
         #endregion
 
-        public void Initialize(Camera sourceIsometricCamera, AudioManager sourceAudioManager)
+        public void Initialize(Camera sourceIsometricCamera, CameraBoundaries cameraBoundariesOffset, AudioManager sourceAudioManager)
         {
             boundaries = sourceIsometricCamera.GetScreenBoundariesInWorld(transform.position);
+            boundaries.AddOffset(cameraBoundariesOffset);
             audioManager = sourceAudioManager;
             audioManager.PlayLoopingClip(GetInstanceID(), ClipIds.AIRCRAFT_ENGINE_CLIP, transform, true);
             transform.position = boundaries.center;

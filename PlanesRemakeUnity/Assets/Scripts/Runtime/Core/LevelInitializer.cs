@@ -5,12 +5,10 @@ namespace PlanesRemake.Runtime.Core
     using UnityEngine;
 
     using PlanesRemake.Runtime.Gameplay;
-    using PlanesRemake.Runtime.Input;
     using PlanesRemake.Runtime.Gameplay.Spawners;
     using PlanesRemake.Runtime.Sound;
-    using PlanesRemake.Runtime.UI;
-    using PlanesRemake.Runtime.UI.Views;
     using System.Threading.Tasks;
+    using PlanesRemake.Runtime.Utils;
 
     public class LevelInitializer : BaseSystem
     {
@@ -48,13 +46,34 @@ namespace PlanesRemake.Runtime.Core
             //To-do: Use the assets loaded here to grab the information about the players choice for the background and the aircraft chosen.
             GameObject skyDomeBackgroundPrefab = await contentLoader.LoadAsset<GameObject>(SPHERICAL_BACKGROUND_PREFAB_PATH);
             skyDomeBackground = GameObject.Instantiate(skyDomeBackgroundPrefab, Vector3.zero, Quaternion.identity);
+
+            CameraBoundaries aircraftCameraBoundariesOffset = new CameraBoundaries()
+            {
+                top = -2,
+                bottom = 0,
+                right = -2,
+                left = 4,
+                center = Vector3.zero
+            };
+            
             Aircraft aircraftPrefab = await contentLoader.LoadAsset<Aircraft>(AIRCRAFT_PREFAB_PATH);
             aircraft = GameObject.Instantiate(aircraftPrefab, Vector3.zero, Quaternion.Euler(0, 115, -25));
-            aircraft.Initialize(isometricCamera, audioManager);
+            aircraft.Initialize(isometricCamera, aircraftCameraBoundariesOffset, audioManager);
+
+            //TO-DO: Move this to a scriptable object so that it can be configured from Unity rather than in code.
+            CameraBoundaries cameraBoundariesOffset = new CameraBoundaries()
+            {
+                top = 0,
+                bottom = 0,
+                right = 5,
+                left = -5,
+                center = Vector3.zero
+            };
+
             Obstacle obstaclePrefab = await contentLoader.LoadAsset<Obstacle>(OBSTACLE_PREFAB_PATH);
-            spawners.Add(new ObstacleSpawner(obstaclePrefab, SPAWNER_POOL_SIZE, SPAWNER_POOL_MAX_CAPACITY, isometricCamera));
+            spawners.Add(new ObstacleSpawner(obstaclePrefab, SPAWNER_POOL_SIZE, SPAWNER_POOL_MAX_CAPACITY, isometricCamera, cameraBoundariesOffset));
             Coin coinPrefab = await contentLoader.LoadAsset<Coin>(COIN_PREFAB_PATH);
-            spawners.Add(new CoinSpawner(coinPrefab, SPAWNER_POOL_SIZE, SPAWNER_POOL_MAX_CAPACITY, isometricCamera, audioManager));
+            spawners.Add(new CoinSpawner(coinPrefab, SPAWNER_POOL_SIZE, SPAWNER_POOL_MAX_CAPACITY, isometricCamera, audioManager, cameraBoundariesOffset));
             TimerPoolableObject timerPoolableObjectPrefab = await contentLoader.LoadAsset<TimerPoolableObject>(COIN_VFX_PREFAB_PATH);
             spawners.Add(new CoinParticleSpawner(timerPoolableObjectPrefab, SPAWNER_POOL_SIZE, SPAWNER_POOL_MAX_CAPACITY));
             return true;

@@ -9,9 +9,11 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
 
     public abstract class TimerSpawner : BaseSpawner, IListener
     {
-        protected CameraExtensions.Boundaries boundaries = default(CameraExtensions.Boundaries);
+        protected CameraBoundaries boundaries = default(CameraBoundaries);
 
         private Timer spawningTimer = null;
+        //NOTE: Move this to a scriptable object or somewhere visible to give control to change it in Unity;
+        private Vector2 cameraBoundariesOffset = new Vector2(5, 0); 
 
         protected abstract Vector3 StartingPosition { get; }
         protected abstract Quaternion StartingRotation { get; }
@@ -46,10 +48,11 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
 
         #endregion
 
-        public TimerSpawner(BasePoolableObject sourcePrefab, int objectPoolSize, int objectPoolMaxCapacity, Camera sourceIsometricCamera) 
+        public TimerSpawner(BasePoolableObject sourcePrefab, int objectPoolSize, int objectPoolMaxCapacity, Camera sourceIsometricCamera, CameraBoundaries cameraBoundariesOffset) 
             : base(sourcePrefab, objectPoolSize, objectPoolMaxCapacity)
         {
             boundaries = sourceIsometricCamera.GetScreenBoundariesInWorld(Vector3.zero);
+            boundaries.AddOffset(cameraBoundariesOffset);
 
             //NOTE: Maybe this should be moved to the class that needs this behavior rather than leaving it here.
             if (SpawnPrefabOnCreation)
@@ -57,7 +60,7 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
                 prefabInstancesPool.Get();
             }
 
-            spawningTimer = new Timer(SpawnDelayInSeconds, sourceIsRepeating: true);
+            spawningTimer = new Timer(SpawnDelayInSeconds, sourceIsRepeating: false);
             spawningTimer.OnTimerCompleted += OnSpawningTimerCompleted;
             spawningTimer.Start();
 
@@ -79,6 +82,13 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
         protected override void OnReleasePoolObject(BasePoolableObject instance)
         {
             base.OnReleasePoolObject(instance);
+            instance.transform.position = StartingPosition;
+            instance.transform.rotation = StartingRotation;
+        }
+
+        protected override void OnGetPoolObject(BasePoolableObject instance)
+        {
+            base.OnGetPoolObject(instance);
             instance.transform.position = StartingPosition;
             instance.transform.rotation = StartingRotation;
         }
@@ -126,6 +136,10 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
         private void OnSpawningTimerCompleted()
         {
             prefabInstancesPool.Get();
+            spawningTimer.OnTimerCompleted -= OnSpawningTimerCompleted;
+            spawningTimer = new Timer(SpawnDelayInSeconds, sourceIsRepeating: false);
+            spawningTimer.OnTimerCompleted += OnSpawningTimerCompleted;
+            spawningTimer.Start();
         }
     }
 }

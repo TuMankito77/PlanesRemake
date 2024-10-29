@@ -81,7 +81,7 @@ namespace PlanesRemake.Runtime.Gameplay
 
         public void Initialize(string sourceTriggerDetectionTag, 
             IObjectPool<BasePoolableObject> sourceCoinPool, 
-            CameraExtensions.Boundaries cameraBoundaries,
+            CameraBoundaries cameraBoundaries,
             AudioManager sourceAudioManager)
         {
             triggerDetectionTag = sourceTriggerDetectionTag;

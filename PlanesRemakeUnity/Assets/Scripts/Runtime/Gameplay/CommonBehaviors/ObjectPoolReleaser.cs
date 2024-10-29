@@ -16,7 +16,7 @@ namespace PlanesRemake.Runtime.Gameplay.CommonBehaviors
         private bool checkVerticalBoundaries = true;
 
         private BasePoolableObject poolableObject = null;
-        private CameraExtensions.Boundaries? cameraBoundaries = null;
+        private CameraBoundaries? cameraBoundaries = null;
 
         #region Unity Region
 
@@ -33,7 +33,7 @@ namespace PlanesRemake.Runtime.Gameplay.CommonBehaviors
 
         #endregion
 
-        public void SetCameraBoundaries(CameraExtensions.Boundaries sourceCameraBoundaries)
+        public void SetCameraBoundaries(CameraBoundaries sourceCameraBoundaries)
         {
             cameraBoundaries = sourceCameraBoundaries;
         }
