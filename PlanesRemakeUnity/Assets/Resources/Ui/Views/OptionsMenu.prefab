@@ -155,7 +155,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &2900652831481229611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201,7 +201,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementsContainerParent: {fileID: 2861317160745008497}
   elementsContainer: {fileID: 5763142167157752657}
-  canvas: {fileID: 1443202982987591837}
   animationDuration: 0.5
   transitionAnimaitonCurve:
     serializedVersion: 2
