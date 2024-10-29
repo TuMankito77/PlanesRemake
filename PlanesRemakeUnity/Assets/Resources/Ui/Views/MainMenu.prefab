@@ -192,7 +192,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementsContainerParent: {fileID: 2861317160745008497}
   elementsContainer: {fileID: 5763142167157752657}
-  canvas: {fileID: 1443202982987591837}
   animationDuration: 1
   transitionAnimaitonCurve:
     serializedVersion: 2
@@ -279,7 +278,7 @@ CanvasGroup:
   m_GameObject: {fileID: 2568938220350312103}
   m_Enabled: 1
   m_Alpha: 1
-  m_Interactable: 0
+  m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
 --- !u!114 &2591634808946119369
