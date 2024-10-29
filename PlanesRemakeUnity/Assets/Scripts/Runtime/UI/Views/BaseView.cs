@@ -19,6 +19,7 @@ namespace PlanesRemake.Runtime.UI.Views
 
         protected AudioManager audioManager = null;
         private BaseButton[] buttons = new BaseButton[0];
+        private SelectableElement[] selectableElements = new SelectableElement[0];
         private IViewAnimator viewAnimator = null;
 
         #region Unity Methods
@@ -26,6 +27,7 @@ namespace PlanesRemake.Runtime.UI.Views
         protected virtual void Awake()
         {
             buttons = GetComponentsInChildren<BaseButton>();
+            selectableElements = GetComponentsInChildren<SelectableElement>();
 
             foreach(BaseButton button in buttons)
             {
@@ -58,6 +60,16 @@ namespace PlanesRemake.Runtime.UI.Views
 
         #endregion
 
+        public void SetInteractable(bool isInractable)
+        {
+            foreach(SelectableElement selectableElement in selectableElements)
+            {
+                selectableElement.SetInteractable(isInractable);
+            }
+
+            CanvasGroup.interactable = isInractable;
+        }
+
         public virtual void Initialize(Camera uiCamera, AudioManager sourceAudioManager)
         {
             Canvas = GetComponent<Canvas>();
@@ -81,18 +93,19 @@ namespace PlanesRemake.Runtime.UI.Views
 
             if(viewAnimator != null)
             {
+                SetInteractable(false);
                 viewAnimator.PlayTransitionIn();
             }
             else
             {
-                CanvasGroup.interactable = true;
+                SetInteractable(true);
                 onTransitionInFinished?.Invoke();
             }
         }
 
         public virtual void TransitionOut()
         {
-            CanvasGroup.interactable = false;
+            SetInteractable(false);
 
             if(viewAnimator != null)
             {
@@ -118,7 +131,7 @@ namespace PlanesRemake.Runtime.UI.Views
 
         private void OnTransitionInAnimationCompleted()
         {
-            CanvasGroup.interactable = true;
+            SetInteractable(true);
             onTransitionInFinished?.Invoke();
         }
     }

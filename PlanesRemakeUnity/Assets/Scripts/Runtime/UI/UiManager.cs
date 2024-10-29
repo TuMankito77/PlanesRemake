@@ -51,7 +51,12 @@ namespace PlanesRemake.Runtime.UI
         }
 
         public BaseView DisplayView(string viewId)
-        {   
+        {
+            if(viewsOpened.Count > 0)
+            {
+                CurrentViewDisplayed().SetInteractable(false);
+            }
+
             BaseView viewFound = GameObject.Instantiate(viewsDatabase.GetFile(viewId), uiManagerGO.transform);
             viewFound.Initialize(uiCamera, audioManager);
             //NOTE: This will update the values like the width and height so that they do not appear as zero,
@@ -114,12 +119,12 @@ namespace PlanesRemake.Runtime.UI
         private void RemoveView(BaseView view)
         {
             int viewIndex = view.Canvas.sortingOrder;
+            viewsOpened.Remove(view);
 
             void OnTransitionOutFinished()
             {
                 view.onTransitionOutFinished -= OnTransitionOutFinished;
                 view.Dispose();
-                viewsOpened.Remove(view);
 
                 for (int i = viewIndex; i < viewsOpened.Count; i++)
                 {
@@ -128,6 +133,7 @@ namespace PlanesRemake.Runtime.UI
 
                 //To-do: Make this be handled by a pool so that it can be reused.
                 GameObject.Destroy(view.gameObject);
+                CurrentViewDisplayed().SetInteractable(true);
             }
 
             view.onTransitionOutFinished += OnTransitionOutFinished;

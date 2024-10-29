@@ -16,7 +16,8 @@ namespace PlanesRemake.Runtime.UI.CoreElements
 
         protected EventTriggerController eventTriggerController = null;
         private bool isSelected = false;
-        
+        private bool isSubscribedToInteractableEvents = false;
+
         #region Unity Methods
 
         protected virtual void Awake()
@@ -27,26 +28,12 @@ namespace PlanesRemake.Runtime.UI.CoreElements
 
         protected virtual void OnEnable()
         {
-            eventTriggerController.SubscribeToTiggerEvent(EventTriggerType.PointerEnter, OnPointerEnter);
-            eventTriggerController.SubscribeToTiggerEvent(EventTriggerType.PointerExit, OnPointerExit);
-            eventTriggerController.SubscribeToTiggerEvent(EventTriggerType.PointerClick, OnSubmit);
-            eventTriggerController.SubscribeToTiggerEvent(EventTriggerType.Submit, OnSubmit);
-            eventTriggerController.SubscribeToTiggerEvent(EventTriggerType.Select, OnSelect);
-            eventTriggerController.SubscribeToTiggerEvent(EventTriggerType.Deselect, OnDeselect);
-            eventTriggerController.SubscribeToTiggerEvent(EventTriggerType.PointerDown, OnPointerDown);
-            eventTriggerController.SubscribeToTiggerEvent(EventTriggerType.PointerUp, OnPointerUp);
+            SubscribeToInteractableEvents();
         }
 
         protected virtual void OnDisable()
         {
-            eventTriggerController.UnsubscribeToTriggerEvent(EventTriggerType.PointerEnter, OnPointerEnter);
-            eventTriggerController.UnsubscribeToTriggerEvent(EventTriggerType.PointerExit, OnPointerExit);
-            eventTriggerController.UnsubscribeToTriggerEvent(EventTriggerType.PointerClick, OnSubmit);
-            eventTriggerController.UnsubscribeToTriggerEvent(EventTriggerType.Submit, OnSubmit);
-            eventTriggerController.UnsubscribeToTriggerEvent(EventTriggerType.Select, OnSelect);
-            eventTriggerController.UnsubscribeToTriggerEvent(EventTriggerType.Deselect, OnDeselect);
-            eventTriggerController.UnsubscribeToTriggerEvent(EventTriggerType.PointerDown, OnPointerDown);
-            eventTriggerController.UnsubscribeToTriggerEvent(EventTriggerType.PointerUp, OnPointerUp);
+            UnsubscribeFromInteractableEvents();
         }
 
         protected virtual void OnDestroy()
@@ -55,6 +42,18 @@ namespace PlanesRemake.Runtime.UI.CoreElements
         }
 
         #endregion
+
+        public void SetInteractable(bool isActive)
+        {
+            if(isActive && !isSubscribedToInteractableEvents)
+            {
+                SubscribeToInteractableEvents();
+            }
+            else if(!isActive && isSubscribedToInteractableEvents)
+            {
+                UnsubscribeFromInteractableEvents();
+            }
+        }
 
         protected virtual void CheckNeededComponents()
         {
@@ -119,6 +118,32 @@ namespace PlanesRemake.Runtime.UI.CoreElements
         protected virtual void OnPointerUp(BaseEventData baseEventData)
         {
 
+        }
+
+        private void SubscribeToInteractableEvents()
+        {
+            isSubscribedToInteractableEvents = true;
+            eventTriggerController.SubscribeToTiggerEvent(EventTriggerType.PointerEnter, OnPointerEnter);
+            eventTriggerController.SubscribeToTiggerEvent(EventTriggerType.PointerExit, OnPointerExit);
+            eventTriggerController.SubscribeToTiggerEvent(EventTriggerType.PointerClick, OnSubmit);
+            eventTriggerController.SubscribeToTiggerEvent(EventTriggerType.Submit, OnSubmit);
+            eventTriggerController.SubscribeToTiggerEvent(EventTriggerType.Select, OnSelect);
+            eventTriggerController.SubscribeToTiggerEvent(EventTriggerType.Deselect, OnDeselect);
+            eventTriggerController.SubscribeToTiggerEvent(EventTriggerType.PointerDown, OnPointerDown);
+            eventTriggerController.SubscribeToTiggerEvent(EventTriggerType.PointerUp, OnPointerUp);
+        }
+
+        private void UnsubscribeFromInteractableEvents()
+        {
+            isSubscribedToInteractableEvents = false;
+            eventTriggerController.UnsubscribeToTriggerEvent(EventTriggerType.PointerEnter, OnPointerEnter);
+            eventTriggerController.UnsubscribeToTriggerEvent(EventTriggerType.PointerExit, OnPointerExit);
+            eventTriggerController.UnsubscribeToTriggerEvent(EventTriggerType.PointerClick, OnSubmit);
+            eventTriggerController.UnsubscribeToTriggerEvent(EventTriggerType.Submit, OnSubmit);
+            eventTriggerController.UnsubscribeToTriggerEvent(EventTriggerType.Select, OnSelect);
+            eventTriggerController.UnsubscribeToTriggerEvent(EventTriggerType.Deselect, OnDeselect);
+            eventTriggerController.UnsubscribeToTriggerEvent(EventTriggerType.PointerDown, OnPointerDown);
+            eventTriggerController.UnsubscribeToTriggerEvent(EventTriggerType.PointerUp, OnPointerUp);
         }
     }
 }
