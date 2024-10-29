@@ -15,9 +15,6 @@ namespace PlanesRemake.Runtime.UiExternalAnimationModule
         [SerializeField]
         private RectTransform elementsContainer = null;
 
-        [SerializeField]
-        private Canvas canvas = null;
-
         [SerializeField, Min(0.01f)]
         private float animationDuration = 1f;
 
