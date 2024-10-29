@@ -4,23 +4,14 @@ namespace PlanesRemake.Runtime.Utils
     
     public static class CameraExtensions
     {
-        public struct Boundaries
+        public static CameraBoundaries GetScreenBoundariesInWorld(this Camera camera, Vector3 worldPosition)
         {
-            public float top;
-            public float bottom;
-            public float left;
-            public float right;
-            public Vector3 center;
-        }
-
-        public static Boundaries GetScreenBoundariesInWorld(this Camera camera, Vector3 worldPosition)
-        {
-            Boundaries boundaries = new Boundaries();
+            CameraBoundaries boundaries = new CameraBoundaries();
             float screenHeight = camera.pixelHeight;
             float screenWidth = camera.pixelWidth;
-            Vector3 aircraftToCameraVector = worldPosition - camera.transform.position;
+            Vector3 worldPositionToCameraVector = worldPosition - camera.transform.position;
 
-            float depthDistanceToCamera = aircraftToCameraVector.magnitude;
+            float depthDistanceToCamera = worldPositionToCameraVector.magnitude;
             boundaries.top = camera.ScreenToWorldPoint(new Vector3(screenWidth, screenHeight, depthDistanceToCamera)).y;
             boundaries.bottom = camera.ScreenToWorldPoint(new Vector3(0, 0, depthDistanceToCamera)).y;
             boundaries.left = camera.ScreenToWorldPoint(new Vector3(0, 0, depthDistanceToCamera)).x;
