@@ -35,7 +35,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -824, y: -253}
+  m_AnchoredPosition: {x: -1031, y: -332}
   m_SizeDelta: {x: 329.16867, y: 329.16867}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1827992392376551632
@@ -208,6 +208,10 @@ MonoBehaviour:
   joystickParent: {fileID: 1815432714152536521}
   joystickOuterCircle: {fileID: 6069397707660965438}
   joystickInnerCircle: {fileID: 7320001995878633624}
+  joystickOuterCircleImage: {fileID: 5559894452625668945}
+  joystickInnerCircleImage: {fileID: 5825571697983793099}
+  joystickTransparencyWhenInUse: 1
+  joystickTransparencyWhenInRest: 0.3
 --- !u!114 &1264865615315874032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,7 +226,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementsContainerParent: {fileID: 7908470765610282712}
   elementsContainer: {fileID: 1815432714152536521}
-  canvas: {fileID: 5966399330817677042}
   animationDuration: 0.5
   transitionAnimaitonCurve:
     serializedVersion: 2
