@@ -1,6 +1,7 @@
 namespace PlanesRemake.Runtime.UI.Views
 {
     using UnityEngine;
+    using UnityEngine.UI;
 
     public class TouchControlsView : BaseView
     {
@@ -12,6 +13,18 @@ namespace PlanesRemake.Runtime.UI.Views
 
         [SerializeField]
         private RectTransform joystickInnerCircle = null;
+
+        [SerializeField]
+        private Image joystickOuterCircleImage = null;
+
+        [SerializeField]
+        private Image joystickInnerCircleImage = null;
+
+        [SerializeField, Range(0, 1)]
+        private float joystickTransparencyWhenInUse = 1;
+
+        [SerializeField, Range(0, 1)]
+        private float joystickTransparencyWhenInRest = 0.3f;
         
         private Vector2 initialPosition = Vector2.zero;
         private Vector2 defaultJoystickPosition = Vector2.zero;
@@ -21,12 +34,14 @@ namespace PlanesRemake.Runtime.UI.Views
         protected void Start()
         {
             defaultJoystickPosition = joystickOuterCircle.anchoredPosition;
+            SetJoystickVisualsTransparency(joystickTransparencyWhenInRest);
         }
 
         #endregion
 
         public void OnInitialPositionUpdated(Vector2 position)
         {
+            SetJoystickVisualsTransparency(joystickTransparencyWhenInUse);
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 joystickParent, 
                 position, 
@@ -48,8 +63,29 @@ namespace PlanesRemake.Runtime.UI.Views
 
         public void OnEndPositionUpdated(Vector2 position)
         {
+            SetJoystickVisualsTransparency(joystickTransparencyWhenInRest);
             joystickOuterCircle.anchoredPosition = defaultJoystickPosition;
             joystickInnerCircle.anchoredPosition = Vector2.zero;
+        }
+
+        private void SetJoystickVisualsTransparency(float alpha)
+        {
+            float alphaClamped = Mathf.Clamp01(alpha);
+            
+            Color joystickOuterCircleColorUpdated = new Color(
+                joystickOuterCircleImage.color.r, 
+                joystickOuterCircleImage.color.g, 
+                joystickOuterCircleImage.color.b, 
+                alphaClamped);
+
+            Color joystickInnerCircleColorUpdated = new Color(
+                joystickInnerCircleImage.color.r,
+                joystickInnerCircleImage.color.g,
+                joystickInnerCircleImage.color.b,
+                alphaClamped);
+
+            joystickOuterCircleImage.color = joystickOuterCircleColorUpdated;
+            joystickInnerCircleImage.color = joystickInnerCircleColorUpdated;
         }
     }
 }
