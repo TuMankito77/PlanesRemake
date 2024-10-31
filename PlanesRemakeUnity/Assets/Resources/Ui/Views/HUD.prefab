@@ -561,7 +561,7 @@ GameObject:
   - component: {fileID: 1464389862671792428}
   - component: {fileID: 6734371890355474627}
   - component: {fileID: 3946539626003716656}
-  - component: {fileID: 227511405053676257}
+  - component: {fileID: 8354893740593311585}
   m_Layer: 5
   m_Name: HUD
   m_TagString: Untagged
@@ -678,7 +678,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coinsTextComponent: {fileID: 4668423752422001220}
   wallsTextComponent: {fileID: 8649528311842907594}
---- !u!114 &227511405053676257
+--- !u!114 &8354893740593311585
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -687,11 +687,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 5361133995867960236}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64f6906fa7271f84e892b4eebd3b04bf, type: 3}
+  m_Script: {fileID: 11500000, guid: 6ce06f2510ca8c448b1e00bf693bdfc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementsContainerParent: {fileID: 7908470765610282712}
-  elementsContainer: {fileID: 1815432714152536521}
   animationDuration: 0.5
   transitionAnimaitonCurve:
     serializedVersion: 2
@@ -744,8 +742,13 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  horizontalEntranceDirection: 1
-  verticalEntranceDirection: 0
+  rootContainer: {fileID: 7908470765610282712}
+  uiElementAnimConfigurations:
+  - rectTransform: {fileID: 1815432714152536521}
+    horizontalEntranceDirection: 1
+    verticalEntranceDirection: 0
+    startPosition: {x: 0, y: 0}
+    targetPosition: {x: 0, y: 0}
 --- !u!1 &5395811195340428101
 GameObject:
   m_ObjectHideFlags: 0
