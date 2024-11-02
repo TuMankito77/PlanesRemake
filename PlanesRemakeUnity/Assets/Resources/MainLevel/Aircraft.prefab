@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f9063a172dec5824f87a148932421f2d, type: 2}
+  - {fileID: 2100000, guid: 695ab620982e4d14d8148fe574168907, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -164,7 +164,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f9063a172dec5824f87a148932421f2d, type: 2}
+  - {fileID: 2100000, guid: 695ab620982e4d14d8148fe574168907, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -200,7 +200,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 10
   acceleration: 50
-  upwardTurnAngle: 30
   vfxAircraftCrashed: {fileID: 19821056, guid: 079954accd64b32419ec069129c81273, type: 3}
   meshRenderersToHideWhenCrashing:
   - {fileID: 4837489700874154162}
