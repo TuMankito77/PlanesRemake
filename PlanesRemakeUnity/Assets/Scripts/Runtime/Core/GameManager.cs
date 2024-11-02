@@ -93,7 +93,13 @@ namespace PlanesRemake.Runtime.Core
             mainLevelSystems = new List<BaseSystem>();
             mainLevelSystemsInitializer = new SystemsInitializer();
             CreateInputControllers();
+            contentLoader.LoadScene("MainMenu", LoadSceneMode.Additive, OnMainMenuSceneLoaded, true);
+        }
+
+        private void OnMainMenuSceneLoaded()
+        {
             uiManager.DisplayView(ViewIds.MAIN_MENU);
+            inputManager.EnableInput(uiManager);
         }
 
         private void CreateInputControllers()
@@ -112,7 +118,6 @@ namespace PlanesRemake.Runtime.Core
             };
 
             inputManager.AddInputController(inputControllers);
-            inputManager.EnableInput(uiManager);
         }
 
         private void HandleUiEvents(UiEvents uiEvent, object data)
@@ -125,6 +130,7 @@ namespace PlanesRemake.Runtime.Core
                             () =>
                             {
                                 uiManager.RemoveView(ViewIds.MAIN_MENU);
+                                contentLoader.UnloadScene("MainMenu", null);
                                 mainLevelSystems.Add(new LevelInitializer(contentLoader, audioManager));
                                 mainLevelSystemsInitializer.OnSystemsInitialized += OnMainLevelSystemsInitialized;
                                 mainLevelSystemsInitializer.InitializeSystems(mainLevelSystems);
@@ -203,6 +209,8 @@ namespace PlanesRemake.Runtime.Core
         private void OnMainLevelSystemsInitialized()
         {
             mainLevelSystemsInitializer.OnSystemsInitialized -= OnMainLevelSystemsInitialized;
+            playerInformation.coinsCollected = 0;
+            playerInformation.wallsEvaded = 0;
             currentLevelInitializer = mainLevelSystemsInitializer.GetSystem<LevelInitializer>();
             uiManager.DisplayView(ViewIds.HUD);
             inputManager.DisableInput(uiManager);
@@ -225,6 +233,7 @@ namespace PlanesRemake.Runtime.Core
             {
                 case GameplayEvents.OnWallcollision:
                     {
+                        storageAccessor.Save(playerInformation);
                         inputManager.DisableInput(currentLevelInitializer.Aircraft);
                         break;
                     }
@@ -247,7 +256,6 @@ namespace PlanesRemake.Runtime.Core
 
                 case GameplayEvents.OnAircraftDestroyed:
                     {
-                        storageAccessor.Save(playerInformation);
                         UnloadMainLevel();
                         break;
                     }
@@ -279,22 +287,8 @@ namespace PlanesRemake.Runtime.Core
             mainLevelSystems.Clear();
             mainLevelSystemsInitializer.Dispose();
 
-            contentLoader.UnloadScene("MainLevel",
-            () =>
-            {
-                ResetPlayerData();
-                uiManager.DisplayView(ViewIds.MAIN_MENU);
-                inputManager.EnableInput(uiManager);
-            });
-        }
-
-        private void ResetPlayerData()
-        {
-            playerInformation = new PlayerInformation(
-                sourceCoinsCollected: 0,
-                sourceWallsEvaded: 0,
-                sourceMusicVolumeSet: 1,
-                sourceVfxVolumeSet: 1);
+            contentLoader.LoadScene("MainMenu", LoadSceneMode.Additive, OnMainMenuSceneLoaded, true);
+            contentLoader.UnloadScene("MainLevel", null);
         }
 
         //NOTE: Make this function be part of a system so that other classes can access it.

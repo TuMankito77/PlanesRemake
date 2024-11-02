@@ -8,7 +8,7 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
     public class CoinSpawner : TimerSpawner
     {
         protected override Vector3 StartingPosition => GetRandomHeightPosition();
-        protected override Quaternion StartingRotation => Quaternion.identity;
+        protected override Quaternion StartingRotation => Quaternion.Euler(new Vector3(-15, -15, 0));
         protected override float SpawnDelayInSeconds => 5;
         protected override bool SpawnPrefabOnCreation => false;
 
