@@ -20,19 +20,18 @@
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
-        LOD 100
+        // Setup our pass to use Forward rendering, and only receive
+		// data on the main directional light and ambient light.
+		Tags
+		{
+			"RenderType"="Opaque"
+			"LightMode" = "UniversalForward"
+			"PassFlags" = "OnlyDirectional"
+		}
+		LOD 200
 
-        Pass
-        {
-            // Setup our pass to use Forward rendering, and only receive
-			// data on the main directional light and ambient light.
-			Tags
-			{
-				"LightMode" = "UniversalForward"
-				"PassFlags" = "OnlyDirectional"
-			}
-
+		Pass
+		{
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
@@ -136,7 +135,7 @@
 				return (light + _AmbientColor + specular + rim) * _Color * sample;
 			}
 			ENDCG
-        }
+		}
 
 		// Shadow casting support.
         UsePass "Legacy Shaders/VertexLit/SHADOWCASTER"
