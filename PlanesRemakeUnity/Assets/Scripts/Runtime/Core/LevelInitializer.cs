@@ -17,6 +17,8 @@ namespace PlanesRemake.Runtime.Core
         private const string OBSTACLE_PREFAB_PATH = "MainLevel/Obstacle";
         private const string COIN_PREFAB_PATH = "MainLevel/Coin";
         private const string COIN_VFX_PREFAB_PATH = "MainLevel/VFX_CoinCollected";
+        private const string BACKGROUND_RENDERING_CAMERA_PREFAB_PATH = "MainLevel/BackgroundRenderingCamera";
+        private const string ISOMETRIC_CAMERA_PREFAB_PATH = "MainLevel/IsometricCamera";
         private const int SPAWNER_POOL_SIZE = 10;
         private const int SPAWNER_POOL_MAX_CAPACITY = 100;
 
@@ -26,22 +28,27 @@ namespace PlanesRemake.Runtime.Core
         private ContentLoader contentLoader = null;
         private AudioManager audioManager = null;
         private Camera isometricCamera = null;
+        private Camera backgroundRenderingCamera = null;
+        private CameraStackingManager cameraStackingManager = null;
 
         public Aircraft Aircraft => aircraft;
 
-        public LevelInitializer(ContentLoader sourceContentLoader, AudioManager sourceAudioManager)
+        public LevelInitializer(ContentLoader sourceContentLoader, AudioManager sourceAudioManager, CameraStackingManager sourceCameraStackingManager)
         {
             spawners = new List<BaseSpawner>();
             contentLoader = sourceContentLoader;
             audioManager = sourceAudioManager;
-            //NOTE: Update this so that we do not look for this object by name, but rather by reference 
-            //as it could cause performance issues. 
-            isometricCamera = GameObject.Find("IsometricCamera").GetComponent<Camera>();
+            cameraStackingManager = sourceCameraStackingManager;
         }
 
         public override async Task<bool> Initialize(IEnumerable<BaseSystem> sourceDependencies)
         {
             await base.Initialize(sourceDependencies);
+            Camera isometricCameraPrefab = await contentLoader.LoadAsset<Camera>(ISOMETRIC_CAMERA_PREFAB_PATH);
+            isometricCamera = GameObject.Instantiate(isometricCameraPrefab);
+            Camera backgroundRenderingCameraPrefab = await contentLoader.LoadAsset<Camera>(BACKGROUND_RENDERING_CAMERA_PREFAB_PATH);
+            backgroundRenderingCamera = GameObject.Instantiate(backgroundRenderingCameraPrefab);
+            cameraStackingManager.AddCameraToStackAtBottom(isometricCamera, backgroundRenderingCamera);
 
             //To-do: Use the assets loaded here to grab the information about the players choice for the background and the aircraft chosen.
             GameObject skyDomeBackgroundPrefab = await contentLoader.LoadAsset<GameObject>(SPHERICAL_BACKGROUND_PREFAB_PATH);
@@ -81,6 +88,8 @@ namespace PlanesRemake.Runtime.Core
 
         public void Dispose()
         {
+            cameraStackingManager.RemoveCameraFromStack(isometricCamera, backgroundRenderingCamera);
+
             foreach (BaseSpawner spawner in spawners)
             {
                 spawner.Dispose();

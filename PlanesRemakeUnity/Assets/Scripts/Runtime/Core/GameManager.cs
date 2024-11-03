@@ -26,6 +26,7 @@ namespace PlanesRemake.Runtime.Core
         private UiManager uiManager = null;
         private AudioManager audioManager = null;
         private InputManager inputManager = null;
+        private CameraStackingManager cameraStackingManager = null;
         private LevelInitializer currentLevelInitializer = null;
         private PlayerInformation playerInformation = null;
         private StorageAccessor storageAccessor = null;
@@ -38,10 +39,12 @@ namespace PlanesRemake.Runtime.Core
             LoadPlayerData();
             
             baseSystems = new List<BaseSystem>();
+            baseSystems.Add(new CameraStackingManager());
             baseSystems.Add(new ContentLoader());
             baseSystems.Add(new UiManager()
                 .AddDependency<ContentLoader>()
-                .AddDependency<AudioManager>());
+                .AddDependency<AudioManager>()
+                .AddDependency<CameraStackingManager>());
             baseSystems.Add(
                 new AudioManager(playerInformation.musicVolumeSet, playerInformation.vfxVolumeSet)
                 .AddDependency<ContentLoader>());
@@ -90,6 +93,7 @@ namespace PlanesRemake.Runtime.Core
             contentLoader = systemsInitializer.GetSystem<ContentLoader>();
             uiManager = systemsInitializer.GetSystem<UiManager>();
             audioManager = systemsInitializer.GetSystem<AudioManager>();
+            cameraStackingManager = systemsInitializer.GetSystem<CameraStackingManager>();
             mainLevelSystems = new List<BaseSystem>();
             mainLevelSystemsInitializer = new SystemsInitializer();
             CreateInputControllers();
@@ -131,7 +135,7 @@ namespace PlanesRemake.Runtime.Core
                             {
                                 uiManager.RemoveView(ViewIds.MAIN_MENU);
                                 contentLoader.UnloadScene("MainMenu", null);
-                                mainLevelSystems.Add(new LevelInitializer(contentLoader, audioManager));
+                                mainLevelSystems.Add(new LevelInitializer(contentLoader, audioManager, cameraStackingManager));
                                 mainLevelSystemsInitializer.OnSystemsInitialized += OnMainLevelSystemsInitialized;
                                 mainLevelSystemsInitializer.InitializeSystems(mainLevelSystems);
                             });

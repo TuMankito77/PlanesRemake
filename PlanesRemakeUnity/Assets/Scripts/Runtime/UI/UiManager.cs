@@ -12,6 +12,7 @@ namespace PlanesRemake.Runtime.UI
     using PlanesRemake.Runtime.Sound;
     using PlanesRemake.Runtime.Utils;
     using UnityEngine.InputSystem.UI;
+    using UnityEngine.Rendering.Universal;
 
     public class UiManager : BaseSystem, IInputControlableEntity
     {
@@ -38,10 +39,11 @@ namespace PlanesRemake.Runtime.UI
 
             uiCamera = new GameObject("UI Camera").AddComponent<Camera>();
             uiCamera.cullingMask = viewsDatabase.ViewsLayerMask;
-            uiCamera.clearFlags = CameraClearFlags.Depth;
-            //Have a system that manages the order of derendering for the cameras
-            uiCamera.depth = 1;
+            uiCamera.clearFlags = CameraClearFlags.Nothing;
             uiCamera.gameObject.transform.SetParent(uiManagerGO.transform);
+            uiCamera.GetUniversalAdditionalCameraData().renderType = CameraRenderType.Overlay;
+            CameraStackingManager cameraStackingManager = GetDependency<CameraStackingManager>();
+            cameraStackingManager.AddCameraToStackAtTop(uiCamera);
 
             GameObject eventSystem = new GameObject("Event System");
             eventSystem.AddComponent<InputSystemUIInputModule>();
