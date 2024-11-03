@@ -176,7 +176,7 @@ GameObject:
   - component: {fileID: 1670202785941257696}
   - component: {fileID: 1682954563887635614}
   - component: {fileID: 2374899312946193876}
-  - component: {fileID: 7645993034545149462}
+  - component: {fileID: 1117991329879162980}
   - component: {fileID: 1288325031834804135}
   m_Layer: 6
   m_Name: UpperWall
@@ -195,7 +195,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 19.25, z: 0}
-  m_LocalScale: {x: 1, y: 30, z: 15}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2130976257302477829}
@@ -207,7 +207,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7010725416938768391}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 4493585093827132993, guid: 0c8fc44282f59424ca569c0e720d3745, type: 3}
 --- !u!23 &2374899312946193876
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -229,6 +229,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 790b824f641a4a844bfaccc649f92e6c, type: 2}
+  - {fileID: 2100000, guid: fb569fcd9d348ca46be8744d65b2d930, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -250,7 +251,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &7645993034545149462
+--- !u!65 &1117991329879162980
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -269,7 +270,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 1, y: 30, z: 15}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1288325031834804135
 MonoBehaviour:
@@ -294,8 +295,8 @@ GameObject:
   - component: {fileID: 583953154766099471}
   - component: {fileID: 4247561371291120931}
   - component: {fileID: 6182987910311749924}
-  - component: {fileID: 8395953249555696161}
   - component: {fileID: 608134231311969663}
+  - component: {fileID: 6397989591090464632}
   m_Layer: 6
   m_Name: LowerWall
   m_TagString: Untagged
@@ -313,7 +314,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -19.25, z: 0}
-  m_LocalScale: {x: 1, y: 30, z: 15}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2130976257302477829}
@@ -325,7 +326,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8063343317297158122}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 4493585093827132993, guid: 0c8fc44282f59424ca569c0e720d3745, type: 3}
 --- !u!23 &6182987910311749924
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -347,6 +348,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 790b824f641a4a844bfaccc649f92e6c, type: 2}
+  - {fileID: 2100000, guid: fb569fcd9d348ca46be8744d65b2d930, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -368,7 +370,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8395953249555696161
+--- !u!114 &608134231311969663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8063343317297158122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77b88eb86bf9eae4586e9361f6004029, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &6397989591090464632
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -387,17 +401,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 1, y: 30, z: 15}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &608134231311969663
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8063343317297158122}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77b88eb86bf9eae4586e9361f6004029, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
