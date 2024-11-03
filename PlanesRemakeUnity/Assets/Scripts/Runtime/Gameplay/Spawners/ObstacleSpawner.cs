@@ -9,7 +9,7 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
         protected override Vector3 StartingPosition => 
             new Vector3(boundaries.right, boundaries.center.y, 0);
         protected override Quaternion StartingRotation =>
-            Quaternion.Euler(new Vector3(-15, -15, 0));
+            Quaternion.Euler(new Vector3(-15, 15, 0));
         protected override float SpawnDelayInSeconds => GetRandomSpawningTime();
         protected override bool SpawnPrefabOnCreation => true;
 

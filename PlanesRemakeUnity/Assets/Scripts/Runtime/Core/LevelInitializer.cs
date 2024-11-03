@@ -64,7 +64,7 @@ namespace PlanesRemake.Runtime.Core
             };
             
             Aircraft aircraftPrefab = await contentLoader.LoadAsset<Aircraft>(AIRCRAFT_PREFAB_PATH);
-            aircraft = GameObject.Instantiate(aircraftPrefab, Vector3.zero, Quaternion.Euler(0, 115, -25));
+            aircraft = GameObject.Instantiate(aircraftPrefab, Vector3.zero, Quaternion.Euler(15, 105, 0));
             aircraft.Initialize(isometricCamera, aircraftCameraBoundariesOffset, audioManager);
 
             //TO-DO: Move this to a scriptable object so that it can be configured from Unity rather than in code.
