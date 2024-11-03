@@ -1,8 +1,8 @@
 ﻿﻿Shader "Roystan/ToonShader"
 {
 	Properties
-	{
-		_Color("Color", Color) = (1,1,1,1)
+    {
+        _Color("Color", Color) = (1,1,1,1)
 		_MainTex("Main Texture", 2D) = "white" {}
 		// Ambient light is applied uniformly to all surfaces on the object.
 		[HDR]
@@ -16,17 +16,20 @@
 		_RimAmount("Rim Amount", Range(0, 1)) = 0.716
 		// Control how smoothly the rim blends when approaching unlit
 		// parts of the surface.
-		_RimThreshold("Rim Threshold", Range(0, 1)) = 0.1		
-	}
-	SubShader
-	{
-		Pass
-		{
-			// Setup our pass to use Forward rendering, and only receive
+		_RimThreshold("Rim Threshold", Range(0, 1)) = 0.1	
+    }
+    SubShader
+    {
+        Tags { "RenderType"="Opaque" }
+        LOD 100
+
+        Pass
+        {
+            // Setup our pass to use Forward rendering, and only receive
 			// data on the main directional light and ambient light.
 			Tags
 			{
-				"LightMode" = "ForwardBase"
+				"LightMode" = "UniversalForward"
 				"PassFlags" = "OnlyDirectional"
 			}
 
@@ -133,7 +136,7 @@
 				return (light + _AmbientColor + specular + rim) * _Color * sample;
 			}
 			ENDCG
-		}
+        }
 
 		// Shadow casting support.
         UsePass "Legacy Shaders/VertexLit/SHADOWCASTER"
