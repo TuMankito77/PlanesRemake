@@ -1,29 +1,98 @@
 namespace PlanesRemake.Runtime.Gameplay
 {
+    using System;
+    
     using UnityEngine;
 
-    public class RotatingBackground : MonoBehaviour
+    using PlanesRemake.Runtime.Events;
+    using PlanesRemake.Runtime.Gameplay.CommonBehaviors;
+    using PlanesRemake.Runtime.Utils;
+
+    public class RotatingBackground : MonoBehaviour, IListener
     {
-        [SerializeField, Min(0)]
-        private float rotatingSpeed = 2;
-
         [SerializeField]
-        private bool turnRight = false;
-
-        private int direction = 1;
+        private DirectionalSpinning directionSpinning = null;
 
         #region Unity Methods
 
         private void Start()
         {
-            direction = turnRight ? 1 : -1;
+            EventDispatcher.Instance.AddListener(this, typeof(UiEvents), typeof(GameplayEvents));
         }
 
-        void Update()
+        private void OnDestroy()
         {
-            transform.Rotate(Vector3.up, Time.deltaTime * rotatingSpeed * direction);        
+            EventDispatcher.Instance.RemoveListener(this, typeof(UiEvents), typeof(GameplayEvents));
         }
 
         #endregion
+
+        #region IListener
+
+        public void HandleEvent(IComparable eventName, object data)
+        {
+            switch(eventName)
+            {
+                case UiEvents uiEvent:
+                    {
+                        HandleUiEvents(uiEvent);
+                        break;
+                    }
+
+                case GameplayEvents gameplayEvent:
+                    {
+                        HandleGameplayEvents(gameplayEvent);
+                        break;
+                    }
+
+                default:
+                    {
+                        LoggerUtil.LogError($"{GetType()} - The event {eventName} is not handled by this class. You may need to unsubscribe.");
+                        break;
+                    }
+            }
+        }
+
+        #endregion
+
+        private void HandleUiEvents(UiEvents uiEvent)
+        {
+            switch(uiEvent)
+            {
+                case UiEvents.OnPauseButtonPressed:
+                    {
+                        directionSpinning.enabled = false;
+                        break;
+                    }
+
+                case UiEvents.OnUnpauseButtonPressed:
+                    {
+                        directionSpinning.enabled = true;
+                        break;
+                    }
+
+                default:
+                    {
+                        break;
+                    }
+            }
+        }
+
+        private void HandleGameplayEvents(GameplayEvents gameplayEvent)
+        {
+            switch(gameplayEvent)
+            {
+                case GameplayEvents.OnWallcollision:
+                    {
+                        directionSpinning.enabled = false;
+                        break;
+                    }
+
+                default:
+                    {
+                        break;
+                    }
+            }
+        }
     }
 }
