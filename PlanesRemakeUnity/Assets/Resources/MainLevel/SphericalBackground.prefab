@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1347355835574739738}
   - component: {fileID: 4719034201301718481}
+  - component: {fileID: 3985578775386443777}
   m_Layer: 3
   m_Name: SphericalBackground
   m_TagString: Untagged
@@ -46,8 +47,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d60ceb7dbd3f9d6428f1da33a1ea5375, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotatingSpeed: 1
-  turnRight: 0
+  directionSpinning: {fileID: 3985578775386443777}
+--- !u!114 &3985578775386443777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3295882251324519786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fda732b921f39d640828ff709ffcd966, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spinningSpeed: 1
+  rotatingDirection: {x: 0, y: -1, z: 0}
 --- !u!1001 &7641960933382669719
 PrefabInstance:
   m_ObjectHideFlags: 0
