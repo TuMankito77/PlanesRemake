@@ -9,6 +9,8 @@ namespace PlanesRemake.Runtime.Core
     using PlanesRemake.Runtime.Sound;
     using System.Threading.Tasks;
     using PlanesRemake.Runtime.Utils;
+    using PlanesRemake.Runtime.UI;
+    using PlanesRemake.Runtime.UI.Views;
 
     public class LevelInitializer : BaseSystem
     {
@@ -17,6 +19,7 @@ namespace PlanesRemake.Runtime.Core
         private const string OBSTACLE_PREFAB_PATH = "MainLevel/Obstacle";
         private const string COIN_PREFAB_PATH = "MainLevel/Coin";
         private const string COIN_VFX_PREFAB_PATH = "MainLevel/VFX_CoinCollected";
+        private const string FUEL_PREFAB_PATH = "MainLevel/Fuel";
         private const string BACKGROUND_RENDERING_CAMERA_PREFAB_PATH = "MainLevel/BackgroundRenderingCamera";
         private const string ISOMETRIC_CAMERA_PREFAB_PATH = "MainLevel/IsometricCamera";
         private const int SPAWNER_POOL_SIZE = 10;
@@ -25,6 +28,7 @@ namespace PlanesRemake.Runtime.Core
         private GameObject skyDomeBackground = null;
         private List<BaseSpawner> spawners = null;
         private Aircraft aircraft = null;
+        private UiManager uiManager = null;
         private ContentLoader contentLoader = null;
         private AudioManager audioManager = null;
         private Camera isometricCamera = null;
@@ -33,9 +37,10 @@ namespace PlanesRemake.Runtime.Core
 
         public Aircraft Aircraft => aircraft;
 
-        public LevelInitializer(ContentLoader sourceContentLoader, AudioManager sourceAudioManager, CameraStackingManager sourceCameraStackingManager)
+        public LevelInitializer(UiManager sourceUiManager, ContentLoader sourceContentLoader, AudioManager sourceAudioManager, CameraStackingManager sourceCameraStackingManager)
         {
             spawners = new List<BaseSpawner>();
+            uiManager = sourceUiManager;
             contentLoader = sourceContentLoader;
             audioManager = sourceAudioManager;
             cameraStackingManager = sourceCameraStackingManager;
@@ -44,6 +49,7 @@ namespace PlanesRemake.Runtime.Core
         public override async Task<bool> Initialize(IEnumerable<BaseSystem> sourceDependencies)
         {
             await base.Initialize(sourceDependencies);
+            uiManager.DisplayView(ViewIds.HUD);
             Camera isometricCameraPrefab = await contentLoader.LoadAsset<Camera>(ISOMETRIC_CAMERA_PREFAB_PATH);
             isometricCamera = GameObject.Instantiate(isometricCameraPrefab);
             Camera backgroundRenderingCameraPrefab = await contentLoader.LoadAsset<Camera>(BACKGROUND_RENDERING_CAMERA_PREFAB_PATH);
@@ -65,7 +71,7 @@ namespace PlanesRemake.Runtime.Core
             
             Aircraft aircraftPrefab = await contentLoader.LoadAsset<Aircraft>(AIRCRAFT_PREFAB_PATH);
             aircraft = GameObject.Instantiate(aircraftPrefab, Vector3.zero, Quaternion.Euler(15, 105, 0));
-            aircraft.Initialize(isometricCamera, aircraftCameraBoundariesOffset, audioManager);
+            aircraft.Initialize(isometricCamera, aircraftCameraBoundariesOffset, audioManager, fuelDuration: 50);
 
             //TO-DO: Move this to a scriptable object so that it can be configured from Unity rather than in code.
             CameraBoundaries cameraBoundariesOffset = new CameraBoundaries()
@@ -80,7 +86,25 @@ namespace PlanesRemake.Runtime.Core
             Obstacle obstaclePrefab = await contentLoader.LoadAsset<Obstacle>(OBSTACLE_PREFAB_PATH);
             spawners.Add(new ObstacleSpawner(obstaclePrefab, SPAWNER_POOL_SIZE, SPAWNER_POOL_MAX_CAPACITY, isometricCamera, cameraBoundariesOffset));
             Coin coinPrefab = await contentLoader.LoadAsset<Coin>(COIN_PREFAB_PATH);
-            spawners.Add(new CoinSpawner(coinPrefab, SPAWNER_POOL_SIZE, SPAWNER_POOL_MAX_CAPACITY, isometricCamera, audioManager, cameraBoundariesOffset));
+            spawners.Add(new PickUpSpawner(
+                coinPrefab, 
+                SPAWNER_POOL_SIZE, 
+                SPAWNER_POOL_MAX_CAPACITY, 
+                isometricCamera, 
+                audioManager, 
+                cameraBoundariesOffset,
+                sourceMinSpawningTime: 1,
+                sourceMaxSpawningTime: 5));
+            Fuel fuelPrefab = await contentLoader.LoadAsset<Fuel>(FUEL_PREFAB_PATH);
+            spawners.Add(new PickUpSpawner(
+                fuelPrefab, 
+                SPAWNER_POOL_SIZE, 
+                SPAWNER_POOL_MAX_CAPACITY, 
+                isometricCamera, 
+                audioManager, 
+                cameraBoundariesOffset,
+                sourceMinSpawningTime: 30,
+                sourceMaxSpawningTime: 41));
             TimerPoolableObject timerPoolableObjectPrefab = await contentLoader.LoadAsset<TimerPoolableObject>(COIN_VFX_PREFAB_PATH);
             spawners.Add(new CoinParticleSpawner(timerPoolableObjectPrefab, SPAWNER_POOL_SIZE, SPAWNER_POOL_MAX_CAPACITY));
             return true;
@@ -88,6 +112,7 @@ namespace PlanesRemake.Runtime.Core
 
         public void Dispose()
         {
+            uiManager.RemoveView(ViewIds.HUD);
             cameraStackingManager.RemoveCameraFromStack(isometricCamera, backgroundRenderingCamera);
 
             foreach (BaseSpawner spawner in spawners)

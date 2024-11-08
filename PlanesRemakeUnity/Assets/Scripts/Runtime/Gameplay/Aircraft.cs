@@ -37,6 +37,7 @@ namespace PlanesRemake.Runtime.Gameplay
         private AudioManager audioManager = null;
         private float horizontalSpeed = 0;
         private float verticalSpeed = 0;
+        private bool isFuelEmpty = false;
         //NOTE: Remove this timer once we have an animation an we know when the destroy animation finishes.
         private Timer timer = null;
 
@@ -44,9 +45,12 @@ namespace PlanesRemake.Runtime.Gameplay
 
         private void Update()
         {
-            Vector3 currentVelocity = CalculateVelocity();
-            UpdateAnimation(currentVelocity);
-            UpdatePosition(currentVelocity);
+            if(!isFuelEmpty)
+            {
+                Vector3 currentVelocity = CalculateVelocity();
+                UpdateAnimation(currentVelocity);
+                UpdatePosition(currentVelocity);
+            }
         }
 
         private void OnEnable()
@@ -89,13 +93,14 @@ namespace PlanesRemake.Runtime.Gameplay
 
         #endregion
 
-        public void Initialize(Camera sourceIsometricCamera, CameraBoundaries cameraBoundariesOffset, AudioManager sourceAudioManager)
+        public void Initialize(Camera sourceIsometricCamera, CameraBoundaries cameraBoundariesOffset, AudioManager sourceAudioManager, float fuelDuration)
         {
             boundaries = sourceIsometricCamera.GetScreenBoundariesInWorld(transform.position);
             boundaries.AddOffset(cameraBoundariesOffset);
             audioManager = sourceAudioManager;
             audioManager.PlayLoopingClip(GetInstanceID(), ClipIds.AIRCRAFT_ENGINE_CLIP, transform, true);
             transform.position = boundaries.center;
+            EventDispatcher.Instance.Dispatch(UiEvents.OnSetFuelTimerDuration, fuelDuration);
         }
 
         public void UpdateDirection(Vector2 sourceDirection)
@@ -165,6 +170,23 @@ namespace PlanesRemake.Runtime.Gameplay
                         }
 
                         DestroyAircraft();
+                        break;
+                    }
+
+                case GameplayEvents.OnFuelCollected:
+                    {
+                        isFuelEmpty = false;
+                        break;
+                    }
+
+                case GameplayEvents.OnFuelEmpty:
+                    {
+                        isFuelEmpty = true;
+                        break;
+                    }
+
+                default:
+                    {
                         break;
                     }
             }

@@ -130,12 +130,13 @@ namespace PlanesRemake.Runtime.Core
             {
                 case UiEvents.OnPlayButtonPressed:
                     {
+                        inputManager.DisableInput(uiManager);
                         contentLoader.LoadScene("MainLevel", LoadSceneMode.Additive,
                             () =>
                             {
                                 uiManager.RemoveView(ViewIds.MAIN_MENU);
                                 contentLoader.UnloadScene("MainMenu", null);
-                                mainLevelSystems.Add(new LevelInitializer(contentLoader, audioManager, cameraStackingManager));
+                                mainLevelSystems.Add(new LevelInitializer(uiManager, contentLoader, audioManager, cameraStackingManager));
                                 mainLevelSystemsInitializer.OnSystemsInitialized += OnMainLevelSystemsInitialized;
                                 mainLevelSystemsInitializer.InitializeSystems(mainLevelSystems);
                             });
@@ -216,8 +217,6 @@ namespace PlanesRemake.Runtime.Core
             playerInformation.coinsCollected = 0;
             playerInformation.wallsEvaded = 0;
             currentLevelInitializer = mainLevelSystemsInitializer.GetSystem<LevelInitializer>();
-            uiManager.DisplayView(ViewIds.HUD);
-            inputManager.DisableInput(uiManager);
             audioManager.PlayBackgroundMusic(ClipIds.MUSIC_CLIP);
             inputManager.EnableInput(currentLevelInitializer.Aircraft);
             GameplayController gameplayContoller = inputManager.GetInputController(currentLevelInitializer.Aircraft) as GameplayController;
@@ -285,7 +284,6 @@ namespace PlanesRemake.Runtime.Core
             }
 
             audioManager.StopAllLoopingClips();
-            uiManager.RemoveView(ViewIds.HUD);
             currentLevelInitializer.Dispose();
             currentLevelInitializer = null;
             mainLevelSystems.Clear();

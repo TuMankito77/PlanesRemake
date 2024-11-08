@@ -60,6 +60,13 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
                         SpawnParticles(coin.transform.position);
                         break;
                     }
+
+                case GameplayEvents.OnFuelCollected:
+                    {
+                        Fuel fuel = data as Fuel;
+                        SpawnParticles(fuel.transform.position);
+                        break;
+                    }
             }
         }
     }

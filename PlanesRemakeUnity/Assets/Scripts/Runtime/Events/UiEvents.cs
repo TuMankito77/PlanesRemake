@@ -11,6 +11,7 @@ namespace PlanesRemake.Runtime.Events
         OnUnpauseButtonPressed,
         OnMainMenuButtonPressed,
         OnMusicVolumeSliderUpdated,
-        OnVfxVolumeSliderUpdated
+        OnVfxVolumeSliderUpdated,
+        OnSetFuelTimerDuration
     }
 }

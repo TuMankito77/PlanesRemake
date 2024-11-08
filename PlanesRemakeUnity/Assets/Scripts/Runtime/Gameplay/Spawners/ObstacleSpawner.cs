@@ -25,12 +25,12 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
             Obstacle obstacle = instance as Obstacle;
             int osilatingSpeed = Random.Range(5, 11);
             float osilationDistance = Random.Range(1, boundaries.top);
-            obstacle.Initialize(Aircraft.AIRCRAFT_TAG, prefabInstancesPool, boundaries, 1, osilatingSpeed, osilationDistance);
+            obstacle.Initialize(Aircraft.AIRCRAFT_TAG, prefabInstancesPool, boundaries, movementSpeed: 3, osilatingSpeed, osilationDistance);
         }
 
         private int GetRandomSpawningTime()
         {
-            return Random.Range(15 , 26);
+            return Random.Range(5 , 8);
         }
     }
 }
