@@ -102,7 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac3a332052291a442b0d259e7f3776c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocityVector: {x: -1, y: 0, z: 0}
+  velocityVector: {x: -3, y: 0, z: 0}
 --- !u!114 &-6426306679631353247
 MonoBehaviour:
   m_ObjectHideFlags: 0
