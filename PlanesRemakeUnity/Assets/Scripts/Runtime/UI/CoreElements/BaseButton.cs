@@ -20,7 +20,7 @@ namespace PlanesRemake.Runtime.UI.CoreElements
         protected override void OnEnable()
         {
             base.OnEnable();
-            button.onClick.AddListener(OnButtonPressed);
+            onSubmit += OnButtonPressed;
         }
 
         protected override void OnDisable()
@@ -31,10 +31,6 @@ namespace PlanesRemake.Runtime.UI.CoreElements
             {
                 buttonAniator.OnSubmitAnimationCompleted -= onButtonPressed;
             }
-            else
-            {
-                button.onClick.RemoveListener(OnButtonPressed);
-            }
         }
 
         #endregion
@@ -42,7 +38,7 @@ namespace PlanesRemake.Runtime.UI.CoreElements
         public void SetAnimationExternalModule(ISeletableElementAnimator sourceButtonAnimator)
         {
             buttonAniator = sourceButtonAnimator;
-            button.onClick.RemoveListener(OnButtonPressed);
+            onSubmit -= OnButtonPressed;
             buttonAniator.OnSubmitAnimationCompleted += OnButtonPressed;
         }
 
@@ -50,13 +46,6 @@ namespace PlanesRemake.Runtime.UI.CoreElements
         {
             base.CheckNeededComponents();
             AddComponentIfNotFound(ref button);
-        }
-
-        protected override void OnSubmit(BaseEventData baseEventData)
-        {
-            base.OnSubmit(baseEventData);
-            //NOTE: Buttons stay on the selected state for some reason, and we are deselecting them as soon as it happens
-            button.OnDeselect(baseEventData);
         }
 
         protected override void OnPointerExit(BaseEventData baseEventData)

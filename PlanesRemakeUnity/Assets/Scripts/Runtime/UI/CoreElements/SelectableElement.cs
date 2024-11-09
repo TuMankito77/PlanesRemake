@@ -15,7 +15,6 @@ namespace PlanesRemake.Runtime.UI.CoreElements
         private EventTrigger eventTrigger = null;
 
         protected EventTriggerController eventTriggerController = null;
-        private bool isSelected = false;
         private bool isSubscribedToInteractableEvents = false;
 
         #region Unity Methods
@@ -79,35 +78,32 @@ namespace PlanesRemake.Runtime.UI.CoreElements
 
         protected virtual void OnPointerEnter(BaseEventData baseEventData)
         {
-            eventTrigger.OnSelect(baseEventData);
+            baseEventData.selectedObject = this.gameObject;
         }
 
         protected virtual void OnPointerExit(BaseEventData baseEventData)
         {
-            eventTrigger.OnDeselect(baseEventData);
+            baseEventData.selectedObject = null;
         }
 
         protected virtual void OnSubmit(BaseEventData baseEventData)
         {
-            onSubmit?.Invoke();
+            if(baseEventData.selectedObject == this.gameObject)
+            {
+                onSubmit?.Invoke();
+            }
+
+            baseEventData.selectedObject = null;
         }
 
         protected virtual void OnSelect(BaseEventData baseEventData)
         {
-            if(!isSelected)
-            {
-                isSelected = true;
-                onSelect?.Invoke();
-            }    
+            onSelect?.Invoke();
         }
 
         protected virtual void OnDeselect(BaseEventData baseEventData)
         {
-            if(isSelected)
-            {
-                isSelected = false;
-                onDeselect?.Invoke();
-            }
+            onDeselect?.Invoke();
         }
 
         protected virtual void OnPointerDown(BaseEventData baseEventData)
