@@ -27,6 +27,9 @@ namespace PlanesRemake.Runtime.Gameplay
         private ParticleSystem vfxAircraftCrashed = null;
 
         [SerializeField]
+        private ParticleSystem[] vfxTrails = new ParticleSystem[0];
+
+        [SerializeField]
         private MeshRenderer[] meshRenderersToHideWhenCrashing = null;
 
         [SerializeField]
@@ -140,6 +143,11 @@ namespace PlanesRemake.Runtime.Gameplay
             foreach (MeshRenderer meshRenderer in meshRenderersToHideWhenCrashing)
             {
                 meshRenderer.enabled = false;
+            }
+
+            foreach (ParticleSystem vfxTrail in vfxTrails)
+            {
+                vfxTrail.Stop();
             }
 
             audioManager.PlayGameplayClip(ClipIds.AIRCRAFT_EXPLOSION_CLIP);
