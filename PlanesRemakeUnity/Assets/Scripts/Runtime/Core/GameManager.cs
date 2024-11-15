@@ -97,11 +97,12 @@ namespace PlanesRemake.Runtime.Core
             mainLevelSystems = new List<BaseSystem>();
             mainLevelSystemsInitializer = new SystemsInitializer();
             CreateInputControllers();
-            contentLoader.LoadScene("MainMenu", LoadSceneMode.Additive, OnMainMenuSceneLoaded, true);
+            ShowMainMenuElements();
         }
 
-        private void OnMainMenuSceneLoaded()
+        private void ShowMainMenuElements()
         {
+            uiManager.DisplayView(ViewIds.AIRCRAFT_SHOWCASE);
             uiManager.DisplayView(ViewIds.MAIN_MENU);
             inputManager.EnableInput(uiManager);
         }
@@ -134,8 +135,8 @@ namespace PlanesRemake.Runtime.Core
                         contentLoader.LoadScene("MainLevel", LoadSceneMode.Additive,
                             () =>
                             {
+                                uiManager.RemoveView(ViewIds.AIRCRAFT_SHOWCASE);
                                 uiManager.RemoveView(ViewIds.MAIN_MENU);
-                                contentLoader.UnloadScene("MainMenu", null);
                                 mainLevelSystems.Add(new LevelInitializer(uiManager, contentLoader, audioManager, cameraStackingManager));
                                 mainLevelSystemsInitializer.OnSystemsInitialized += OnMainLevelSystemsInitialized;
                                 mainLevelSystemsInitializer.InitializeSystems(mainLevelSystems);
@@ -288,9 +289,8 @@ namespace PlanesRemake.Runtime.Core
             currentLevelInitializer = null;
             mainLevelSystems.Clear();
             mainLevelSystemsInitializer.Dispose();
-
-            contentLoader.LoadScene("MainMenu", LoadSceneMode.Additive, OnMainMenuSceneLoaded, true);
             contentLoader.UnloadScene("MainLevel", null);
+            ShowMainMenuElements();
         }
 
         //NOTE: Make this function be part of a system so that other classes can access it.

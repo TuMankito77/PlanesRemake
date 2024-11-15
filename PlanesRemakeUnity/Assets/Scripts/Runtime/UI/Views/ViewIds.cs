@@ -9,6 +9,7 @@ namespace PlanesRemake.Runtime.UI.Views
 		public const string PAUSE_MENU = "PauseMenu";
 		public const string TOUCH_CONTROLS = "TouchControls";
 		public const string OPTIONS_MENU = "OptionsMenu";
+		public const string AIRCRAFT_SHOWCASE = "AircraftShowcase";
 	}
 }
 

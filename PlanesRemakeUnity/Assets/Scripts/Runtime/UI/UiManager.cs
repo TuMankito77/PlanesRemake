@@ -108,7 +108,7 @@ namespace PlanesRemake.Runtime.UI
         public void RemoveTopStackView()
         {
             //We make sure that there will always be at least one view opened.
-            if(viewsOpened.Count <= 1)
+            if(viewsOpened[viewsOpened.Count - 1].GetType() == typeof(MainMenuView))
             {
                 return;
             }
