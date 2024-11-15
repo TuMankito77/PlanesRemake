@@ -23,6 +23,8 @@ MonoBehaviour:
     file: {fileID: 4680101471839379955, guid: 687216a49c2a124439102dcadac8ce9a, type: 3}
   - id: OptionsMenu
     file: {fileID: 7894646632574403767, guid: c77426813dacbfb40a93375eab07a6c8, type: 3}
+  - id: AircraftShowcase
+    file: {fileID: 1604106085961109954, guid: ad2d43ac688616c4f8404f7939bbb157, type: 3}
   viewsLayerMask:
     serializedVersion: 2
     m_Bits: 32
