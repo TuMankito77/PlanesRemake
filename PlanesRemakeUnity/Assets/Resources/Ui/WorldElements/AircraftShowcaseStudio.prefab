@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 436252934854285560}
   m_Layer: 0
-  m_Name: AircraftPlace
+  m_Name: AircraftPlacement
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -392,6 +392,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4082960986124155173}
+  - component: {fileID: 4115576100983235222}
   m_Layer: 0
   m_Name: AircraftShowcaseStudio
   m_TagString: Untagged
@@ -419,6 +420,19 @@ Transform:
   - {fileID: 6778064095376582022}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4115576100983235222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8847387719482863072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1db293800c8a66e4288c1fc3a9dba4fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aircraftPlacement: {fileID: 436252934854285560}
 --- !u!1001 &466709129005773203
 PrefabInstance:
   m_ObjectHideFlags: 0
