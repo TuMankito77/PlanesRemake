@@ -54,8 +54,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 742fca30019617145965dc5ac099d22c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aircraftStudioShowcasePrefab: {fileID: 8847387719482863072, guid: 7afcf06f5d2d2854e85407becf098482,
+  aircraftShowcaseStudioPrefab: {fileID: 4115576100983235222, guid: 7afcf06f5d2d2854e85407becf098482,
     type: 3}
+  aircraftDatabase: {fileID: 11400000, guid: 219c80f9327f5e541bfcdf084a8df572, type: 2}
 --- !u!114 &1417453276043495833
 MonoBehaviour:
   m_ObjectHideFlags: 0

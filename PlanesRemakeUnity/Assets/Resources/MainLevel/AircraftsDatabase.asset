@@ -17,6 +17,6 @@ MonoBehaviour:
     file:
       aircraftPrefab: {fileID: 23568146648127300, guid: 6bb35f431bd4f2342b5f3f6db13e128f,
         type: 3}
-      shocaseAircraftPrefab: {fileID: 1639305033056109428, guid: 39aa34a022d793a4e879d1209a6e5012,
+      showcaseAircraftPrefab: {fileID: 1639305033056109428, guid: 39aa34a022d793a4e879d1209a6e5012,
         type: 3}
-      price: 0
+      price: 1
