@@ -49,7 +49,7 @@ namespace PlanesRemake.Runtime.Core
         public override async Task<bool> Initialize(IEnumerable<BaseSystem> sourceDependencies)
         {
             await base.Initialize(sourceDependencies);
-            uiManager.DisplayView(ViewIds.HUD);
+            uiManager.DisplayView(ViewIds.HUD, disableCurrentInteractableGroup: true);
             Camera isometricCameraPrefab = await contentLoader.LoadAsset<Camera>(ISOMETRIC_CAMERA_PREFAB_PATH);
             isometricCamera = GameObject.Instantiate(isometricCameraPrefab);
             Camera backgroundRenderingCameraPrefab = await contentLoader.LoadAsset<Camera>(BACKGROUND_RENDERING_CAMERA_PREFAB_PATH);

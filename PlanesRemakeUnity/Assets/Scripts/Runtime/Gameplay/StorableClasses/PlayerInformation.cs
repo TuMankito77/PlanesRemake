@@ -30,6 +30,9 @@ namespace PlanesRemake.Runtime.Gameplay.StorableClasses
         [JsonProperty]
         public float vfxVolumeSet = 1;
 
+        [JsonProperty]
+        public string aircraftSelected = AircraftIds.PLANE;
+
         public PlayerInformation(int sourceCoinsCollected, int sourceWallsEvaded, float sourceMusicVolumeSet, float sourceVfxVolumeSet)
         {
             coinsCollected = sourceCoinsCollected;

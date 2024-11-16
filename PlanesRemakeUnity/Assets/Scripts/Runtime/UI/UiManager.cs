@@ -21,6 +21,7 @@ namespace PlanesRemake.Runtime.UI
         private Camera uiCamera = null;
         private List<BaseView> viewsOpened = null;
         private AudioManager audioManager = null;
+        private int currentInteractbleGroupId = 0;
 
         //To-do: Create a request class that will be sent through an event in order to request a view.
         public override async Task<bool> Initialize(IEnumerable<BaseSystem> sourceDependencies)
@@ -52,12 +53,25 @@ namespace PlanesRemake.Runtime.UI
             return true;
         }
 
-        public BaseView DisplayView(string viewId)
+        public BaseView DisplayView(string viewId, bool disableCurrentInteractableGroup)
         {
-            if(viewsOpened.Count > 0)
+            if(disableCurrentInteractableGroup)
             {
-                CurrentViewDisplayed().SetInteractable(false);
+                for(int i = viewsOpened.Count - 1; i >= 0; i--)
+                {
+                    BaseView view = viewsOpened[i];
+                    
+                    if (view.InteractableGroupId != currentInteractbleGroupId)
+                    {
+                        break;
+                    }
+
+                    view.SetInteractable(false);
+                }
+                
+                currentInteractbleGroupId++;
             }
+
 
             BaseView viewFound = GameObject.Instantiate(viewsDatabase.GetFile(viewId), uiManagerGO.transform);
             viewFound.Initialize(uiCamera, audioManager);
@@ -65,7 +79,7 @@ namespace PlanesRemake.Runtime.UI
             //dunno how I will remind this to myself -_-, BUT remember, we have to do this before trying to access any RectTransform values
             Canvas.ForceUpdateCanvases();
             viewFound.Canvas.sortingOrder = viewsOpened.Count;
-            viewFound.TransitionIn();
+            viewFound.TransitionIn(currentInteractbleGroupId);
             viewFound.transform.SetParent(uiManagerGO.transform);
             viewsOpened.Add(viewFound);
             return viewFound;
@@ -135,7 +149,25 @@ namespace PlanesRemake.Runtime.UI
 
                 //To-do: Make this be handled by a pool so that it can be reused.
                 GameObject.Destroy(view.gameObject);
-                CurrentViewDisplayed().SetInteractable(true);
+
+                BaseView currentViewDisplayed = CurrentViewDisplayed();
+
+                if(currentViewDisplayed.InteractableGroupId != currentInteractbleGroupId)
+                {
+                    currentInteractbleGroupId = currentViewDisplayed.InteractableGroupId;
+
+                    for(int i = viewsOpened.Count - 1; i >= 0; i--)
+                    {
+                        BaseView view = viewsOpened[i];
+
+                        if (view.InteractableGroupId != currentInteractbleGroupId)
+                        {
+                            break;
+                        }
+
+                        view.SetInteractable(true);
+                    }
+                }
             }
 
             view.onTransitionOutFinished += OnTransitionOutFinished;

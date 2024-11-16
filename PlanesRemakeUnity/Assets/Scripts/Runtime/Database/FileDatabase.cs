@@ -49,12 +49,17 @@ namespace PlanesRemake.Runtime.Database
 
         public T GetFile(string id)
         {
+            if(idFileLookup == null)
+            {
+                Initialize();
+            }
+
             if (idFileLookup.TryGetValue(id, out T file))
             {
                 return file;
             }
 
-            LoggerUtil.LogError($"{GetType().Name} - The clip {id} id does not exist!");
+            LoggerUtil.LogError($"{GetType().Name} - The {id} id does not exist!");
             return null;
         }
 

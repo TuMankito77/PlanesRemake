@@ -102,8 +102,9 @@ namespace PlanesRemake.Runtime.Core
 
         private void ShowMainMenuElements()
         {
-            uiManager.DisplayView(ViewIds.AIRCRAFT_SHOWCASE);
-            uiManager.DisplayView(ViewIds.MAIN_MENU);
+            uiManager.DisplayView(ViewIds.AIRCRAFT_SHOWCASE, disableCurrentInteractableGroup: false);
+            EventDispatcher.Instance.Dispatch(UiEvents.OnSetShowcaseAircraft, playerInformation.aircraftSelected);
+            uiManager.DisplayView(ViewIds.MAIN_MENU, disableCurrentInteractableGroup: false);
             inputManager.EnableInput(uiManager);
         }
 
@@ -146,7 +147,7 @@ namespace PlanesRemake.Runtime.Core
 
                 case UiEvents.OnPauseButtonPressed:
                     {
-                        uiManager.DisplayView(ViewIds.PAUSE_MENU);
+                        uiManager.DisplayView(ViewIds.PAUSE_MENU, disableCurrentInteractableGroup: true);
                         inputManager.EnableInput(uiManager);
                         inputManager.DisableInput(currentLevelInitializer.Aircraft);
                         audioManager.PauseGameplayClips();
@@ -177,7 +178,7 @@ namespace PlanesRemake.Runtime.Core
 
                 case UiEvents.OnOptionsButtonPressed:
                     {
-                        uiManager.DisplayView(ViewIds.OPTIONS_MENU);
+                        uiManager.DisplayView(ViewIds.OPTIONS_MENU, disableCurrentInteractableGroup: true);
                         break;
                     }
 
@@ -224,7 +225,8 @@ namespace PlanesRemake.Runtime.Core
 
             if (gameplayContoller.VirtualJoystickEnabled)
             {
-                TouchControlsView touchControlsView = uiManager.DisplayView(ViewIds.TOUCH_CONTROLS) as TouchControlsView;
+                uiManager.DisplayView(ViewIds.TOUCH_CONTROLS, disableCurrentInteractableGroup: false);
+                TouchControlsView touchControlsView = uiManager.GetTopStackView(ViewIds.TOUCH_CONTROLS) as TouchControlsView;
                 gameplayContoller.VirtualJoystick.OnTouchStart += touchControlsView.OnInitialPositionUpdated;
                 gameplayContoller.VirtualJoystick.OnTouchDrag += touchControlsView.OnDragPositionUpdated;
                 gameplayContoller.VirtualJoystick.OnTouchEnd += touchControlsView.OnEndPositionUpdated;

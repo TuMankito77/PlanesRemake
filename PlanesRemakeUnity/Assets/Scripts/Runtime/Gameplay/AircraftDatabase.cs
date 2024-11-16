@@ -13,10 +13,14 @@ namespace PlanesRemake.Runtime.Gameplay
         private Aircraft aircraftPrefab = null;
 
         [SerializeField]
-        private GameObject shocaseAircraftPrefab = null;
+        private GameObject showcaseAircraftPrefab = null;
 
         [SerializeField]
         private int price = 100;
+
+        public Aircraft AircraftPrefab => aircraftPrefab;
+        public GameObject ShowcaseAircraftPrefab => showcaseAircraftPrefab;
+        public int Price => price;
     }
 
     [CreateAssetMenu(fileName = AIRCRAFTS_DATABASE_ASSET_NAME, menuName = "Database/AircraftsDatabase")]

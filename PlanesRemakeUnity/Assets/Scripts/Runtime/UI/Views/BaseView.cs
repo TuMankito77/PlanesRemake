@@ -13,14 +13,16 @@ namespace PlanesRemake.Runtime.UI.Views
         public event Action onTransitionInFinished;
         public event Action onTransitionOutFinished;
 
-        public Canvas Canvas { get; private set; } = null;
-        public CanvasGroup CanvasGroup { get; private set; } = null;
-        public CanvasScaler CanvasScaler { get; private set; } = null;
-
         protected AudioManager audioManager = null;
         private BaseButton[] buttons = new BaseButton[0];
         private SelectableElement[] selectableElements = new SelectableElement[0];
         private IViewAnimator viewAnimator = null;
+        private int interactableGroupId = -1;
+
+        public Canvas Canvas { get; private set; } = null;
+        public CanvasGroup CanvasGroup { get; private set; } = null;
+        public CanvasScaler CanvasScaler { get; private set; } = null;
+        public int InteractableGroupId { get => interactableGroupId; private set => interactableGroupId = value; }
 
         #region Unity Methods
 
@@ -87,8 +89,9 @@ namespace PlanesRemake.Runtime.UI.Views
             CanvasGroup = null;
         }
 
-        public virtual void TransitionIn()
+        public virtual void TransitionIn(int sourceInteractableGroupId)
         {
+            InteractableGroupId = sourceInteractableGroupId;
             CanvasGroup.alpha = 1;
 
             if(viewAnimator != null)

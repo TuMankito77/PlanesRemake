@@ -22,9 +22,9 @@ namespace PlanesRemake.Runtime.UI.Views
 
         #endregion
 
-        public override void TransitionIn()
+        public override void TransitionIn(int sourceInteractableGroupId)
         {
-            base.TransitionIn();
+            base.TransitionIn(sourceInteractableGroupId);
             musicSlider.OnValueChanged += OnMusicVolumeChanged;
             vfxSlider.OnValueChanged += OnVfxVolumeChanged;
             musicSlider.UpdateSliderValue(audioManager.CurrentMusicVolume);

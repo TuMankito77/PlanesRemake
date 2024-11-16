@@ -11,7 +11,7 @@ namespace PlanesRemake.Runtime.UI.WorldElements
 
         public void UpdateAircraftDisplayed(GameObject aircraftPrefab)
         {
-            if(aircraftPlacement != null)
+            if(aircraftDisplayed != null)
             {
                 Destroy(aircraftDisplayed);
             }

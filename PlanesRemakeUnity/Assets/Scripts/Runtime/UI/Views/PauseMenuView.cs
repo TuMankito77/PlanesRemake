@@ -18,9 +18,9 @@ namespace PlanesRemake.Runtime.UI.Views
 
         #region Unity Methods
 
-        public override void TransitionIn()
+        public override void TransitionIn(int sourceInteractableGroupId)
         {
-            base.TransitionIn();
+            base.TransitionIn(sourceInteractableGroupId);
             continueButton.onButtonPressed += OnContinueButtonPressed;
             optionsButton.onButtonPressed += OnOptionsButtonPressed;
             mainMenuButton.onButtonPressed += OnMainMenuButtonPressed;
