@@ -42,7 +42,7 @@ namespace PlanesRemake.Runtime.UI.CoreElements
 
         #endregion
 
-        public void SetInteractable(bool isActive)
+        public virtual void SetInteractable(bool isActive)
         {
             if(isActive && !isSubscribedToInteractableEvents)
             {

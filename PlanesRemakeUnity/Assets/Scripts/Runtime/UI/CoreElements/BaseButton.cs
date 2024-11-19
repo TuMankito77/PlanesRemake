@@ -42,6 +42,12 @@ namespace PlanesRemake.Runtime.UI.CoreElements
             buttonAniator.OnSubmitAnimationCompleted += OnButtonPressed;
         }
 
+        public override void SetInteractable(bool isActive)
+        {
+            base.SetInteractable(isActive);
+            button.interactable = isActive;
+        }
+
         protected override void CheckNeededComponents()
         {
             base.CheckNeededComponents();

@@ -12,6 +12,9 @@ namespace PlanesRemake.Runtime.UI.Views
 
         [SerializeField]
         private BaseButton optionsButton = null;
+
+        [SerializeField]
+        private BaseButton shopButton = null;
         
         [SerializeField]
         private BaseButton quitButton = null;
@@ -23,6 +26,7 @@ namespace PlanesRemake.Runtime.UI.Views
             base.Awake();
             playButton.onButtonPressed += OnPlayButtonPressed;
             optionsButton.onButtonPressed += OnOptionsButtonPressed;
+            shopButton.onButtonPressed += OnShopButtonPressed;
             quitButton.onButtonPressed += OnQuitButtonPressed;
         }
 
@@ -31,6 +35,7 @@ namespace PlanesRemake.Runtime.UI.Views
             base.Awake();
             playButton.onButtonPressed -= OnPlayButtonPressed;
             optionsButton.onButtonPressed -= OnOptionsButtonPressed;
+            shopButton.onButtonPressed -= OnShopButtonPressed;
             quitButton.onButtonPressed -= OnQuitButtonPressed;
         }
 
@@ -46,6 +51,11 @@ namespace PlanesRemake.Runtime.UI.Views
             EventDispatcher.Instance.Dispatch(UiEvents.OnOptionsButtonPressed);
         }
         
+        private void OnShopButtonPressed()
+        {
+            EventDispatcher.Instance.Dispatch(UiEvents.OnShopButtonPressed);
+        }
+
         private void OnQuitButtonPressed()
         {
             EventDispatcher.Instance.Dispatch(UiEvents.OnQuitButtonPressed);

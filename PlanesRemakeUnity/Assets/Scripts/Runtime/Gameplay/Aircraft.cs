@@ -43,7 +43,7 @@ namespace PlanesRemake.Runtime.Gameplay
         private bool isFuelEmpty = false;
         //NOTE: Remove this timer once we have an animation an we know when the destroy animation finishes.
         private Timer timer = null;
-
+        
         #region Unity Methods
 
         private void Update()

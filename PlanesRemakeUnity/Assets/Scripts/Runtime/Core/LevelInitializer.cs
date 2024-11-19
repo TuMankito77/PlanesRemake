@@ -15,7 +15,6 @@ namespace PlanesRemake.Runtime.Core
     public class LevelInitializer : BaseSystem
     {
         private const string SPHERICAL_BACKGROUND_PREFAB_PATH = "MainLevel/SphericalBackground";
-        private const string AIRCRAFT_PREFAB_PATH = "MainLevel/Aircraft";
         private const string OBSTACLE_PREFAB_PATH = "MainLevel/Obstacle";
         private const string COIN_PREFAB_PATH = "MainLevel/Coin";
         private const string COIN_VFX_PREFAB_PATH = "MainLevel/VFX_CoinCollected";
@@ -34,12 +33,14 @@ namespace PlanesRemake.Runtime.Core
         private Camera isometricCamera = null;
         private Camera backgroundRenderingCamera = null;
         private CameraStackingManager cameraStackingManager = null;
+        private string aircraftSelected = string.Empty;
 
         public Aircraft Aircraft => aircraft;
 
-        public LevelInitializer(UiManager sourceUiManager, ContentLoader sourceContentLoader, AudioManager sourceAudioManager, CameraStackingManager sourceCameraStackingManager)
+        public LevelInitializer(string sourceAircraftSelected, UiManager sourceUiManager, ContentLoader sourceContentLoader, AudioManager sourceAudioManager, CameraStackingManager sourceCameraStackingManager)
         {
             spawners = new List<BaseSpawner>();
+            aircraftSelected = sourceAircraftSelected;
             uiManager = sourceUiManager;
             contentLoader = sourceContentLoader;
             audioManager = sourceAudioManager;
@@ -68,8 +69,9 @@ namespace PlanesRemake.Runtime.Core
                 left = 4,
                 center = Vector3.zero
             };
-            
-            Aircraft aircraftPrefab = await contentLoader.LoadAsset<Aircraft>(AIRCRAFT_PREFAB_PATH);
+
+            AircraftDatabase aircraftDatabase = await contentLoader.LoadAsset<AircraftDatabase>(AircraftDatabase.AIRCRAFTS_DATABASE_SCRIPTABLE_OBJECT_PATH);
+            Aircraft aircraftPrefab = aircraftDatabase.GetFile(aircraftSelected).AircraftPrefab;
             aircraft = GameObject.Instantiate(aircraftPrefab, Vector3.zero, Quaternion.Euler(15, 105, 0));
             aircraft.Initialize(isometricCamera, aircraftCameraBoundariesOffset, audioManager, fuelDuration: 50);
 

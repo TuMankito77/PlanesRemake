@@ -4,6 +4,7 @@ namespace PlanesRemake.Runtime.Events
     {
         OnPlayButtonPressed,
         OnOptionsButtonPressed,
+        OnShopButtonPressed,
         OnQuitButtonPressed,
         OnCoinsValueChanged,
         OnWallsValueChanged,
@@ -13,6 +14,9 @@ namespace PlanesRemake.Runtime.Events
         OnMusicVolumeSliderUpdated,
         OnVfxVolumeSliderUpdated,
         OnSetFuelTimerDuration,
-        OnSetShowcaseAircraft
+        OnSetShowcaseAircraft,
+        OnUpdatePlayerInformation,
+        OnSelectAircraftButtonPressed,
+        OnPurchaseAircraftButtonPressed
     }
 }

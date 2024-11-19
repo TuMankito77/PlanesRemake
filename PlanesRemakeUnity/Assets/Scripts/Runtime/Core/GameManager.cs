@@ -15,6 +15,7 @@ namespace PlanesRemake.Runtime.Core
     using PlanesRemake.Runtime.Gameplay.StorableClasses;
     using PlanesRemake.Runtime.SaveTool;
     using PlanesRemake.Runtime.Utils;
+    using PlanesRemake.Runtime.UI.Views.DataContainers;
 
     public class GameManager : IListener
     {
@@ -30,6 +31,8 @@ namespace PlanesRemake.Runtime.Core
         private LevelInitializer currentLevelInitializer = null;
         private PlayerInformation playerInformation = null;
         private StorageAccessor storageAccessor = null;
+        private int gameSessionCoinsCollected = 0;
+        private int gameSessionWallsEvaded = 0;
 
         public bool IsGamePaused { get; private set; } = false;
 
@@ -138,7 +141,7 @@ namespace PlanesRemake.Runtime.Core
                             {
                                 uiManager.RemoveView(ViewIds.AIRCRAFT_SHOWCASE);
                                 uiManager.RemoveView(ViewIds.MAIN_MENU);
-                                mainLevelSystems.Add(new LevelInitializer(uiManager, contentLoader, audioManager, cameraStackingManager));
+                                mainLevelSystems.Add(new LevelInitializer(playerInformation.aircraftSelected, uiManager, contentLoader, audioManager, cameraStackingManager));
                                 mainLevelSystemsInitializer.OnSystemsInitialized += OnMainLevelSystemsInitialized;
                                 mainLevelSystemsInitializer.InitializeSystems(mainLevelSystems);
                             });
@@ -182,6 +185,13 @@ namespace PlanesRemake.Runtime.Core
                         break;
                     }
 
+                case UiEvents.OnShopButtonPressed:
+                    {
+                        ShopViewData shopViewData = new ShopViewData(playerInformation);
+                        uiManager.DisplayView(ViewIds.SHOP_MENU, disableCurrentInteractableGroup: true, shopViewData);
+                        break;
+                    }
+
                 case UiEvents.OnQuitButtonPressed:
                     {
                         Application.Quit();
@@ -206,6 +216,37 @@ namespace PlanesRemake.Runtime.Core
                         break;
                     }
 
+                case UiEvents.OnSelectAircraftButtonPressed:
+                    {
+                        string aircraftId = data as string;
+                        playerInformation.aircraftSelected = aircraftId;
+                        storageAccessor.Save(playerInformation);
+                        break;
+                    }
+
+                case UiEvents.OnPurchaseAircraftButtonPressed:
+                    {
+                        Tuple<string, int> aircraftIdPricePair = data as Tuple<string, int>;
+                        string aircraftId = aircraftIdPricePair.Item1;
+                        int price = aircraftIdPricePair.Item2;
+
+                        if (price > playerInformation.coinsCollected)
+                        {
+                            string notEnoughCoinsMessage = "SORRY BUT YOU DON'T HAVE ENOUGH COINS COLLECTED TO BUY THIS AIRCRAFT";
+                            MessageViewData messageViewData = new MessageViewData(notEnoughCoinsMessage);
+                            uiManager.DisplayView(ViewIds.MESSAGE_WINDOW, disableCurrentInteractableGroup: true, messageViewData);
+                        }
+                        else
+                        {
+                            playerInformation.coinsCollected = playerInformation.coinsCollected - price;
+                            playerInformation.aircraftsPurchased.Add(aircraftId);
+                            storageAccessor.Save(playerInformation);
+                            EventDispatcher.Instance.Dispatch(UiEvents.OnUpdatePlayerInformation, playerInformation);
+                        }
+
+                        break;
+                    }
+
                 default:
                     {
                         break;
@@ -216,8 +257,8 @@ namespace PlanesRemake.Runtime.Core
         private void OnMainLevelSystemsInitialized()
         {
             mainLevelSystemsInitializer.OnSystemsInitialized -= OnMainLevelSystemsInitialized;
-            playerInformation.coinsCollected = 0;
-            playerInformation.wallsEvaded = 0;
+            gameSessionCoinsCollected = 0;
+            gameSessionWallsEvaded = 0;
             currentLevelInitializer = mainLevelSystemsInitializer.GetSystem<LevelInitializer>();
             audioManager.PlayBackgroundMusic(ClipIds.MUSIC_CLIP);
             inputManager.EnableInput(currentLevelInitializer.Aircraft);
@@ -247,7 +288,8 @@ namespace PlanesRemake.Runtime.Core
                 case GameplayEvents.OnWallEvaded:
                     {
                         playerInformation.wallsEvaded++;
-                        string wallsEvadedAsString = playerInformation.wallsEvaded.ToString();
+                        gameSessionWallsEvaded++;
+                        string wallsEvadedAsString = gameSessionWallsEvaded.ToString();
                         EventDispatcher.Instance.Dispatch(UiEvents.OnWallsValueChanged, wallsEvadedAsString);
                         break;
                     }
@@ -255,7 +297,8 @@ namespace PlanesRemake.Runtime.Core
                 case GameplayEvents.OnCoinCollected:
                     {
                         playerInformation.coinsCollected++;
-                        string coinsCollectedAsString = playerInformation.coinsCollected.ToString();
+                        gameSessionCoinsCollected++;
+                        string coinsCollectedAsString = gameSessionCoinsCollected.ToString();
                         EventDispatcher.Instance.Dispatch(UiEvents.OnCoinsValueChanged, coinsCollectedAsString);
                         break;
                     }
@@ -302,7 +345,9 @@ namespace PlanesRemake.Runtime.Core
                 sourceCoinsCollected: 0, 
                 sourceWallsEvaded: 0, 
                 sourceMusicVolumeSet: 1, 
-                sourceVfxVolumeSet: 1);
+                sourceVfxVolumeSet: 1,
+                sourceAircraftSelected: AircraftIds.PLANE,
+                sourceAircraftsPurchased: new List<string>() { AircraftIds.PLANE });
 
             storageAccessor = new StorageAccessor();
 

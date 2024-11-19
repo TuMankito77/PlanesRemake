@@ -13,6 +13,7 @@ namespace PlanesRemake.Runtime.UI
     using PlanesRemake.Runtime.Utils;
     using UnityEngine.InputSystem.UI;
     using UnityEngine.Rendering.Universal;
+    using PlanesRemake.Runtime.UI.Views.DataContainers;
 
     public class UiManager : BaseSystem, IInputControlableEntity
     {
@@ -53,7 +54,7 @@ namespace PlanesRemake.Runtime.UI
             return true;
         }
 
-        public BaseView DisplayView(string viewId, bool disableCurrentInteractableGroup)
+        public BaseView DisplayView(string viewId, bool disableCurrentInteractableGroup, ViewInjectableData viewInjectableData = null)
         {
             if(disableCurrentInteractableGroup)
             {
@@ -74,7 +75,7 @@ namespace PlanesRemake.Runtime.UI
 
 
             BaseView viewFound = GameObject.Instantiate(viewsDatabase.GetFile(viewId), uiManagerGO.transform);
-            viewFound.Initialize(uiCamera, audioManager);
+            viewFound.Initialize(uiCamera, audioManager, viewInjectableData);
             //NOTE: This will update the values like the width and height so that they do not appear as zero,
             //dunno how I will remind this to myself -_-, BUT remember, we have to do this before trying to access any RectTransform values
             Canvas.ForceUpdateCanvases();

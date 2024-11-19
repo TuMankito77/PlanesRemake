@@ -144,6 +144,7 @@ namespace PlanesRemake.Runtime.Gameplay
                 case GameplayEvents.OnWallcollision:
                     {
                         SetMovementEnabled(false);
+                        collisionEventNotifier.OnTiggerEnterDetected -= OnTriggerEntered;
                         break;
                     }
 

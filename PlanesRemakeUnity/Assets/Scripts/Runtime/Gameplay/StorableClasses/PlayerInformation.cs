@@ -3,6 +3,7 @@ namespace PlanesRemake.Runtime.Gameplay.StorableClasses
     using Newtonsoft.Json;
 
     using PlanesRemake.Runtime.SaveTool;
+    using System.Collections.Generic;
 
     public class PlayerInformation : IStorable
     {
@@ -31,14 +32,19 @@ namespace PlanesRemake.Runtime.Gameplay.StorableClasses
         public float vfxVolumeSet = 1;
 
         [JsonProperty]
-        public string aircraftSelected = AircraftIds.PLANE;
+        public string aircraftSelected = string.Empty;
 
-        public PlayerInformation(int sourceCoinsCollected, int sourceWallsEvaded, float sourceMusicVolumeSet, float sourceVfxVolumeSet)
+        [JsonProperty]
+        public List<string> aircraftsPurchased = null;
+
+        public PlayerInformation(int sourceCoinsCollected, int sourceWallsEvaded, float sourceMusicVolumeSet, float sourceVfxVolumeSet, string sourceAircraftSelected, List<string> sourceAircraftsPurchased)
         {
             coinsCollected = sourceCoinsCollected;
             wallsEvaded = sourceWallsEvaded;
             musicVolumeSet = sourceMusicVolumeSet;
             vfxVolumeSet = sourceVfxVolumeSet;
+            aircraftSelected = sourceAircraftSelected;
+            aircraftsPurchased = sourceAircraftsPurchased;
         }
     }
 }

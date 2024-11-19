@@ -6,10 +6,14 @@ namespace PlanesRemake.Runtime.UI.Views
     using PlanesRemake.Runtime.UI.CoreElements;
     using UnityEngine.UI;
     using System;
+    using PlanesRemake.Runtime.UI.Views.DataContainers;
 
     [RequireComponent(typeof (Canvas),typeof(CanvasGroup))]
     public abstract class BaseView : MonoBehaviour
     {
+        [SerializeField]
+        private Image inputBlockerImage = null;
+
         public event Action onTransitionInFinished;
         public event Action onTransitionOutFinished;
 
@@ -64,15 +68,11 @@ namespace PlanesRemake.Runtime.UI.Views
 
         public void SetInteractable(bool isInractable)
         {
-            foreach(SelectableElement selectableElement in selectableElements)
-            {
-                selectableElement.SetInteractable(isInractable);
-            }
-
+            inputBlockerImage.raycastTarget = !isInractable;
             CanvasGroup.interactable = isInractable;
         }
 
-        public virtual void Initialize(Camera uiCamera, AudioManager sourceAudioManager)
+        public virtual void Initialize(Camera uiCamera, AudioManager sourceAudioManager, ViewInjectableData viewInjectableData)
         {
             Canvas = GetComponent<Canvas>();
             CanvasGroup = GetComponent<CanvasGroup>();

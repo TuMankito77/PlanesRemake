@@ -8,6 +8,7 @@ namespace PlanesRemake.Runtime.UI.Views
     using PlanesRemake.Runtime.Events;
     using PlanesRemake.Runtime.Sound;
     using PlanesRemake.Runtime.Utils;
+    using PlanesRemake.Runtime.UI.Views.DataContainers;
 
     public class HudView : BaseView, IListener
     {
@@ -22,9 +23,9 @@ namespace PlanesRemake.Runtime.UI.Views
 
         private Timer fuelTimer = null;
 
-        public override void Initialize(Camera uiCamera, AudioManager audioManager)
+        public override void Initialize(Camera uiCamera, AudioManager audioManager, ViewInjectableData viewInjectableData)
         {
-            base.Initialize(uiCamera, audioManager);
+            base.Initialize(uiCamera, audioManager, viewInjectableData);
             EventDispatcher.Instance.AddListener(this, typeof(UiEvents), typeof(GameplayEvents));
         }
 
@@ -74,6 +75,11 @@ namespace PlanesRemake.Runtime.UI.Views
                 case GameplayEvents.OnWallcollision:
                 {
                     fuelTimer.Stop();
+                    break;
+                }
+
+                default:
+                {
                     break;
                 }
             }
