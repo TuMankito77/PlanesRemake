@@ -15,8 +15,33 @@ MonoBehaviour:
   idFilePairs:
   - id: Plane
     file:
+      displayName: Small Plane
       aircraftPrefab: {fileID: 23568146648127300, guid: 6bb35f431bd4f2342b5f3f6db13e128f,
         type: 3}
       showcaseAircraftPrefab: {fileID: 1639305033056109428, guid: 39aa34a022d793a4e879d1209a6e5012,
         type: 3}
-      price: 1
+      price: 0
+  - id: IceBlades
+    file:
+      displayName: Ice Blades
+      aircraftPrefab: {fileID: 23568146648127300, guid: beaa7de897f0a4647bca7103380912c6,
+        type: 3}
+      showcaseAircraftPrefab: {fileID: 1639305033056109428, guid: 493589417c70cab4ba21a64a516e6dc8,
+        type: 3}
+      price: 100
+  - id: Spaceship
+    file:
+      displayName: Spaceship
+      aircraftPrefab: {fileID: 23568146648127300, guid: f9d0ee729fcb287498def51f1baef777,
+        type: 3}
+      showcaseAircraftPrefab: {fileID: 1639305033056109428, guid: 6fe32935da5bac64081fb69daca6e721,
+        type: 3}
+      price: 250
+  - id: BlueBull
+    file:
+      displayName: Blue Bull
+      aircraftPrefab: {fileID: 23568146648127300, guid: 0c6e75d8c37c73e4f95d14d6c4a2b545,
+        type: 3}
+      showcaseAircraftPrefab: {fileID: 1639305033056109428, guid: fa87472ff8ef5084cbb1a52c45ca5274,
+        type: 3}
+      price: 500
