@@ -11,7 +11,8 @@ namespace PlanesRemake.Runtime.UiExternalAnimationModule
 
     public class ButtonAnimator : MonoBehaviour, ISeletableElementAnimator
     {
-        private event Action OnSubmitAnimationFinished = null;
+        private event Action onSubmitAnimationStart = null;
+        private event Action onSubmitAnimationEnd = null;
 
         [SerializeField]
         private float animationDuration = 0.25f;
@@ -34,10 +35,16 @@ namespace PlanesRemake.Runtime.UiExternalAnimationModule
 
         #region ISelectableElementAnimator
 
-        public event Action OnSubmitAnimationCompleted
+        public event Action OnSubmitAnimationStart
         {
-            add => OnSubmitAnimationFinished += value;
-            remove => OnSubmitAnimationFinished -= value;
+            add => onSubmitAnimationStart += value;
+            remove => onSubmitAnimationStart -= value;
+        }
+
+        public event Action OnSubmitAnimationEnd
+        {
+            add => onSubmitAnimationEnd += value;
+            remove => onSubmitAnimationEnd -= value;
         }
 
         #endregion
@@ -122,6 +129,8 @@ namespace PlanesRemake.Runtime.UiExternalAnimationModule
                 return;
             }
 
+            onSubmitAnimationStart?.Invoke();
+
             if (currentTween.IsActive())
             {
                 currentTween.Kill();
@@ -139,7 +148,7 @@ namespace PlanesRemake.Runtime.UiExternalAnimationModule
         {
             isDoingSubmitAnimation = false;
             transform.localScale = Vector3.one;
-            OnSubmitAnimationFinished?.Invoke();
+            onSubmitAnimationEnd?.Invoke();
             currentTween.onComplete -= OnTweenAnimationCompleted;
         }
 

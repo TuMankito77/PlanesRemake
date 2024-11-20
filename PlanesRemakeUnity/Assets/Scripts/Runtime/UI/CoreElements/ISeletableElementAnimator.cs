@@ -4,6 +4,7 @@ namespace PlanesRemake.Runtime.UI.CoreElements
     
     public interface ISeletableElementAnimator
     {
-        public event Action OnSubmitAnimationCompleted;
+        public event Action OnSubmitAnimationStart;
+        public event Action OnSubmitAnimationEnd;
     }
 }

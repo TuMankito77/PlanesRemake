@@ -13,6 +13,9 @@ namespace PlanesRemake.Runtime.UI.CoreElements
         [SerializeField]
         private Button button = null;
 
+        [SerializeField]
+        private bool triggerButtonActionBeforeAnimation = false;
+
         private ISeletableElementAnimator buttonAniator = null;
 
         #region Unity Methods
@@ -29,7 +32,8 @@ namespace PlanesRemake.Runtime.UI.CoreElements
 
             if(buttonAniator != null)
             {
-                buttonAniator.OnSubmitAnimationCompleted -= onButtonPressed;
+                buttonAniator.OnSubmitAnimationStart -= onButtonPressed;
+                buttonAniator.OnSubmitAnimationEnd -= onButtonPressed;
             }
         }
 
@@ -39,7 +43,15 @@ namespace PlanesRemake.Runtime.UI.CoreElements
         {
             buttonAniator = sourceButtonAnimator;
             onSubmit -= OnButtonPressed;
-            buttonAniator.OnSubmitAnimationCompleted += OnButtonPressed;
+
+            if(triggerButtonActionBeforeAnimation)
+            {
+                buttonAniator.OnSubmitAnimationStart += OnButtonPressed;
+            }
+            else
+            {
+                buttonAniator.OnSubmitAnimationEnd += OnButtonPressed;
+            }
         }
 
         public override void SetInteractable(bool isActive)
