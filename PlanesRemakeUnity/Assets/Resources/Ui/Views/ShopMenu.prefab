@@ -193,6 +193,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventTrigger: {fileID: 2142605495508596796}
   button: {fileID: 4022358515139133698}
+  triggerButtonActionBeforeAnimation: 1
 --- !u!114 &2142605495508596796
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1265,6 +1266,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventTrigger: {fileID: 481440158820696980}
   button: {fileID: 6679448645163088469}
+  triggerButtonActionBeforeAnimation: 1
 --- !u!114 &481440158820696980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2919,6 +2921,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Text
       value: SELECT
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: triggerButtonActionBeforeAnimation
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6715635896082630800, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}
