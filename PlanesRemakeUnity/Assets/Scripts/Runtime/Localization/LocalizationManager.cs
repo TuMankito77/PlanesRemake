@@ -16,6 +16,8 @@ namespace PlanesRemake.Runtime.Localization
         private LocalizationDatabase localizationDatabase = null;
         private Dictionary<string, string> localizationKeyLocalizedTextPair = null;
 
+        public SystemLanguage LanguageSelected { get; private set; } = SystemLanguage.Unknown;
+
         public override async Task<bool> Initialize(IEnumerable<BaseSystem> sourceDependencies)
         {
             await base.Initialize(sourceDependencies);
@@ -31,53 +33,54 @@ namespace PlanesRemake.Runtime.Localization
             
             if (localizationDatabase.Ids.Count > 0)
             {
-                string operatingSystemLanguage = string.Empty;
-
                 switch(Application.systemLanguage)
                 {
                     case SystemLanguage.English:
                         {
-                            operatingSystemLanguage = LanguageIds.EN;
+                            LanguageSelected = SystemLanguage.English;
                             break;
                         }
 
                     case SystemLanguage.French:
                         {
-                            operatingSystemLanguage = LanguageIds.FR;
+                            LanguageSelected = SystemLanguage.French;
                             break;
                         }
 
                     case SystemLanguage.Spanish:
                         {
-                            operatingSystemLanguage = LanguageIds.ES;
+                            LanguageSelected = SystemLanguage.Spanish;
                             break;
                         }
 
                     default:
                         {
-                            operatingSystemLanguage = LanguageIds.EN;
+                            LanguageSelected = SystemLanguage.English;
                             break;
                         }
                 }
 
-                TextAsset textAsset = localizationDatabase.GetFile(operatingSystemLanguage);
+                TextAsset textAsset = localizationDatabase.GetFile(LanguageSelected.ToString());
                 localizationKeyLocalizedTextPair = JsonConvert.DeserializeObject<Dictionary<string, string>>(textAsset.text);
             }
 
             return true;
         }
 
-        public void UpdatedSelectedLanguage(string langaugeKey)
+        public void UpdateSelectedLanguage(SystemLanguage languageSelected)
         {
-            if(localizationDatabase.DoesIdExist(langaugeKey))
+            string systemLanguageAsString = languageSelected.ToString();
+
+            if(localizationDatabase.DoesIdExist(systemLanguageAsString))
             {
-                TextAsset textAsset = localizationDatabase.GetFile(langaugeKey);
+                LanguageSelected = languageSelected;
+                TextAsset textAsset = localizationDatabase.GetFile(systemLanguageAsString);
                 localizationKeyLocalizedTextPair = JsonConvert.DeserializeObject<Dictionary<string, string>>(textAsset.text);
                 EventDispatcher.Instance.Dispatch(LocalizationEvents.OnLanguageUpdated);
             }
             else
             {
-                LoggerUtil.Log($"{GetType()}: Language key {langaugeKey} not found, keeping the current language as the one selected.");
+                LoggerUtil.Log($"{GetType()}: Language key {languageSelected} not found, keeping the current language as the one selected.");
             }
         }
 

@@ -14,6 +14,7 @@ namespace PlanesRemake.Runtime.UI
     using UnityEngine.InputSystem.UI;
     using UnityEngine.Rendering.Universal;
     using PlanesRemake.Runtime.UI.Views.DataContainers;
+    using PlanesRemake.Runtime.Localization;
 
     public class UiManager : BaseSystem, IInputControlableEntity
     {
@@ -22,6 +23,7 @@ namespace PlanesRemake.Runtime.UI
         private Camera uiCamera = null;
         private List<BaseView> viewsOpened = null;
         private AudioManager audioManager = null;
+        private LocalizationManager localizationManager = null;
         private int currentInteractbleGroupId = 0;
 
         //To-do: Create a request class that will be sent through an event in order to request a view.
@@ -31,9 +33,16 @@ namespace PlanesRemake.Runtime.UI
 
             viewsOpened = new List<BaseView>();
             audioManager = GetDependency<AudioManager>();
+            localizationManager = GetDependency<LocalizationManager>();
             //To-do: Create a database that categorizes the objects loaded based on a list that groups what is needed to be loaded depending on what needs to be shown.
             ContentLoader contentLoader = GetDependency<ContentLoader>();
             viewsDatabase = await contentLoader.LoadAsset<ViewsDatabase>(ViewsDatabase.VIEWS_DATABASE_SCRIPTABLE_OBJECT_PATH);
+            
+            if(viewsDatabase == null)
+            {
+                return false;
+            }
+            
             viewsDatabase.Initialize();
 
             uiManagerGO = new GameObject("UI Manager");
@@ -75,7 +84,7 @@ namespace PlanesRemake.Runtime.UI
 
 
             BaseView viewFound = GameObject.Instantiate(viewsDatabase.GetFile(viewId), uiManagerGO.transform);
-            viewFound.Initialize(uiCamera, audioManager, viewInjectableData);
+            viewFound.Initialize(uiCamera, audioManager, viewInjectableData, localizationManager);
             //NOTE: This will update the values like the width and height so that they do not appear as zero,
             //dunno how I will remind this to myself -_-, BUT remember, we have to do this before trying to access any RectTransform values
             Canvas.ForceUpdateCanvases();

@@ -7,6 +7,7 @@ namespace PlanesRemake.Runtime.UI.Views
     using UnityEngine.UI;
     using System;
     using PlanesRemake.Runtime.UI.Views.DataContainers;
+    using PlanesRemake.Runtime.Localization;
 
     [RequireComponent(typeof (Canvas),typeof(CanvasGroup))]
     public abstract class BaseView : MonoBehaviour
@@ -72,7 +73,7 @@ namespace PlanesRemake.Runtime.UI.Views
             CanvasGroup.interactable = isInractable;
         }
 
-        public virtual void Initialize(Camera uiCamera, AudioManager sourceAudioManager, ViewInjectableData viewInjectableData)
+        public virtual void Initialize(Camera uiCamera, AudioManager sourceAudioManager, ViewInjectableData viewInjectableData, LocalizationManager localizationManager)
         {
             Canvas = GetComponent<Canvas>();
             CanvasGroup = GetComponent<CanvasGroup>();
@@ -81,6 +82,11 @@ namespace PlanesRemake.Runtime.UI.Views
             Canvas.worldCamera = uiCamera;
             CanvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             audioManager = sourceAudioManager;
+
+            foreach(LocalizedText localizedText in GetComponentsInChildren<LocalizedText>(includeInactive: true))
+            {
+                localizedText.Initialize(localizationManager);
+            }
         }
 
         public virtual void Dispose()

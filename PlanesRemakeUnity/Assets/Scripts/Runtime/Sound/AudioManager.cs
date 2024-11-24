@@ -24,12 +24,6 @@ namespace PlanesRemake.Runtime.Sound
 
         public float CurrentMusicVolume { get; private set; } = 1;
         public float CurrentVfxVolume { get; private set; } = 1;
-        
-        public AudioManager(float currentMusicVolume, float currentVfxVolume)
-        {
-            CurrentMusicVolume = currentMusicVolume;
-            CurrentVfxVolume = currentVfxVolume;
-        }
 
         public override async Task<bool> Initialize(IEnumerable<BaseSystem> sourceDependencies)
         {

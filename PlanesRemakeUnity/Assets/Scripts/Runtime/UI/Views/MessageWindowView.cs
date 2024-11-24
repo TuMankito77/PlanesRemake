@@ -1,5 +1,6 @@
 namespace PlanesRemake.Runtime.UI.Views
 {
+    using PlanesRemake.Runtime.Localization;
     using PlanesRemake.Runtime.Sound;
     using PlanesRemake.Runtime.UI.Views.DataContainers;
     using UnityEngine;
@@ -10,9 +11,9 @@ namespace PlanesRemake.Runtime.UI.Views
         [SerializeField]
         private Text messageTextComponent = null;
 
-        public override void Initialize(Camera uiCamera, AudioManager sourceAudioManager, ViewInjectableData viewInjectableData)
+        public override void Initialize(Camera uiCamera, AudioManager sourceAudioManager, ViewInjectableData viewInjectableData, LocalizationManager localizationManager)
         {
-            base.Initialize(uiCamera, sourceAudioManager, viewInjectableData);
+            base.Initialize(uiCamera, sourceAudioManager, viewInjectableData, localizationManager);
             MessageViewData messageViewData = viewInjectableData as MessageViewData;
 
             if(messageViewData != null)

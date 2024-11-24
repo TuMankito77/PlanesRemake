@@ -12,6 +12,7 @@ namespace PlanesRemake.Runtime.UI.Views
     using PlanesRemake.Runtime.Gameplay.StorableClasses;
     using PlanesRemake.Runtime.Sound;
     using PlanesRemake.Runtime.UI.Views.DataContainers;
+    using PlanesRemake.Runtime.Localization;
 
     public class ShopView : BaseView, IListener
     {
@@ -41,6 +42,7 @@ namespace PlanesRemake.Runtime.UI.Views
 
         private int aircraftDisplayedIndex = 0;
         private PlayerInformation playerInformation = null;
+        private LocalizationManager localizationManager = null;
 
         public override void TransitionIn(int sourceInteractableGroupId)
         {
@@ -60,7 +62,7 @@ namespace PlanesRemake.Runtime.UI.Views
             leftArrowButton.onButtonPressed -= OnLeftArrowButtonPressed;
             rightArrowButton.onButtonPressed -= OnRightArrowButtonPressed;
             EventDispatcher.Instance.RemoveListener(this, typeof(UiEvents));
-            EventDispatcher.Instance.Dispatch(UiEvents.OnSetShowcaseAircraft, playerInformation.aircraftSelected);
+            EventDispatcher.Instance.Dispatch(UiEvents.OnSetShowcaseAircraft, playerInformation.AircraftSelected);
         }
 
         private void OnRightArrowButtonPressed()
@@ -96,7 +98,7 @@ namespace PlanesRemake.Runtime.UI.Views
             string aircraftId = aircraftDatabase.Ids[aircraftDisplayedIndex];
             EventDispatcher.Instance.Dispatch(UiEvents.OnSetShowcaseAircraft, aircraftId);
             
-            if (playerInformation.aircraftsPurchased.Contains(aircraftId))
+            if (playerInformation.AircraftsPurchased.Contains(aircraftId))
             {
                 ShowAircraftOwnedConfiguration();
             }
@@ -118,7 +120,8 @@ namespace PlanesRemake.Runtime.UI.Views
         {
             purchaseButton.SetInteractable(true);
             priceText.transform.parent.gameObject.SetActive(true);
-            priceText.text = $"PRICE: {price}";
+            string priceTextLocalized = localizationManager.GetLocalizedText("Text.Price");
+            priceText.text = string.Format(priceTextLocalized, price);
             selectButton.SetInteractable(false);
             ownedText.gameObject.SetActive(false);
         }
@@ -145,19 +148,21 @@ namespace PlanesRemake.Runtime.UI.Views
 
         #endregion
 
-        public override void Initialize(Camera uiCamera, AudioManager sourceAudioManager, ViewInjectableData viewInjectableData)
+        public override void Initialize(Camera uiCamera, AudioManager sourceAudioManager, ViewInjectableData viewInjectableData, LocalizationManager sourceLocalizationManager)
         {
-            base.Initialize(uiCamera, sourceAudioManager, viewInjectableData);
+            base.Initialize(uiCamera, sourceAudioManager, viewInjectableData, sourceLocalizationManager);
+            localizationManager = sourceLocalizationManager;
             ShopViewData shopViewData = viewInjectableData as ShopViewData;
             
             if(shopViewData != null)
             {
                 playerInformation = shopViewData.PlayerInformation;
-                coinsText.text = $"COINS: {playerInformation.coinsCollected}";
+                string coinsTextLocalized = localizationManager.GetLocalizedText("Text.Coins");
+                coinsText.text = string.Format(coinsTextLocalized, playerInformation.CoinsCollected);
 
                 for (int i = 0; i < aircraftDatabase.Ids.Count; i++)
                 {
-                    if (playerInformation.aircraftSelected == aircraftDatabase.Ids[i])
+                    if (playerInformation.AircraftSelected == aircraftDatabase.Ids[i])
                     {
                         aircraftDisplayedIndex = i;
                         break;
@@ -175,10 +180,11 @@ namespace PlanesRemake.Runtime.UI.Views
                 case UiEvents.OnUpdatePlayerInformation:
                     {
                         playerInformation = data as PlayerInformation;
-                        coinsText.text = $"COINS: {playerInformation.coinsCollected}";
+                        string coinsTextLocalized = localizationManager.GetLocalizedText("Text.Coins");
+                        coinsText.text = string.Format(coinsTextLocalized, playerInformation.CoinsCollected);
                         string aircraftId = aircraftDatabase.Ids[aircraftDisplayedIndex];
 
-                        if (playerInformation.aircraftsPurchased.Contains(aircraftId))
+                        if (playerInformation.AircraftsPurchased.Contains(aircraftId))
                         {
                             ShowAircraftOwnedConfiguration();
                         }

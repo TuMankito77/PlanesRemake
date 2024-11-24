@@ -63,6 +63,11 @@ namespace PlanesRemake.Runtime.Database
             return null;
         }
 
+        public bool DoesIdExist(string id)
+        {
+            return idFileLookup.ContainsKey(id);
+        }
+
         private bool AreIdsUnique()
         {
             if (idFilePairs == null)

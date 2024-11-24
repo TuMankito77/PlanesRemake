@@ -17,6 +17,7 @@ namespace PlanesRemake.Runtime.Events
         OnSetShowcaseAircraft,
         OnUpdatePlayerInformation,
         OnSelectAircraftButtonPressed,
-        OnPurchaseAircraftButtonPressed
+        OnPurchaseAircraftButtonPressed,
+        OnLanguageButtonPressed
     }
 }

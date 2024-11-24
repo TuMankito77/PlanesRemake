@@ -16,6 +16,7 @@ namespace PlanesRemake.Runtime.Core
     using PlanesRemake.Runtime.SaveTool;
     using PlanesRemake.Runtime.Utils;
     using PlanesRemake.Runtime.UI.Views.DataContainers;
+    using PlanesRemake.Runtime.Localization;
 
     public class GameManager : IListener
     {
@@ -27,6 +28,7 @@ namespace PlanesRemake.Runtime.Core
         private UiManager uiManager = null;
         private AudioManager audioManager = null;
         private InputManager inputManager = null;
+        private LocalizationManager localizationManager = null;
         private CameraStackingManager cameraStackingManager = null;
         private LevelInitializer currentLevelInitializer = null;
         private PlayerInformation playerInformation = null;
@@ -39,17 +41,18 @@ namespace PlanesRemake.Runtime.Core
         public GameManager()
         {
             Application.targetFrameRate = 60;
-            LoadPlayerData();
-            
+
             baseSystems = new List<BaseSystem>();
             baseSystems.Add(new CameraStackingManager());
             baseSystems.Add(new ContentLoader());
             baseSystems.Add(new UiManager()
                 .AddDependency<ContentLoader>()
                 .AddDependency<AudioManager>()
-                .AddDependency<CameraStackingManager>());
-            baseSystems.Add(
-                new AudioManager(playerInformation.musicVolumeSet, playerInformation.vfxVolumeSet)
+                .AddDependency<CameraStackingManager>()
+                .AddDependency<LocalizationManager>());
+            baseSystems.Add(new AudioManager()
+                .AddDependency<ContentLoader>());
+            baseSystems.Add(new LocalizationManager()
                 .AddDependency<ContentLoader>());
             systemsInitializer = new SystemsInitializer();
             systemsInitializer.OnSystemsInitialized += OnSystemsInitialized;
@@ -97,8 +100,13 @@ namespace PlanesRemake.Runtime.Core
             uiManager = systemsInitializer.GetSystem<UiManager>();
             audioManager = systemsInitializer.GetSystem<AudioManager>();
             cameraStackingManager = systemsInitializer.GetSystem<CameraStackingManager>();
+            localizationManager = systemsInitializer.GetSystem<LocalizationManager>();
             mainLevelSystems = new List<BaseSystem>();
             mainLevelSystemsInitializer = new SystemsInitializer();
+            LoadPlayerData();
+            localizationManager.UpdateSelectedLanguage(playerInformation.LanguageSelected);
+            audioManager.UpdateMusicVolume(playerInformation.MusicVolumeSet);
+            audioManager.UpdateVFXMusicVolume(playerInformation.VfxVolumeSet);
             CreateInputControllers();
             ShowMainMenuElements();
         }
@@ -106,7 +114,7 @@ namespace PlanesRemake.Runtime.Core
         private void ShowMainMenuElements()
         {
             uiManager.DisplayView(ViewIds.AIRCRAFT_SHOWCASE, disableCurrentInteractableGroup: false);
-            EventDispatcher.Instance.Dispatch(UiEvents.OnSetShowcaseAircraft, playerInformation.aircraftSelected);
+            EventDispatcher.Instance.Dispatch(UiEvents.OnSetShowcaseAircraft, playerInformation.AircraftSelected);
             uiManager.DisplayView(ViewIds.MAIN_MENU, disableCurrentInteractableGroup: false);
             inputManager.EnableInput(uiManager);
         }
@@ -141,7 +149,7 @@ namespace PlanesRemake.Runtime.Core
                             {
                                 uiManager.RemoveView(ViewIds.AIRCRAFT_SHOWCASE);
                                 uiManager.RemoveView(ViewIds.MAIN_MENU);
-                                mainLevelSystems.Add(new LevelInitializer(playerInformation.aircraftSelected, uiManager, contentLoader, audioManager, cameraStackingManager));
+                                mainLevelSystems.Add(new LevelInitializer(playerInformation.AircraftSelected, uiManager, contentLoader, audioManager, cameraStackingManager));
                                 mainLevelSystemsInitializer.OnSystemsInitialized += OnMainLevelSystemsInitialized;
                                 mainLevelSystemsInitializer.InitializeSystems(mainLevelSystems);
                             });
@@ -201,7 +209,7 @@ namespace PlanesRemake.Runtime.Core
                 case UiEvents.OnMusicVolumeSliderUpdated:
                     {
                         float volume = (float)data;
-                        playerInformation.musicVolumeSet = volume;
+                        playerInformation.MusicVolumeSet = volume;
                         storageAccessor.Save(playerInformation);
                         audioManager.UpdateMusicVolume(volume);
                         break;
@@ -210,7 +218,7 @@ namespace PlanesRemake.Runtime.Core
                 case UiEvents.OnVfxVolumeSliderUpdated:
                     {
                         float volume = (float)data;
-                        playerInformation.vfxVolumeSet = volume;
+                        playerInformation.VfxVolumeSet = volume;
                         storageAccessor.Save(playerInformation);
                         audioManager.UpdateVFXMusicVolume(volume);
                         break;
@@ -219,7 +227,7 @@ namespace PlanesRemake.Runtime.Core
                 case UiEvents.OnSelectAircraftButtonPressed:
                     {
                         string aircraftId = data as string;
-                        playerInformation.aircraftSelected = aircraftId;
+                        playerInformation.AircraftSelected = aircraftId;
                         storageAccessor.Save(playerInformation);
                         break;
                     }
@@ -230,20 +238,29 @@ namespace PlanesRemake.Runtime.Core
                         string aircraftId = aircraftIdPricePair.Item1;
                         int price = aircraftIdPricePair.Item2;
 
-                        if (price > playerInformation.coinsCollected)
+                        if (price > playerInformation.CoinsCollected)
                         {
-                            string notEnoughCoinsMessage = "SORRY BUT YOU DON'T HAVE ENOUGH COINS COLLECTED TO BUY THIS AIRCRAFT";
+                            string notEnoughCoinsMessage = localizationManager.GetLocalizedText("Message.NotEnoughCoins");
                             MessageViewData messageViewData = new MessageViewData(notEnoughCoinsMessage);
                             uiManager.DisplayView(ViewIds.MESSAGE_WINDOW, disableCurrentInteractableGroup: true, messageViewData);
                         }
                         else
                         {
-                            playerInformation.coinsCollected = playerInformation.coinsCollected - price;
-                            playerInformation.aircraftsPurchased.Add(aircraftId);
+                            playerInformation.CoinsCollected = playerInformation.CoinsCollected - price;
+                            playerInformation.AircraftsPurchased.Add(aircraftId);
                             storageAccessor.Save(playerInformation);
                             EventDispatcher.Instance.Dispatch(UiEvents.OnUpdatePlayerInformation, playerInformation);
                         }
 
+                        break;
+                    }
+
+                case UiEvents.OnLanguageButtonPressed:
+                    {
+                        SystemLanguage languageSelected = (SystemLanguage)data;
+                        playerInformation.LanguageSelected = languageSelected;
+                        storageAccessor.Save(playerInformation);
+                        localizationManager.UpdateSelectedLanguage(languageSelected);
                         break;
                     }
 
@@ -287,7 +304,7 @@ namespace PlanesRemake.Runtime.Core
 
                 case GameplayEvents.OnWallEvaded:
                     {
-                        playerInformation.wallsEvaded++;
+                        playerInformation.WallsEvaded++;
                         gameSessionWallsEvaded++;
                         string wallsEvadedAsString = gameSessionWallsEvaded.ToString();
                         EventDispatcher.Instance.Dispatch(UiEvents.OnWallsValueChanged, wallsEvadedAsString);
@@ -296,7 +313,7 @@ namespace PlanesRemake.Runtime.Core
 
                 case GameplayEvents.OnCoinCollected:
                     {
-                        playerInformation.coinsCollected++;
+                        playerInformation.CoinsCollected++;
                         gameSessionCoinsCollected++;
                         string coinsCollectedAsString = gameSessionCoinsCollected.ToString();
                         EventDispatcher.Instance.Dispatch(UiEvents.OnCoinsValueChanged, coinsCollectedAsString);
@@ -347,13 +364,15 @@ namespace PlanesRemake.Runtime.Core
                 sourceMusicVolumeSet: 1, 
                 sourceVfxVolumeSet: 1,
                 sourceAircraftSelected: AircraftIds.PLANE,
-                sourceAircraftsPurchased: new List<string>() { AircraftIds.PLANE });
+                sourceAircraftsPurchased: new List<string>() { AircraftIds.PLANE },
+                sourceLanguageSelected: localizationManager.LanguageSelected);
 
             storageAccessor = new StorageAccessor();
 
             if (storageAccessor.DoesInformationExist(playerInformation.Key))
             {
-                playerInformation = storageAccessor.Load<PlayerInformation>(playerInformation.Key);
+                PlayerInformation playerInformationFound = storageAccessor.Load<PlayerInformation>(playerInformation.Key);
+                playerInformationFound.TrasferValidValues(ref playerInformation);
             }
         }
     }
