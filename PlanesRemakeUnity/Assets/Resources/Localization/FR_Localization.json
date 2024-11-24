@@ -1,0 +1,23 @@
+{
+  "Button.Play": "JOUER",
+  "Button.Options": "OPTIONS",
+  "Button.Shop": "BOUTIQUE",
+  "Button.Quit": "QUITTER",
+  "Button.Continue": "CONTINUER",
+  "Button.MainMenu": "MENU PRINCIPAL",
+  "Slider.MusicVolume": "VOLUME DE MUSIQUE",
+  "Slider.VfxVolume": "VOLUME DES VFX",
+  "Button.Return": "RETOURNER",
+  "Button.Purchase": "ACHETER",
+  "Button.Select": "SÉLECTIONNER",
+  "Text.Coins": "PIÈCES {0}",
+  "Text.Owned": "ACQUIS",
+  "Text.Price": "PRIX {0}",
+  "Message.NotEnoughCoins": "DÉSOLÉ MAIS VOUS N'AVEZ PAS ASSEZ DE PIÈCES COLLECTÉES POUR ACHETER CET AVION",
+  "Button.Ok": "D'ACCORD",
+  "Text.Fuel": "ESSENCE",
+  "Text.Language": "LANGUE",
+  "Button.English": "ENGLISH",
+  "Button.French": "FRANÇAISE",
+  "Button.Spanish": "ESPAÑOL"
+}

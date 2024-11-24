@@ -1,0 +1,23 @@
+{
+  "Button.Play": "PLAY",
+  "Button.Options": "OPTIONS",
+  "Button.Shop": "SHOP",
+  "Button.Quit": "QUIT",
+  "Button.Continue": "CONTINUE",
+  "Button.MainMenu": "MAIN MENU",
+  "Slider.MusicVolume": "MUSIC VOLUME",
+  "Slider.VfxVolume": "VFX VOLUME",
+  "Button.Return": "RETURN",
+  "Button.Purchase": "PURCHASE",
+  "Button.Select": "SELECT",
+  "Text.Coins": "COINS {0}",
+  "Text.Owned": "OWNED",
+  "Text.Price": "PRICE {0}",
+  "Message.NotEnoughCoins": "SORRY BUT YOU DON'T HAVE ENOUGH COINS COLLECTED TO BUY THIS AIRCRAFT",
+  "Button.Ok": "OK",
+  "Text.Fuel": "FUEL",
+  "Text.Language": "LANGUAGE",
+  "Button.English": "ENGLISH",
+  "Button.French": "FRANÇAISE",
+  "Button.Spanish": "ESPAÑOL"
+}

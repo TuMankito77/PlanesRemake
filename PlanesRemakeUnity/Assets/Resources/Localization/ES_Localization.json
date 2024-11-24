@@ -1,0 +1,23 @@
+{
+  "Button.Play": "JUGAR",
+  "Button.Options": "OPCIONES",
+  "Button.Shop": "TIENDA",
+  "Button.Quit": "ABANDONAR",
+  "Button.Continue": "CONTINUAR",
+  "Button.MainMenu": "MENÚ PRINCIPAL",
+  "Slider.MusicVolume": "VOLUMEN DE MÚSICA",
+  "Slider.VfxVolume": "VOLUMEN DE EFECTOS",
+  "Button.Return": "VOLVER",
+  "Button.Purchase": "COMPRAR",
+  "Button.Select": "SELECCIONAR",
+  "Text.Coins": "MONEDAS {0}",
+  "Text.Owned": "ADQUIRIDO",
+  "Text.Price": "PRECIO {0}",
+  "Message.NotEnoughCoins": "LO SIENTO PERO NO TIENES SUFICIENTES MONEDAS RECOGIDAS PARA COMPRAR ESTA AERONAVE",
+  "Button.Ok": "DE ACUERDO",
+  "Text.Fuel": "COMBUSTIBLE",
+  "Text.Language": "IDIOMA",
+  "Button.English": "ENGLISH",
+  "Button.French": "FRANÇAISE",
+  "Button.Spanish": "ESPAÑOL"
+}
