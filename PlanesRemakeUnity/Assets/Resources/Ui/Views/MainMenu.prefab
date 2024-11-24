@@ -1547,6 +1547,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1678741085558982589, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: localizationKey
+      value: Button.Play
+      objectReference: {fileID: 0}
     - target: {fileID: 6715635896082630800, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}
       propertyPath: m_Name
@@ -1682,6 +1687,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1678741085558982589, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: localizationKey
+      value: Button.Shop
       objectReference: {fileID: 0}
     - target: {fileID: 3755007923083715559, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}
@@ -1824,6 +1834,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1678741085558982589, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: localizationKey
+      value: Button.Options
+      objectReference: {fileID: 0}
     - target: {fileID: 3755007923083715559, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}
       propertyPath: m_Text
@@ -1964,6 +1979,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1678741085558982589, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: localizationKey
+      value: Button.Quit
       objectReference: {fileID: 0}
     - target: {fileID: 3755007923083715559, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}

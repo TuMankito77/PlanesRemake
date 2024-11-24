@@ -454,7 +454,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &2900652831481229611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1431,6 +1431,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1678741085558982589, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: localizationKey
+      value: Button.MainMenu
+      objectReference: {fileID: 0}
     - target: {fileID: 3755007923083715559, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}
       propertyPath: m_Text
@@ -1572,6 +1577,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1678741085558982589, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: localizationKey
+      value: Button.Options
+      objectReference: {fileID: 0}
     - target: {fileID: 3755007923083715559, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}
       propertyPath: m_Text
@@ -1712,6 +1722,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1678741085558982589, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: localizationKey
+      value: Button.Continue
       objectReference: {fileID: 0}
     - target: {fileID: 3755007923083715559, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}

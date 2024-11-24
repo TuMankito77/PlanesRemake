@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5492529780778041831}
   - component: {fileID: 4668423752422001220}
   - component: {fileID: 4730527816428373351}
+  - component: {fileID: 5272483619037735581}
   m_Layer: 5
   m_Name: CoinsNumber
   m_TagString: Untagged
@@ -100,6 +101,21 @@ MonoBehaviour:
   m_FlexibleWidth: 1
   m_FlexibleHeight: 1
   m_LayoutPriority: 1
+--- !u!114 &5272483619037735581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 25860698311239025}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
+  m_EffectDistance: {x: 6.02, y: 7.73}
+  m_UseGraphicAlpha: 1
 --- !u!1 &348208761898237953
 GameObject:
   m_ObjectHideFlags: 0
@@ -358,6 +374,7 @@ GameObject:
   - component: {fileID: 1419137675176524333}
   - component: {fileID: 8649528311842907594}
   - component: {fileID: 55305429043861316}
+  - component: {fileID: 950923216533831337}
   m_Layer: 5
   m_Name: WallsNumber
   m_TagString: Untagged
@@ -446,6 +463,21 @@ MonoBehaviour:
   m_FlexibleWidth: 1
   m_FlexibleHeight: 1
   m_LayoutPriority: 1
+--- !u!114 &950923216533831337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3455920800284179892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
+  m_EffectDistance: {x: 6.02, y: 7.73}
+  m_UseGraphicAlpha: 1
 --- !u!1 &3532923284742602980
 GameObject:
   m_ObjectHideFlags: 0
@@ -1326,6 +1358,7 @@ GameObject:
   - component: {fileID: 5196169418031699143}
   - component: {fileID: 711424360329248399}
   - component: {fileID: 1571476781665623708}
+  - component: {fileID: 8972380103615813753}
   m_Layer: 5
   m_Name: ButtonText
   m_TagString: Untagged
@@ -1409,6 +1442,20 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
   m_EffectDistance: {x: 6.02, y: 7.73}
   m_UseGraphicAlpha: 1
+--- !u!114 &8972380103615813753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5573994131162942646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e96006e4c246a7341a9757acfce24bca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textComponent: {fileID: 711424360329248399}
+  localizationKey: Text.Fuel
 --- !u!1 &6058091356613168507
 GameObject:
   m_ObjectHideFlags: 0
@@ -2163,7 +2210,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: BaseButton
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1678741085558982589, guid: b001b050f1df26644accf75aba3a48cb, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:

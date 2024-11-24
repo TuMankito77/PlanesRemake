@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -359,6 +359,7 @@ GameObject:
   - component: {fileID: 7008592268280676552}
   - component: {fileID: 3205378752488059577}
   - component: {fileID: 801378951276231824}
+  - component: {fileID: 4388379407531514248}
   m_Layer: 5
   m_Name: PriceText
   m_TagString: Untagged
@@ -458,6 +459,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 0
+--- !u!114 &4388379407531514248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1100317632374786249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e96006e4c246a7341a9757acfce24bca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textComponent: {fileID: 7008592268280676552}
+  localizationKey: Text.Price
 --- !u!1 &1916568491013401282
 GameObject:
   m_ObjectHideFlags: 0
@@ -898,6 +913,7 @@ GameObject:
   - component: {fileID: 4971209380827172302}
   - component: {fileID: 3155337859709229316}
   - component: {fileID: 8959922637459774738}
+  - component: {fileID: 6922358866674066080}
   m_Layer: 5
   m_Name: OwnedText
   m_TagString: Untagged
@@ -981,6 +997,20 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
   m_EffectDistance: {x: 6.02, y: 7.73}
   m_UseGraphicAlpha: 1
+--- !u!114 &6922358866674066080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2874719552853153689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e96006e4c246a7341a9757acfce24bca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textComponent: {fileID: 3155337859709229316}
+  localizationKey: Text.Owned
 --- !u!1 &3066975568813671929
 GameObject:
   m_ObjectHideFlags: 0
@@ -1221,7 +1251,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -1712,6 +1742,7 @@ GameObject:
   - component: {fileID: 5800530184845885180}
   - component: {fileID: 8104620911174016138}
   - component: {fileID: 9048309560156999754}
+  - component: {fileID: 7539213027229573638}
   m_Layer: 5
   m_Name: CoinsText
   m_TagString: Untagged
@@ -1811,6 +1842,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 0
+--- !u!114 &7539213027229573638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5135607898821806266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e96006e4c246a7341a9757acfce24bca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textComponent: {fileID: 5800530184845885180}
+  localizationKey: Text.Coins
 --- !u!1 &6082153177324519022
 GameObject:
   m_ObjectHideFlags: 0
@@ -2752,6 +2797,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1678741085558982589, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: localizationKey
+      value: Button.Return
+      objectReference: {fileID: 0}
     - target: {fileID: 3755007923083715559, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}
       propertyPath: m_Text
@@ -2917,6 +2967,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1678741085558982589, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: localizationKey
+      value: Button.Select
+      objectReference: {fileID: 0}
     - target: {fileID: 3755007923083715559, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}
       propertyPath: m_Text
@@ -3062,6 +3117,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1678741085558982589, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: localizationKey
+      value: Button.Purchase
       objectReference: {fileID: 0}
     - target: {fileID: 3755007923083715559, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}

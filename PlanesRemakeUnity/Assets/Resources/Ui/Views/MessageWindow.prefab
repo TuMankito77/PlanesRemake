@@ -800,6 +800,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1678741085558982589, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: localizationKey
+      value: Button.Ok
+      objectReference: {fileID: 0}
     - target: {fileID: 2537356338216927275, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}
       propertyPath: m_AnchoredPosition.y
