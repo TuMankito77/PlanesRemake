@@ -338,7 +338,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ce06f2510ca8c448b1e00bf693bdfc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationDuration: 0.5
+  animationDuration: 1
   transitionAnimaitonCurve:
     serializedVersion: 2
     m_Curve:
@@ -346,14 +346,23 @@ MonoBehaviour:
       time: 0
       value: 0
       inSlope: 7.172714
-      outSlope: 7.172714
-      tangentMode: 0
+      outSlope: 0
+      tangentMode: 65
       weightedMode: 0
       inWeight: 0
       outWeight: 0.15022534
     - serializedVersion: 3
-      time: 0.11724293
-      value: 0.72367835
+      time: 0.25
+      value: 0
+      inSlope: -0
+      outSlope: 7.3947024
+      tangentMode: 5
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.36360863
+      value: 0.7273764
       inSlope: 2.877913
       outSlope: 2.877913
       tangentMode: 0
@@ -361,8 +370,8 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.26112753
     - serializedVersion: 3
-      time: 0.17061643
-      value: 0.8288742
+      time: 0.41698214
+      value: 0.8325722
       inSlope: 1.2284995
       outSlope: 1.2284995
       tangentMode: 0
@@ -370,22 +379,22 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.73397225
     - serializedVersion: 3
-      time: 0.2671486
-      value: 0.89347804
-      inSlope: 0.38778153
-      outSlope: 0.38778153
+      time: 0.5014975
+      value: 0.9197821
+      inSlope: 0.48832422
+      outSlope: 0.48832422
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.11479295
+      outWeight: 0.19800779
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 0
-      outSlope: 0
+      inSlope: 0.08734192
+      outSlope: 0.08734192
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.5387625
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -454,7 +463,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &2900652831481229611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1436,11 +1445,51 @@ PrefabInstance:
       propertyPath: localizationKey
       value: Button.MainMenu
       objectReference: {fileID: 0}
+    - target: {fileID: 3591473433201196268, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3755007923083715559, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}
       propertyPath: m_Text
       value: MAIN MENU
       objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: triggerButtonActionBeforeAnimation
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].neighborDirection
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].selectableNeighbors.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 8731933033663238970}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 1209981312708023217}
     - target: {fileID: 6715635896082630800, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}
       propertyPath: m_Name
@@ -1582,11 +1631,51 @@ PrefabInstance:
       propertyPath: localizationKey
       value: Button.Options
       objectReference: {fileID: 0}
+    - target: {fileID: 3591473433201196268, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3755007923083715559, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}
       propertyPath: m_Text
       value: OPTIONS
       objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: triggerButtonActionBeforeAnimation
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].neighborDirection
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].selectableNeighbors.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 1209981312708023217}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 6366383083618151281}
     - target: {fileID: 6715635896082630800, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}
       propertyPath: m_Name
@@ -1728,11 +1817,56 @@ PrefabInstance:
       propertyPath: localizationKey
       value: Button.Continue
       objectReference: {fileID: 0}
+    - target: {fileID: 3591473433201196268, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3755007923083715559, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}
       propertyPath: m_Text
       value: CONTINUE
       objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: triggerButtonActionBeforeAnimation
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].neighborDirection
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].selectableNeighbors.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 6366383083618151281}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.data[1]
+      value: 
+      objectReference: {fileID: 6366383083618151281}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 8731933033663238970}
     - target: {fileID: 6715635896082630800, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}
       propertyPath: m_Name

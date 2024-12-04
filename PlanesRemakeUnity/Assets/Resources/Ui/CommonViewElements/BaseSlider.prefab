@@ -539,6 +539,7 @@ GameObject:
   - component: {fileID: 3864221104834240729}
   - component: {fileID: 8671043921543493747}
   - component: {fileID: 1351791335296778020}
+  - component: {fileID: 1503719537224194032}
   m_Layer: 5
   m_Name: Slider
   m_TagString: Untagged
@@ -632,7 +633,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventTrigger: {fileID: 0}
+  deselectAfterSubmitAction: 0
+  selectableElementNeighborGroups: []
   slider: {fileID: 0}
+  sliderSelectedColor: {r: 0.5294118, g: 0.5294118, b: 0.5294118, a: 1}
+  fillerImage: {fileID: 2101139685836858906}
+  backgroundFillerImage: {fileID: 1712237566625063399}
 --- !u!114 &1351791335296778020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -647,3 +653,66 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_AspectMode: 1
   m_AspectRatio: 8.170841
+--- !u!114 &1503719537224194032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8366552378302172770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6918040983ab3bc499e8e5740adc73c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  submitAnimationDuration: 0
+  selectAnimationDuration: 0.25
+  playAnimationOnSubmit: 0
+  selectAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 1.0112879
+      outSlope: 1.0112879
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.07415347
+    - serializedVersion: 3
+      time: 1
+      value: 1.1
+      inSlope: -0.16118278
+      outSlope: -0.16118278
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.12751728
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  submitAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

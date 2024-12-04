@@ -213,9 +213,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 1}
+    m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_SelectedColor: {r: 1, g: 1, b: 1, a: 0.18039216}
+    m_SelectedColor: {r: 0.5294118, g: 0.5294118, b: 0.5294118, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -287,8 +287,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6918040983ab3bc499e8e5740adc73c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationDuration: 0.5
+  submitAnimationDuration: 0.5
+  selectAnimationDuration: 0.25
   selectAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 1.0112879
+      outSlope: 1.0112879
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.07415347
+    - serializedVersion: 3
+      time: 1
+      value: 1.1
+      inSlope: -0.16118278
+      outSlope: -0.16118278
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.12751728
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  submitAnimationCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -299,33 +324,9 @@ MonoBehaviour:
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 1.2
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  submitAnimationCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1.2
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.5
+      time: 0.1
       value: 0.7
       inSlope: 0
       outSlope: 0
@@ -334,10 +335,46 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
+      time: 0.28203747
+      value: 1.0602317
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.45006126
+      value: 0.95163155
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.6141901
+      value: 1.0142796
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.7652896
+      value: 0.9868648
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
       time: 1
-      value: 1.2
-      inSlope: 0.5
-      outSlope: 0.5
+      value: 1
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0

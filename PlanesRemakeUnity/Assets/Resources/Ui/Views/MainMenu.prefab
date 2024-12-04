@@ -376,7 +376,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ce06f2510ca8c448b1e00bf693bdfc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationDuration: 0.5
+  animationDuration: 1
   transitionAnimaitonCurve:
     serializedVersion: 2
     m_Curve:
@@ -1552,6 +1552,76 @@ PrefabInstance:
       propertyPath: localizationKey
       value: Button.Play
       objectReference: {fileID: 0}
+    - target: {fileID: 3591473433201196268, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3591473433201196268, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 5344098095916920296}
+    - target: {fileID: 3591473433201196268, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 7440169887093878875}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: triggerButtonActionBeforeAnimation
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].neighborDirection
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[2].neighborDirection
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[3].neighborDirection
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].selectableNeighbors.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 3073608648979936138}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.data[1]
+      value: 
+      objectReference: {fileID: 3073608648979936138}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.data[2]
+      value: 
+      objectReference: {fileID: 3073608648979936138}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 562212425029758521}
     - target: {fileID: 6715635896082630800, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}
       propertyPath: m_Name
@@ -1568,6 +1638,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1309590033240805906}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2592915862730075902 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3591473433201196268, guid: b001b050f1df26644accf75aba3a48cb,
+    type: 3}
+  m_PrefabInstance: {fileID: 1309590033240805906}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4861153190466039964 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
@@ -1693,11 +1775,71 @@ PrefabInstance:
       propertyPath: localizationKey
       value: Button.Shop
       objectReference: {fileID: 0}
+    - target: {fileID: 3591473433201196268, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3591473433201196268, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 7440169887093878875}
+    - target: {fileID: 3591473433201196268, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 5344098095916920296}
     - target: {fileID: 3755007923083715559, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}
       propertyPath: m_Text
       value: SHOP
       objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: triggerButtonActionBeforeAnimation
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].neighborDirection
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[2].neighborDirection
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[3].neighborDirection
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].selectableNeighbors.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 562212425029758521}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 3073608648979936138}
     - target: {fileID: 6715635896082630800, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}
       propertyPath: m_Name
@@ -1708,6 +1850,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b001b050f1df26644accf75aba3a48cb, type: 3}
+--- !u!114 &474793185066184874 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3591473433201196268, guid: b001b050f1df26644accf75aba3a48cb,
+    type: 3}
+  m_PrefabInstance: {fileID: 3981665778395040838}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &2751132936810547598 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1255461106662016456, guid: b001b050f1df26644accf75aba3a48cb,
@@ -1839,11 +1993,71 @@ PrefabInstance:
       propertyPath: localizationKey
       value: Button.Options
       objectReference: {fileID: 0}
+    - target: {fileID: 3591473433201196268, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3591473433201196268, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 2592915862730075902}
+    - target: {fileID: 3591473433201196268, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 474793185066184874}
     - target: {fileID: 3755007923083715559, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}
       propertyPath: m_Text
       value: OPTIONS
       objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: triggerButtonActionBeforeAnimation
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].neighborDirection
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[2].neighborDirection
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[3].neighborDirection
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].selectableNeighbors.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 4861153190466039964}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 7357588549079215816}
     - target: {fileID: 6715635896082630800, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}
       propertyPath: m_Name
@@ -1872,6 +2086,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 6239650528251104439}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7440169887093878875 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3591473433201196268, guid: b001b050f1df26644accf75aba3a48cb,
+    type: 3}
+  m_PrefabInstance: {fileID: 6239650528251104439}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8934427976553828612
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1985,11 +2211,66 @@ PrefabInstance:
       propertyPath: localizationKey
       value: Button.Quit
       objectReference: {fileID: 0}
+    - target: {fileID: 3591473433201196268, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3591473433201196268, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 474793185066184874}
+    - target: {fileID: 3591473433201196268, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 2592915862730075902}
     - target: {fileID: 3755007923083715559, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}
       propertyPath: m_Text
       value: QUIT
       objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].neighborDirection
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[2].neighborDirection
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[3].neighborDirection
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].selectableNeighbors.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 7357588549079215816}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 4861153190466039964}
     - target: {fileID: 6715635896082630800, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}
       propertyPath: m_Name
@@ -2010,6 +2291,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bec8debc353ef7d4da92e7fd15668ca9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5344098095916920296 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3591473433201196268, guid: b001b050f1df26644accf75aba3a48cb,
+    type: 3}
+  m_PrefabInstance: {fileID: 8934427976553828612}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &7678986811764708556 stripped

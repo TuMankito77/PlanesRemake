@@ -362,7 +362,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ce06f2510ca8c448b1e00bf693bdfc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationDuration: 0.5
+  animationDuration: 1
   transitionAnimaitonCurve:
     serializedVersion: 2
     m_Curve:
@@ -370,14 +370,23 @@ MonoBehaviour:
       time: 0
       value: 0
       inSlope: 7.172714
-      outSlope: 7.172714
-      tangentMode: 0
+      outSlope: 0
+      tangentMode: 65
       weightedMode: 0
       inWeight: 0
       outWeight: 0.15022534
     - serializedVersion: 3
-      time: 0.11724293
-      value: 0.72367835
+      time: 0.25
+      value: 0
+      inSlope: -0
+      outSlope: 7.3947024
+      tangentMode: 5
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.36360863
+      value: 0.7273764
       inSlope: 2.877913
       outSlope: 2.877913
       tangentMode: 0
@@ -385,8 +394,8 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.26112753
     - serializedVersion: 3
-      time: 0.17061643
-      value: 0.8288742
+      time: 0.41698214
+      value: 0.8325722
       inSlope: 1.2284995
       outSlope: 1.2284995
       tangentMode: 0
@@ -394,22 +403,22 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.73397225
     - serializedVersion: 3
-      time: 0.2671486
-      value: 0.89347804
-      inSlope: 0.38778153
-      outSlope: 0.38778153
+      time: 0.5014975
+      value: 0.9197821
+      inSlope: 0.48832422
+      outSlope: 0.48832422
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.11479295
+      outWeight: 0.19800779
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 0
-      outSlope: 0
+      inSlope: 0.08734192
+      outSlope: 0.08734192
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.5387625
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -1563,6 +1572,21 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -5
       objectReference: {fileID: 0}
+    - target: {fileID: 3864221104834240729, guid: 4bae0a438ff5aca4b8448a2e4f482851,
+        type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3864221104834240729, guid: 4bae0a438ff5aca4b8448a2e4f482851,
+        type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 4619679950228022787}
+    - target: {fileID: 3864221104834240729, guid: 4bae0a438ff5aca4b8448a2e4f482851,
+        type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 4616923327090101624}
     - target: {fileID: 4544755173949954095, guid: 4bae0a438ff5aca4b8448a2e4f482851,
         type: 3}
       propertyPath: m_Name
@@ -1698,6 +1722,36 @@ PrefabInstance:
       propertyPath: m_FontData.m_FontSize
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 8671043921543493747, guid: 4bae0a438ff5aca4b8448a2e4f482851,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8671043921543493747, guid: 4bae0a438ff5aca4b8448a2e4f482851,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].neighborDirection
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8671043921543493747, guid: 4bae0a438ff5aca4b8448a2e4f482851,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8671043921543493747, guid: 4bae0a438ff5aca4b8448a2e4f482851,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].selectableNeighbors.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8671043921543493747, guid: 4bae0a438ff5aca4b8448a2e4f482851,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 1002510985951149737}
+    - target: {fileID: 8671043921543493747, guid: 4bae0a438ff5aca4b8448a2e4f482851,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 2350651829846004506}
     - target: {fileID: 8743143163575814239, guid: 4bae0a438ff5aca4b8448a2e4f482851,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -1713,6 +1767,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4bae0a438ff5aca4b8448a2e4f482851, type: 3}
+--- !u!114 &3943290887107776147 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3864221104834240729, guid: 4bae0a438ff5aca4b8448a2e4f482851,
+    type: 3}
+  m_PrefabInstance: {fileID: 223239018323537482}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &6939504184916407475 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7158200021092473593, guid: 4bae0a438ff5aca4b8448a2e4f482851,
@@ -1844,6 +1910,21 @@ PrefabInstance:
       propertyPath: localizationKey
       value: Button.French
       objectReference: {fileID: 0}
+    - target: {fileID: 3591473433201196268, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3591473433201196268, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 3943290887107776147}
+    - target: {fileID: 3591473433201196268, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 4619679950228022787}
     - target: {fileID: 3755007923083715559, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}
       propertyPath: m_Text
@@ -1854,6 +1935,101 @@ PrefabInstance:
       propertyPath: triggerButtonActionBeforeAnimation
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].neighborDirection
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].neighborDirection
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[2].neighborDirection
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[3].neighborDirection
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[4].neighborDirection
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].selectableNeighbors.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[2].selectableNeighbors.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[3].selectableNeighbors.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[4].selectableNeighbors.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 764916938968146650}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.data[1]
+      value: 
+      objectReference: {fileID: 5083743880598683007}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 2350651829846004506}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[2].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 1002510985951149737}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[2].selectableNeighbors.Array.data[1]
+      value: 
+      objectReference: {fileID: 5083743880598683007}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[3].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 5083743880598683007}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[3].selectableNeighbors.Array.data[1]
+      value: 
+      objectReference: {fileID: 764916938968146650}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[4].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 1002510985951149737}
     - target: {fileID: 6715635896082630800, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}
       propertyPath: m_Name
@@ -1996,6 +2172,21 @@ PrefabInstance:
       propertyPath: localizationKey
       value: Button.English
       objectReference: {fileID: 0}
+    - target: {fileID: 3591473433201196268, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3591473433201196268, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 3943290887107776147}
+    - target: {fileID: 3591473433201196268, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 4619679950228022787}
     - target: {fileID: 3755007923083715559, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}
       propertyPath: m_Text
@@ -2006,6 +2197,86 @@ PrefabInstance:
       propertyPath: triggerButtonActionBeforeAnimation
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].neighborDirection
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].neighborDirection
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[2].neighborDirection
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[3].neighborDirection
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].selectableNeighbors.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[2].selectableNeighbors.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[3].selectableNeighbors.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 6085399597118012624}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.data[1]
+      value: 
+      objectReference: {fileID: 764916938968146650}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 2350651829846004506}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[2].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 1002510985951149737}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[2].selectableNeighbors.Array.data[1]
+      value: 
+      objectReference: {fileID: 764916938968146650}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[3].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 764916938968146650}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[3].selectableNeighbors.Array.data[1]
+      value: 
+      objectReference: {fileID: 6085399597118012624}
     - target: {fileID: 6715635896082630800, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}
       propertyPath: m_Name
@@ -2023,6 +2294,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1718059758980669425}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2738395490383700765 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3591473433201196268, guid: b001b050f1df26644accf75aba3a48cb,
+    type: 3}
+  m_PrefabInstance: {fileID: 1718059758980669425}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5083743880598683007 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
@@ -2148,6 +2431,21 @@ PrefabInstance:
       propertyPath: localizationKey
       value: Button.Spanish
       objectReference: {fileID: 0}
+    - target: {fileID: 3591473433201196268, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3591473433201196268, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 3943290887107776147}
+    - target: {fileID: 3591473433201196268, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 4619679950228022787}
     - target: {fileID: 3755007923083715559, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}
       propertyPath: m_Text
@@ -2158,6 +2456,101 @@ PrefabInstance:
       propertyPath: triggerButtonActionBeforeAnimation
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].neighborDirection
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].neighborDirection
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[2].neighborDirection
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[3].neighborDirection
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[4].neighborDirection
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].selectableNeighbors.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[2].selectableNeighbors.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[3].selectableNeighbors.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[4].selectableNeighbors.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 5083743880598683007}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.data[1]
+      value: 
+      objectReference: {fileID: 6085399597118012624}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 2350651829846004506}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[2].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 1002510985951149737}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[2].selectableNeighbors.Array.data[1]
+      value: 
+      objectReference: {fileID: 6085399597118012624}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[3].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 6085399597118012624}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[3].selectableNeighbors.Array.data[1]
+      value: 
+      objectReference: {fileID: 5083743880598683007}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[4].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 1002510985951149737}
     - target: {fileID: 6715635896082630800, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}
       propertyPath: m_Name
@@ -2300,11 +2693,71 @@ PrefabInstance:
       propertyPath: localizationKey
       value: Button.Return
       objectReference: {fileID: 0}
+    - target: {fileID: 3591473433201196268, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3591473433201196268, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 3943290887107776147}
+    - target: {fileID: 3591473433201196268, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 2738395490383700765}
     - target: {fileID: 3755007923083715559, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}
       propertyPath: m_Text
       value: RETURN
       objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: triggerButtonActionBeforeAnimation
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].neighborDirection
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].selectableNeighbors.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 8884658912335664697}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 5083743880598683007}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].selectableNeighbors.Array.data[1]
+      value: 
+      objectReference: {fileID: 6085399597118012624}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].selectableNeighbors.Array.data[2]
+      value: 
+      objectReference: {fileID: 764916938968146650}
     - target: {fileID: 6715635896082630800, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}
       propertyPath: m_Name
@@ -2351,6 +2804,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controlPathSelected: <Gamepad>/{Back}
   linkedButton: {fileID: 2350651829846004506}
+--- !u!114 &4616923327090101624 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3591473433201196268, guid: b001b050f1df26644accf75aba3a48cb,
+    type: 3}
+  m_PrefabInstance: {fileID: 8198206374247543188}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3240157442331392260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &6965285745702909020 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1255461106662016456, guid: b001b050f1df26644accf75aba3a48cb,
@@ -2405,6 +2870,21 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -5
       objectReference: {fileID: 0}
+    - target: {fileID: 3864221104834240729, guid: 4bae0a438ff5aca4b8448a2e4f482851,
+        type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3864221104834240729, guid: 4bae0a438ff5aca4b8448a2e4f482851,
+        type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 2738395490383700765}
+    - target: {fileID: 3864221104834240729, guid: 4bae0a438ff5aca4b8448a2e4f482851,
+        type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 3943290887107776147}
     - target: {fileID: 4544755173949954095, guid: 4bae0a438ff5aca4b8448a2e4f482851,
         type: 3}
       propertyPath: m_Name
@@ -2520,6 +3000,46 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8671043921543493747, guid: 4bae0a438ff5aca4b8448a2e4f482851,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8671043921543493747, guid: 4bae0a438ff5aca4b8448a2e4f482851,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].neighborDirection
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8671043921543493747, guid: 4bae0a438ff5aca4b8448a2e4f482851,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8671043921543493747, guid: 4bae0a438ff5aca4b8448a2e4f482851,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].selectableNeighbors.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8671043921543493747, guid: 4bae0a438ff5aca4b8448a2e4f482851,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 5083743880598683007}
+    - target: {fileID: 8671043921543493747, guid: 4bae0a438ff5aca4b8448a2e4f482851,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.data[1]
+      value: 
+      objectReference: {fileID: 6085399597118012624}
+    - target: {fileID: 8671043921543493747, guid: 4bae0a438ff5aca4b8448a2e4f482851,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[0].selectableNeighbors.Array.data[2]
+      value: 
+      objectReference: {fileID: 764916938968146650}
+    - target: {fileID: 8671043921543493747, guid: 4bae0a438ff5aca4b8448a2e4f482851,
+        type: 3}
+      propertyPath: selectableElementNeighborGroups.Array.data[1].selectableNeighbors.Array.data[0]
+      value: 
+      objectReference: {fileID: 8884658912335664697}
     - target: {fileID: 8743143163575814239, guid: 4bae0a438ff5aca4b8448a2e4f482851,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -2553,3 +3073,15 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 8483689811086116570}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4619679950228022787 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3864221104834240729, guid: 4bae0a438ff5aca4b8448a2e4f482851,
+    type: 3}
+  m_PrefabInstance: {fileID: 8483689811086116570}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -1140,7 +1140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ce06f2510ca8c448b1e00bf693bdfc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationDuration: 0.5
+  animationDuration: 1
   transitionAnimaitonCurve:
     serializedVersion: 2
     m_Curve:
@@ -2204,6 +2204,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_PreferredHeight
       value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862226702457496206, guid: b001b050f1df26644accf75aba3a48cb,
+        type: 3}
+      propertyPath: triggerButtonActionBeforeAnimation
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6715635896082630800, guid: b001b050f1df26644accf75aba3a48cb,
         type: 3}
