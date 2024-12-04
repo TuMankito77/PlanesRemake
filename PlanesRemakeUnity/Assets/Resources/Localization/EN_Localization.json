@@ -19,5 +19,6 @@
   "Text.Language": "LANGUAGE",
   "Button.English": "ENGLISH",
   "Button.French": "FRANÇAISE",
-  "Button.Spanish": "ESPAÑOL"
+  "Button.Spanish": "ESPAÑOL",
+  "Text.ControllerCompatible": "COMPATIBLE WITH GAMEPADS TOO!"
 }
