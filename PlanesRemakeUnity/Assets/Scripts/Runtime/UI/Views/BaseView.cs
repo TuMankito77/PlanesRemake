@@ -1,11 +1,13 @@
 namespace PlanesRemake.Runtime.UI.Views 
 {
+    using System;
+    
     using UnityEngine;
+    using UnityEngine.UI;
+    using UnityEngine.EventSystems;
     
     using PlanesRemake.Runtime.Sound;
     using PlanesRemake.Runtime.UI.CoreElements;
-    using UnityEngine.UI;
-    using System;
     using PlanesRemake.Runtime.UI.Views.DataContainers;
     using PlanesRemake.Runtime.Localization;
 
@@ -23,11 +25,14 @@ namespace PlanesRemake.Runtime.UI.Views
         private SelectableElement[] selectableElements = new SelectableElement[0];
         private IViewAnimator viewAnimator = null;
         private int interactableGroupId = -1;
+        private EventSystem eventSystem = null;
 
         public Canvas Canvas { get; private set; } = null;
         public CanvasGroup CanvasGroup { get; private set; } = null;
         public CanvasScaler CanvasScaler { get; private set; } = null;
         public int InteractableGroupId { get => interactableGroupId; private set => interactableGroupId = value; }
+        public SelectableElement[] SelectableElements => selectableElements;
+        public SelectableElement currentSelectableElementSelected = null;
 
         #region Unity Methods
 
@@ -73,7 +78,7 @@ namespace PlanesRemake.Runtime.UI.Views
             CanvasGroup.interactable = isInractable;
         }
 
-        public virtual void Initialize(Camera uiCamera, AudioManager sourceAudioManager, ViewInjectableData viewInjectableData, LocalizationManager localizationManager)
+        public virtual void Initialize(Camera uiCamera, AudioManager sourceAudioManager, ViewInjectableData viewInjectableData, LocalizationManager localizationManager, EventSystem sourceEventSystem)
         {
             Canvas = GetComponent<Canvas>();
             CanvasGroup = GetComponent<CanvasGroup>();
@@ -82,6 +87,7 @@ namespace PlanesRemake.Runtime.UI.Views
             Canvas.worldCamera = uiCamera;
             CanvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             audioManager = sourceAudioManager;
+            eventSystem = sourceEventSystem;
 
             foreach(LocalizedText localizedText in GetComponentsInChildren<LocalizedText>(includeInactive: true))
             {
@@ -112,6 +118,23 @@ namespace PlanesRemake.Runtime.UI.Views
             }
         }
 
+        public virtual void SelectNeighborButton(SelectableNeighborDirection neighborDirection)
+        {
+            if(currentSelectableElementSelected == null)
+            {
+                SelectFirstActiveButton();
+                return;
+            }
+
+            SelectableElement neighbor = currentSelectableElementSelected.GetNeighbor(neighborDirection);
+            
+            if(neighbor != null && neighbor.isActiveAndEnabled)
+            {
+                eventSystem.SetSelectedGameObject(neighbor.gameObject);
+                currentSelectableElementSelected = neighbor;
+            }
+        }
+
         public virtual void TransitionOut()
         {
             SetInteractable(false);
@@ -124,6 +147,19 @@ namespace PlanesRemake.Runtime.UI.Views
             {
                 CanvasGroup.alpha = 0;
                 onTransitionOutFinished?.Invoke();
+            }
+        }
+
+        private void SelectFirstActiveButton()
+        {
+            foreach (SelectableElement selectableElement in SelectableElements)
+            {
+                if (selectableElement.IsInteractable)
+                {
+                    currentSelectableElementSelected = selectableElement;
+                    eventSystem.SetSelectedGameObject(selectableElement.gameObject);
+                    break;
+                }
             }
         }
 

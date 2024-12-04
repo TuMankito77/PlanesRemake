@@ -13,6 +13,7 @@ namespace PlanesRemake.Runtime.UI.Views
     using PlanesRemake.Runtime.Sound;
     using PlanesRemake.Runtime.UI.Views.DataContainers;
     using PlanesRemake.Runtime.Localization;
+    using UnityEngine.EventSystems;
 
     public class ShopView : BaseView, IListener
     {
@@ -148,9 +149,9 @@ namespace PlanesRemake.Runtime.UI.Views
 
         #endregion
 
-        public override void Initialize(Camera uiCamera, AudioManager sourceAudioManager, ViewInjectableData viewInjectableData, LocalizationManager sourceLocalizationManager)
+        public override void Initialize(Camera uiCamera, AudioManager sourceAudioManager, ViewInjectableData viewInjectableData, LocalizationManager sourceLocalizationManager, EventSystem eventSystem)
         {
-            base.Initialize(uiCamera, sourceAudioManager, viewInjectableData, sourceLocalizationManager);
+            base.Initialize(uiCamera, sourceAudioManager, viewInjectableData, sourceLocalizationManager, eventSystem);
             localizationManager = sourceLocalizationManager;
             ShopViewData shopViewData = viewInjectableData as ShopViewData;
             

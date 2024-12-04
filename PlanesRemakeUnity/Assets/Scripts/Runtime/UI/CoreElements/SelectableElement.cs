@@ -1,12 +1,20 @@
 namespace PlanesRemake.Runtime.UI.CoreElements
 {
     using System;
-    
+
     using UnityEngine;
     using UnityEngine.EventSystems;
+    using UnityEngine.UI;
 
-    public class SelectableElement : MonoBehaviour
+    public abstract class SelectableElement : MonoBehaviour
     {
+        [Serializable]
+        private struct SelectableElementNeighborGroup
+        {
+            public SelectableNeighborDirection neighborDirection;
+            public SelectableElement[] selectableNeighbors;
+        }
+
         public event Action onSubmit = null;
         public event Action onSelect = null;
         public event Action onDeselect = null;
@@ -14,8 +22,18 @@ namespace PlanesRemake.Runtime.UI.CoreElements
         [SerializeField]
         private EventTrigger eventTrigger = null;
 
+        [SerializeField]
+        private bool deselectAfterSubmitAction = true;
+
+        [SerializeField]
+        private SelectableElementNeighborGroup[] selectableElementNeighborGroups = new SelectableElementNeighborGroup[0];
+
         protected EventTriggerController eventTriggerController = null;
+        
         private bool isSubscribedToInteractableEvents = false;
+
+        public bool DeselectAfterSubmitAction => deselectAfterSubmitAction;
+        public bool IsInteractable { get; private set; } = true;
 
         #region Unity Methods
 
@@ -42,13 +60,20 @@ namespace PlanesRemake.Runtime.UI.CoreElements
 
         #endregion
 
-        public virtual void SetInteractable(bool isActive)
+        public virtual void SetAnimationExternalModule(ISeletableElementAnimator selectableElementAnimator)
         {
-            if(isActive && !isSubscribedToInteractableEvents)
+            
+        }
+
+        public virtual void SetInteractable(bool isInteractable)
+        {
+            IsInteractable = isInteractable;
+
+            if (isInteractable && !isSubscribedToInteractableEvents)
             {
                 SubscribeToInteractableEvents();
             }
-            else if(!isActive && isSubscribedToInteractableEvents)
+            else if (!isInteractable && isSubscribedToInteractableEvents)
             {
                 UnsubscribeFromInteractableEvents();
             }
@@ -57,6 +82,25 @@ namespace PlanesRemake.Runtime.UI.CoreElements
         protected virtual void CheckNeededComponents()
         {
             AddComponentIfNotFound(ref eventTrigger);
+        }
+
+        public SelectableElement GetNeighbor(SelectableNeighborDirection neighborDirection)
+        {
+            foreach (SelectableElementNeighborGroup selectableElementNeighborGroup in selectableElementNeighborGroups)
+            {
+                if (selectableElementNeighborGroup.neighborDirection == neighborDirection)
+                {
+                    foreach(SelectableElement neighbor in selectableElementNeighborGroup.selectableNeighbors)
+                    {
+                        if(neighbor.IsInteractable)
+                        {
+                            return neighbor;
+                        }
+                    }
+                }
+            }
+
+            return null;
         }
 
         protected void AddComponentIfNotFound<T>(ref T componentReference) where T : UnityEngine.Component
@@ -83,17 +127,23 @@ namespace PlanesRemake.Runtime.UI.CoreElements
 
         protected virtual void OnPointerExit(BaseEventData baseEventData)
         {
-            baseEventData.selectedObject = null;
+            if(baseEventData.selectedObject == gameObject)
+            {
+                baseEventData.selectedObject = null;
+            }
         }
 
         protected virtual void OnSubmit(BaseEventData baseEventData)
         {
-            if(baseEventData.selectedObject == this.gameObject)
+            if(baseEventData.selectedObject == gameObject)
             {
                 onSubmit?.Invoke();
             }
 
-            baseEventData.selectedObject = null;
+            if(deselectAfterSubmitAction && baseEventData.selectedObject == gameObject)
+            {
+                baseEventData.selectedObject = null;
+            }
         }
 
         protected virtual void OnSelect(BaseEventData baseEventData)

@@ -9,6 +9,7 @@ namespace PlanesRemake.Runtime.UI.Views
     using PlanesRemake.Runtime.Localization;
     using PlanesRemake.Runtime.Sound;
     using PlanesRemake.Runtime.UI.Views.DataContainers;
+    using UnityEngine.EventSystems;
 
     public class OptionsMenuView : BaseView
     {
@@ -39,9 +40,9 @@ namespace PlanesRemake.Runtime.UI.Views
 
         #endregion
 
-        public override void Initialize(Camera uiCamera, AudioManager sourceAudioManager, ViewInjectableData viewInjectableData, LocalizationManager sourceLocalizationManager)
+        public override void Initialize(Camera uiCamera, AudioManager sourceAudioManager, ViewInjectableData viewInjectableData, LocalizationManager sourceLocalizationManager, EventSystem eventSystem)
         {
-            base.Initialize(uiCamera, sourceAudioManager, viewInjectableData, sourceLocalizationManager);
+            base.Initialize(uiCamera, sourceAudioManager, viewInjectableData, sourceLocalizationManager, eventSystem);
             localizationManager = sourceLocalizationManager;
         }
 
@@ -52,7 +53,7 @@ namespace PlanesRemake.Runtime.UI.Views
             vfxSlider.OnValueChanged += OnVfxVolumeChanged;
             musicSlider.UpdateSliderValue(audioManager.CurrentMusicVolume);
             vfxSlider.UpdateSliderValue(audioManager.CurrentVfxVolume);
-
+            
             foreach (LanguageButtonPair languageButtonPair in languageButtonPairs)
             {
                 languageButtonPair.languageButton.onButtonPressed += () =>

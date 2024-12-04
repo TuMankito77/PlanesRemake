@@ -15,15 +15,19 @@ namespace PlanesRemake.Runtime.UI
     using UnityEngine.Rendering.Universal;
     using PlanesRemake.Runtime.UI.Views.DataContainers;
     using PlanesRemake.Runtime.Localization;
+    using UnityEngine.EventSystems;
 
     public class UiManager : BaseSystem, IInputControlableEntity
     {
+        private const string EVENT_SYSTEM_PREFAB_PATH = "Ui/EventSystem";
+
         private ViewsDatabase viewsDatabase = null;
         private GameObject uiManagerGO = null;
         private Camera uiCamera = null;
         private List<BaseView> viewsOpened = null;
         private AudioManager audioManager = null;
         private LocalizationManager localizationManager = null;
+        private EventSystem eventSystem = null;
         private int currentInteractbleGroupId = 0;
 
         //To-do: Create a request class that will be sent through an event in order to request a view.
@@ -56,9 +60,10 @@ namespace PlanesRemake.Runtime.UI
             CameraStackingManager cameraStackingManager = GetDependency<CameraStackingManager>();
             cameraStackingManager.AddCameraToStackAtTop(uiCamera);
 
-            GameObject eventSystem = new GameObject("Event System");
-            eventSystem.AddComponent<InputSystemUIInputModule>();
-            eventSystem.transform.SetParent(uiManagerGO.transform);
+            InputSystemUIInputModule inputSystemUIInputModulePrefab = await contentLoader.LoadAsset<InputSystemUIInputModule>(EVENT_SYSTEM_PREFAB_PATH);
+            InputSystemUIInputModule inputSystemUIInputModuleInstance = GameObject.Instantiate(inputSystemUIInputModulePrefab);
+            inputSystemUIInputModuleInstance.transform.SetParent(uiManagerGO.transform);
+            eventSystem = inputSystemUIInputModuleInstance.GetComponent<EventSystem>();
 
             return true;
         }
@@ -82,9 +87,8 @@ namespace PlanesRemake.Runtime.UI
                 currentInteractbleGroupId++;
             }
 
-
             BaseView viewFound = GameObject.Instantiate(viewsDatabase.GetFile(viewId), uiManagerGO.transform);
-            viewFound.Initialize(uiCamera, audioManager, viewInjectableData, localizationManager);
+            viewFound.Initialize(uiCamera, audioManager, viewInjectableData, localizationManager, eventSystem);
             //NOTE: This will update the values like the width and height so that they do not appear as zero,
             //dunno how I will remind this to myself -_-, BUT remember, we have to do this before trying to access any RectTransform values
             Canvas.ForceUpdateCanvases();

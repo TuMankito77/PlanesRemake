@@ -10,6 +10,7 @@ namespace PlanesRemake.Runtime.UI.Views
     using PlanesRemake.Runtime.Utils;
     using PlanesRemake.Runtime.UI.Views.DataContainers;
     using PlanesRemake.Runtime.Localization;
+    using UnityEngine.EventSystems;
 
     public class HudView : BaseView, IListener
     {
@@ -24,9 +25,9 @@ namespace PlanesRemake.Runtime.UI.Views
 
         private Timer fuelTimer = null;
 
-        public override void Initialize(Camera uiCamera, AudioManager audioManager, ViewInjectableData viewInjectableData, LocalizationManager localizationManager)
+        public override void Initialize(Camera uiCamera, AudioManager audioManager, ViewInjectableData viewInjectableData, LocalizationManager localizationManager, EventSystem eventSystem)
         {
-            base.Initialize(uiCamera, audioManager, viewInjectableData, localizationManager);
+            base.Initialize(uiCamera, audioManager, viewInjectableData, localizationManager, eventSystem);
             EventDispatcher.Instance.AddListener(this, typeof(UiEvents), typeof(GameplayEvents));
         }
 

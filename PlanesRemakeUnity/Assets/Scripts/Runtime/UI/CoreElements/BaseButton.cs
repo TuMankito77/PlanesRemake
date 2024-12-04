@@ -39,7 +39,7 @@ namespace PlanesRemake.Runtime.UI.CoreElements
 
         #endregion
 
-        public void SetAnimationExternalModule(ISeletableElementAnimator sourceButtonAnimator)
+        public override void SetAnimationExternalModule(ISeletableElementAnimator sourceButtonAnimator)
         {
             buttonAniator = sourceButtonAnimator;
             onSubmit -= OnButtonPressed;
@@ -64,12 +64,6 @@ namespace PlanesRemake.Runtime.UI.CoreElements
         {
             base.CheckNeededComponents();
             AddComponentIfNotFound(ref button);
-        }
-
-        protected override void OnPointerExit(BaseEventData baseEventData)
-        {
-            base.OnPointerExit(baseEventData);
-            button.OnDeselect(baseEventData);
         }
 
         private void OnButtonPressed()
