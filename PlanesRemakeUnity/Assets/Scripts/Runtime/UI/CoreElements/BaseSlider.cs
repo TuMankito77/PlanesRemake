@@ -27,6 +27,8 @@ namespace PlanesRemake.Runtime.UI.CoreElements
         private Color fillerImageOriginalColor = Color.white;
         private Color backgroundFillerImageOriginalColor = Color.white;
 
+        public float Value => slider.value;
+
         protected override void Awake()
         {
             base.Awake();

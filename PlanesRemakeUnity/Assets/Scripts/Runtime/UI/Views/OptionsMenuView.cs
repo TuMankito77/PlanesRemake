@@ -10,6 +10,7 @@ namespace PlanesRemake.Runtime.UI.Views
     using PlanesRemake.Runtime.Sound;
     using PlanesRemake.Runtime.UI.Views.DataContainers;
     using UnityEngine.EventSystems;
+    using UnityEngine.Rendering;
 
     public class OptionsMenuView : BaseView
     {
@@ -68,6 +69,8 @@ namespace PlanesRemake.Runtime.UI.Views
             base.TransitionOut();
             musicSlider.OnValueChanged -= OnMusicVolumeChanged;
             vfxSlider.OnValueChanged -= OnVfxVolumeChanged;
+            EventDispatcher.Instance.Dispatch(UiEvents.OnMusicVolumeSliderUpdated, musicSlider.Value);
+            EventDispatcher.Instance.Dispatch(UiEvents.OnVfxVolumeSliderUpdated, vfxSlider.Value);
         }
 
         private void OnMusicVolumeChanged(float volume)
