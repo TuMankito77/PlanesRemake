@@ -1,4 +1,4 @@
-Shader "Shader Graphs/Dots"
+Shader "Custom/Dots"
 {
 	//NOTE: This file exists along with the shader graph file becuase we have to modify the code once the graph is done 
 	// to take into acount the mask component in the UI 
