@@ -56,6 +56,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputBlockerImage: {fileID: 7346285835703960809}
+  currentSelectableElementSelected: {fileID: 0}
   aircraftShowcaseStudioPrefab: {fileID: 4115576100983235222, guid: 7afcf06f5d2d2854e85407becf098482,
     type: 3}
   aircraftDatabase: {fileID: 11400000, guid: 219c80f9327f5e541bfcdf084a8df572, type: 2}
@@ -187,7 +188,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &2900652831481229611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -387,10 +388,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 4008055454384986778}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 1, y: 0.10552778}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1480, y: 153.7089}
+  m_SizeDelta: {x: -1, y: 1.7088928}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &8222019616188316288
 CanvasRenderer:
