@@ -297,14 +297,12 @@ namespace PlanesRemake.Runtime.Core
             {
                 case GameplayEvents.OnWallcollision:
                     {
-                        storageAccessor.Save(playerInformation);
                         inputManager.DisableInput(currentLevelInitializer.Aircraft);
                         break;
                     }
 
                 case GameplayEvents.OnWallEvaded:
                     {
-                        playerInformation.WallsEvaded++;
                         gameSessionWallsEvaded++;
                         string wallsEvadedAsString = gameSessionWallsEvaded.ToString();
                         EventDispatcher.Instance.Dispatch(UiEvents.OnWallsValueChanged, wallsEvadedAsString);
@@ -322,7 +320,32 @@ namespace PlanesRemake.Runtime.Core
 
                 case GameplayEvents.OnAircraftDestroyed:
                     {
-                        UnloadMainLevel();
+                        string gameOverMessage = string.Empty;
+                        
+                        if(gameSessionWallsEvaded > playerInformation.WallsEvadedRecord)
+                        {
+                            playerInformation.WallsEvadedRecord = gameSessionWallsEvaded;
+                            gameOverMessage = localizationManager.GetLocalizedText("Message.NewBestRecord");
+                        }
+                        else
+                        {
+                            gameOverMessage = localizationManager.GetLocalizedText("Message.OldBestRecord");
+                        }
+
+                        storageAccessor.Save(playerInformation);
+                        string formattedGameOverMessage = string.Format(gameOverMessage, playerInformation.WallsEvadedRecord);
+                        MessageViewData messageViewData = new MessageViewData(formattedGameOverMessage);
+                        BaseView messageView = uiManager.DisplayView(ViewIds.MESSAGE_WINDOW, disableCurrentInteractableGroup: true, messageViewData);
+                        messageView.onTransitionInFinished += () =>
+                        {
+                            inputManager.EnableInput(uiManager);
+                        };
+                        messageView.onTransitionOutFinished += () =>
+                        {
+                            inputManager.DisableInput(uiManager);
+                            UnloadMainLevel();
+                        };
+
                         break;
                     }
 
@@ -360,7 +383,7 @@ namespace PlanesRemake.Runtime.Core
         {
             playerInformation = new PlayerInformation(
                 sourceCoinsCollected: 0, 
-                sourceWallsEvaded: 0, 
+                sourceWallsEvadedRecord: 0,
                 sourceMusicVolumeSet: 1, 
                 sourceVfxVolumeSet: 1,
                 sourceAircraftSelected: AircraftIds.PLANE,

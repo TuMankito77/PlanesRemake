@@ -26,7 +26,7 @@ namespace PlanesRemake.Runtime.Gameplay.StorableClasses
         private int? coinsCollected = null;
 
         [JsonProperty]
-        private int? wallsEvaded = null;
+        private int? wallsEvadedRecord = null;
 
         [JsonProperty]
         private float? musicVolumeSet = null;
@@ -47,7 +47,7 @@ namespace PlanesRemake.Runtime.Gameplay.StorableClasses
         public int CoinsCollected { get => coinsCollected.Value; set => coinsCollected = value; }
 
         [JsonIgnore]
-        public int WallsEvaded { get => wallsEvaded.Value; set => wallsEvaded = value; }
+        public int WallsEvadedRecord { get => wallsEvadedRecord.Value; set => wallsEvadedRecord = value; }
 
         [JsonIgnore]
         public float MusicVolumeSet { get => musicVolumeSet.Value; set => musicVolumeSet = value; }
@@ -65,10 +65,10 @@ namespace PlanesRemake.Runtime.Gameplay.StorableClasses
         public SystemLanguage LanguageSelected { get => languageSelected.Value; set => languageSelected = value; }
 
         [JsonConstructor]
-        public PlayerInformation(int? sourceCoinsCollected, int? sourceWallsEvaded, float? sourceMusicVolumeSet, float? sourceVfxVolumeSet, string sourceAircraftSelected, List<string> sourceAircraftsPurchased, SystemLanguage? sourceLanguageSelected)
+        public PlayerInformation(int? sourceCoinsCollected, int? sourceWallsEvadedRecord, float? sourceMusicVolumeSet, float? sourceVfxVolumeSet, string sourceAircraftSelected, List<string> sourceAircraftsPurchased, SystemLanguage? sourceLanguageSelected)
         {
             coinsCollected = sourceCoinsCollected;
-            wallsEvaded = sourceCoinsCollected;
+            wallsEvadedRecord = sourceCoinsCollected;
             musicVolumeSet = sourceMusicVolumeSet;
             vfxVolumeSet = sourceVfxVolumeSet;
             aircraftSelected = sourceAircraftSelected;
@@ -76,7 +76,7 @@ namespace PlanesRemake.Runtime.Gameplay.StorableClasses
             languageSelected = sourceLanguageSelected;
         }
 
-        //NOTE: This is to leave values that were not found in the class a their default values assigned at the moment of construction.
+        //NOTE: This is to leave values that were not found in the class as their default values assigned at the moment of construction.
         //We are handling it in this way to prevent having the players' data erased completely because of a new value added on an upate.
         public void TrasferValidValues(ref PlayerInformation otherPlayerInformation)
         {
@@ -85,9 +85,9 @@ namespace PlanesRemake.Runtime.Gameplay.StorableClasses
                 otherPlayerInformation.CoinsCollected = coinsCollected.Value;
             }
 
-            if(wallsEvaded != null)
+            if(wallsEvadedRecord != null)
             {
-                otherPlayerInformation.WallsEvaded = wallsEvaded.Value;
+                otherPlayerInformation.WallsEvadedRecord = wallsEvadedRecord.Value;
             }
 
             if(musicVolumeSet != null)

@@ -83,9 +83,19 @@ namespace PlanesRemake.Runtime.UI
 
         private void GoBackActionTriggered(InputAction.CallbackContext context)
         {
-            if(uiManager.CurrentViewDisplayed().GetType() == typeof(PauseMenuView))
+            Type currentViewDisplayedType = uiManager.CurrentViewDisplayed().GetType();
+            
+            if (currentViewDisplayedType == typeof(PauseMenuView))
             {
                 EventDispatcher.Instance.Dispatch(UiEvents.OnUnpauseButtonPressed);
+                return;
+            }
+
+            //We make sure that there will always be at least one view opened.
+            if (currentViewDisplayedType == typeof(MainMenuView) ||
+                currentViewDisplayedType == typeof(HudView) ||
+                currentViewDisplayedType == typeof(TouchControlsView))
+            {
                 return;
             }
 
