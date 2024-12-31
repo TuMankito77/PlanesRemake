@@ -20,5 +20,7 @@
   "Button.English": "ENGLISH",
   "Button.French": "FRANÇAISE",
   "Button.Spanish": "ESPAÑOL",
-  "Text.ControllerCompatible": "COMPATIBLE WITH GAMEPADS TOO!"
+  "Text.ControllerCompatible": "COMPATIBLE WITH GAMEPADS TOO!",
+  "Message.NewBestRecord": "CONGRATULATIONS, YOU SET A NEW RECORD!\nNUMBER OF WALLS AVOIDED {0}",
+  "Message.OldBestRecord":  "THE BEST RECORD OF WALLS AVOIDED IS {0}\nTRY TO SURPASS IT NEXT TIME"
 }

@@ -20,5 +20,7 @@
   "Button.English": "ENGLISH",
   "Button.French": "FRANÇAISE",
   "Button.Spanish": "ESPAÑOL",
-  "Text.ControllerCompatible": "COMPATIBLE AVEC GAMEPADS AUSSI!"
+  "Text.ControllerCompatible": "COMPATIBLE AVEC GAMEPADS AUSSI!",
+  "Message.NewBestRecord": "FÉLICITATIONS, TU AS ÉTABLI UN NOUVEAU RECORD!\nNOMBRES DE MURS ÉVITÉS {0}",
+  "Message.OldBestRecord": "LE MEILLEUR RECORD DE MURS ÉVITÉS EST {0}\nESSAYE DE LE SURPASSER LA PROCHAINE FOIS"
 }

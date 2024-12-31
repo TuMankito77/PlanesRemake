@@ -20,5 +20,7 @@
   "Button.English": "ENGLISH",
   "Button.French": "FRANÇAISE",
   "Button.Spanish": "ESPAÑOL",
-  "Text.ControllerCompatible": "COMPATIBLE CON GAMEPADS TAMBIEN!"
+  "Text.ControllerCompatible": "COMPATIBLE CON GAMEPADS TAMBIEN!",
+  "Message.NewBestRecord": "FELICIDADES, HICISTE UN NUEVO RECORD!\nNUMERO DE MUROS ESQUIVADOS {0}",
+  "Message.OldBestRecord": "EL MEJOR RECORD DE MUROS ESQUIVADOS ES DE {0}\nINTENTA SOBREPASARLO LA PROXIMA VEZ"
 }
