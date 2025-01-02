@@ -17,8 +17,9 @@ namespace PlanesRemake.Runtime.Core
         private const string SPHERICAL_BACKGROUND_PREFAB_PATH = "MainLevel/SphericalBackground";
         private const string OBSTACLE_PREFAB_PATH = "MainLevel/Obstacle";
         private const string COIN_PREFAB_PATH = "MainLevel/Coin";
-        private const string COIN_VFX_PREFAB_PATH = "MainLevel/VFX_CoinCollected";
         private const string FUEL_PREFAB_PATH = "MainLevel/Fuel";
+        private const string MAGNET_PREFAB_PATH = "MainLevel/Magnet";
+        private const string COIN_VFX_PREFAB_PATH = "MainLevel/VFX_CoinCollected";
         private const string BACKGROUND_RENDERING_CAMERA_PREFAB_PATH = "MainLevel/BackgroundRenderingCamera";
         private const string ISOMETRIC_CAMERA_PREFAB_PATH = "MainLevel/IsometricCamera";
         private const int SPAWNER_POOL_SIZE = 10;
@@ -86,7 +87,14 @@ namespace PlanesRemake.Runtime.Core
             };
 
             Obstacle obstaclePrefab = await contentLoader.LoadAsset<Obstacle>(OBSTACLE_PREFAB_PATH);
-            spawners.Add(new ObstacleSpawner(obstaclePrefab, SPAWNER_POOL_SIZE, SPAWNER_POOL_MAX_CAPACITY, isometricCamera, cameraBoundariesOffset));
+            spawners.Add(new ObstacleSpawner(
+                obstaclePrefab, 
+                SPAWNER_POOL_SIZE, 
+                SPAWNER_POOL_MAX_CAPACITY, 
+                isometricCamera, 
+                cameraBoundariesOffset,
+                sourceMinSpawningTime: 5,
+                sourceMaxSpawningTime: 8));
             Coin coinPrefab = await contentLoader.LoadAsset<Coin>(COIN_PREFAB_PATH);
             spawners.Add(new PickUpSpawner(
                 coinPrefab, 
@@ -95,8 +103,8 @@ namespace PlanesRemake.Runtime.Core
                 isometricCamera, 
                 audioManager, 
                 cameraBoundariesOffset,
-                sourceMinSpawningTime: 1,
-                sourceMaxSpawningTime: 5));
+                minSpawningTime: 1,
+                maxSpawningTime: 5));
             Fuel fuelPrefab = await contentLoader.LoadAsset<Fuel>(FUEL_PREFAB_PATH);
             spawners.Add(new PickUpSpawner(
                 fuelPrefab, 
@@ -105,8 +113,18 @@ namespace PlanesRemake.Runtime.Core
                 isometricCamera, 
                 audioManager, 
                 cameraBoundariesOffset,
-                sourceMinSpawningTime: 30,
-                sourceMaxSpawningTime: 41));
+                minSpawningTime: 30,
+                maxSpawningTime: 41));
+            Magnet magnetPrefab = await contentLoader.LoadAsset<Magnet>(MAGNET_PREFAB_PATH);
+            spawners.Add(new PickUpSpawner(
+                magnetPrefab,
+                SPAWNER_POOL_SIZE,
+                SPAWNER_POOL_MAX_CAPACITY,
+                isometricCamera,
+                audioManager,
+                cameraBoundariesOffset,
+                minSpawningTime: 25,
+                maxSpawningTime: 30));
             TimerPoolableObject timerPoolableObjectPrefab = await contentLoader.LoadAsset<TimerPoolableObject>(COIN_VFX_PREFAB_PATH);
             spawners.Add(new CoinParticleSpawner(timerPoolableObjectPrefab, SPAWNER_POOL_SIZE, SPAWNER_POOL_MAX_CAPACITY));
             return true;

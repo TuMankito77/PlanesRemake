@@ -9,15 +9,14 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
 
     public abstract class TimerSpawner : BaseSpawner, IListener
     {
+        private event Func<float> GetSpawningDelayInSeconds;
+        
         protected CameraBoundaries boundaries = default(CameraBoundaries);
 
-        private Timer spawningTimer = null;
-        //NOTE: Move this to a scriptable object or somewhere visible to give control to change it in Unity;
-        private Vector2 cameraBoundariesOffset = new Vector2(5, 0); 
-
+        private Timer spawningTimer = null; 
+        
         protected abstract Vector3 StartingPosition { get; }
         protected abstract Quaternion StartingRotation { get; }
-        protected abstract float SpawnDelayInSeconds { get; }
         protected abstract bool SpawnPrefabOnCreation { get; }
 
         #region IListener
@@ -48,7 +47,7 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
 
         #endregion
 
-        public TimerSpawner(BasePoolableObject sourcePrefab, int objectPoolSize, int objectPoolMaxCapacity, Camera sourceIsometricCamera, CameraBoundaries cameraBoundariesOffset) 
+        public TimerSpawner(BasePoolableObject sourcePrefab, int objectPoolSize, int objectPoolMaxCapacity, Camera sourceIsometricCamera, CameraBoundaries cameraBoundariesOffset, Func<float> getSpawningDelayInSeconds) 
             : base(sourcePrefab, objectPoolSize, objectPoolMaxCapacity)
         {
             boundaries = sourceIsometricCamera.GetScreenBoundariesInWorld(Vector3.zero);
@@ -60,7 +59,8 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
                 prefabInstancesPool.Get();
             }
 
-            spawningTimer = new Timer(SpawnDelayInSeconds, sourceIsRepeating: false);
+            GetSpawningDelayInSeconds = getSpawningDelayInSeconds;
+            spawningTimer = new Timer(GetSpawningDelayInSeconds(), sourceIsRepeating: false);
             spawningTimer.OnTimerCompleted += OnSpawningTimerCompleted;
             spawningTimer.Start();
 
@@ -137,7 +137,7 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
         {
             prefabInstancesPool.Get();
             spawningTimer.OnTimerCompleted -= OnSpawningTimerCompleted;
-            spawningTimer = new Timer(SpawnDelayInSeconds, sourceIsRepeating: false);
+            spawningTimer = new Timer(GetSpawningDelayInSeconds(), sourceIsRepeating: false);
             spawningTimer.OnTimerCompleted += OnSpawningTimerCompleted;
             spawningTimer.Start();
         }
