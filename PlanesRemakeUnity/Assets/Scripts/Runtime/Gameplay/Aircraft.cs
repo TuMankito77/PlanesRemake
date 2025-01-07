@@ -8,6 +8,8 @@ namespace PlanesRemake.Runtime.Gameplay
     using PlanesRemake.Runtime.Utils;
     using PlanesRemake.Runtime.Events;
     using PlanesRemake.Runtime.Sound;
+    using PlanesRemake.Runtime.Gameplay.Abilities;
+    using PlanesRemake.Runtime.Core;
 
     public class Aircraft : MonoBehaviour, IInputControlableEntity, IListener
     {
@@ -35,12 +37,17 @@ namespace PlanesRemake.Runtime.Gameplay
         [SerializeField]
         private Animator animator = null;
 
+        [SerializeField]
+        private Transform middlePositionAttachment = null;
+
         private Vector2 direction = Vector2.zero;
         private CameraBoundaries boundaries = default(CameraBoundaries);
         private AudioManager audioManager = null;
         private float horizontalSpeed = 0;
         private float verticalSpeed = 0;
         private bool isFuelEmpty = false;
+        private BaseAbility currentAbility = null;
+        private ContentLoader contentLoader = null;
         //NOTE: Remove this timer once we have an animation an we know when the destroy animation finishes.
         private Timer timer = null;
         
@@ -96,12 +103,13 @@ namespace PlanesRemake.Runtime.Gameplay
 
         #endregion
 
-        public void Initialize(Camera sourceIsometricCamera, CameraBoundaries cameraBoundariesOffset, AudioManager sourceAudioManager, float fuelDuration)
+        public void Initialize(Camera sourceIsometricCamera, CameraBoundaries cameraBoundariesOffset, AudioManager sourceAudioManager, ContentLoader sourceContentLoader, float fuelDuration)
         {
             boundaries = sourceIsometricCamera.GetScreenBoundariesInWorld(transform.position);
             boundaries.AddOffset(cameraBoundariesOffset);
             audioManager = sourceAudioManager;
             audioManager.PlayLoopingClip(GetInstanceID(), ClipIds.AIRCRAFT_ENGINE_CLIP, transform, true);
+            contentLoader = sourceContentLoader;
             transform.position = boundaries.center;
             EventDispatcher.Instance.Dispatch(UiEvents.OnSetFuelTimerDuration, fuelDuration);
         }
@@ -177,6 +185,11 @@ namespace PlanesRemake.Runtime.Gameplay
                             return;
                         }
 
+                        if(currentAbility != null)
+                        {
+                            currentAbility.Deactivate();
+                        }
+
                         DestroyAircraft();
                         break;
                     }
@@ -190,6 +203,19 @@ namespace PlanesRemake.Runtime.Gameplay
                 case GameplayEvents.OnFuelEmpty:
                     {
                         isFuelEmpty = true;
+                        break;
+                    }
+
+                case GameplayEvents.OnMagnetCollected:
+                    {
+                        if(currentAbility != null)
+                        {
+                            currentAbility.Deactivate();
+                        }
+
+                        currentAbility = new CoinMagnetAbility(middlePositionAttachment.gameObject, 5, contentLoader);
+                        currentAbility.onAbilityEffectFinished += OnAbilityEffectFinished;
+                        currentAbility.Activate();
                         break;
                     }
 
@@ -247,6 +273,12 @@ namespace PlanesRemake.Runtime.Gameplay
             //And yes, the direction also has this constraint, but the problem comes back when calculating 
             //the speed for each axis (-_-) 
             return Vector3.ClampMagnitude(velocity, movementSpeed);
+        }
+
+        private void OnAbilityEffectFinished()
+        {
+            currentAbility.onAbilityEffectFinished -= OnAbilityEffectFinished;
+            currentAbility = null;
         }
     }
 }

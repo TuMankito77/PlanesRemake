@@ -3,11 +3,11 @@ namespace PlanesRemake.Runtime.Gameplay
     using System;
 
     using UnityEngine;
+    using UnityEngine.Pool;
 
     using PlanesRemake.Runtime.Gameplay.CommonBehaviors;
     using PlanesRemake.Runtime.Events;
     using PlanesRemake.Runtime.Utils;
-    using UnityEngine.Pool;
     using PlanesRemake.Runtime.Sound;
 
     public abstract class BasePickUpItem : BasePoolableObject, IListener
@@ -31,6 +31,8 @@ namespace PlanesRemake.Runtime.Gameplay
         protected override IObjectPool<BasePoolableObject> ObjectPool => poolContainer;
         protected abstract GameplayEvents GameplayEventToDispatch { get; }
         protected abstract string PickUpClipId { get; }
+
+        public DirectionalMovement DirectionalMovementComponent => directionalMovement;
 
         #region Uinty Methods
 

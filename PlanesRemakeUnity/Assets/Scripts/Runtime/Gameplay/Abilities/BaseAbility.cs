@@ -45,6 +45,11 @@ namespace PlanesRemake.Runtime.Gameplay.Abilities
         {
             activeTimer.Stop();
             activeTimer.OnTimerCompleted -= Deactivate;
+
+            if(IsAbilityTimerTickEnabled)
+            {
+                activeTimer.OnTimerTick -= OnAbilityTimerTick;
+            }
         }
 
         protected virtual void OnAbilityTimerTick(float deltaTime, float timeTranscurred)

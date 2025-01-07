@@ -74,7 +74,7 @@ namespace PlanesRemake.Runtime.Core
             AircraftDatabase aircraftDatabase = await contentLoader.LoadAsset<AircraftDatabase>(AircraftDatabase.AIRCRAFTS_DATABASE_SCRIPTABLE_OBJECT_PATH);
             Aircraft aircraftPrefab = aircraftDatabase.GetFile(aircraftSelected).AircraftPrefab;
             aircraft = GameObject.Instantiate(aircraftPrefab, Vector3.zero, Quaternion.Euler(15, 105, 0));
-            aircraft.Initialize(isometricCamera, aircraftCameraBoundariesOffset, audioManager, fuelDuration: 50);
+            aircraft.Initialize(isometricCamera, aircraftCameraBoundariesOffset, audioManager, contentLoader, fuelDuration: 50);
 
             //TO-DO: Move this to a scriptable object so that it can be configured from Unity rather than in code.
             CameraBoundaries cameraBoundariesOffset = new CameraBoundaries()

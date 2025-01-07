@@ -16,7 +16,7 @@ namespace PlanesRemake.Runtime.Gameplay.Abilities
 
         private CollisionEventNotifier coinCollisionDetection = null;
         private List<BasePickUpItem> pickUpItemsAttracted = null;
-        private float attractionSpeed = 5;
+        private float attractionSpeed = 10;
         private GameObject magnetAbilityPrefabInstance = null;
         private ContentLoader contentLoader = null;
 
