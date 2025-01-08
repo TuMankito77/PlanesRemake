@@ -10,7 +10,8 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
             new Vector3(boundaries.right, boundaries.center.y, 0);
         protected override Quaternion StartingRotation =>
             Quaternion.Euler(new Vector3(-15, 15, 0));
-        protected override bool SpawnPrefabOnCreation => true;
+        
+        private bool spawnPrefabOnCreation => true;
 
         public ObstacleSpawner(
             Obstacle obstaclePrefab,
@@ -28,7 +29,10 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
                  cameraBoundariesOffset,
                  getSpawningDelayInSeconds: () => { return Random.Range(sourceMinSpawningTime, sourceMaxSpawningTime); })
         {
-
+            if(spawnPrefabOnCreation)
+            {
+                prefabInstancesPool.Get();
+            }
         }
 
         protected override void OnGetPoolObject(BasePoolableObject instance)

@@ -9,7 +9,6 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
     {
         protected override Vector3 StartingPosition => GetRandomHeightPosition();
         protected override Quaternion StartingRotation => Quaternion.Euler(new Vector3(-15, 15, 0));
-        protected override bool SpawnPrefabOnCreation => false;
 
         private AudioManager audioManager = null;
 

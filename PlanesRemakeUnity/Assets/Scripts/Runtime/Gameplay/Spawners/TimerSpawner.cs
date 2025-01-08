@@ -17,7 +17,6 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
         
         protected abstract Vector3 StartingPosition { get; }
         protected abstract Quaternion StartingRotation { get; }
-        protected abstract bool SpawnPrefabOnCreation { get; }
 
         #region IListener
 
@@ -52,18 +51,10 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
         {
             boundaries = sourceIsometricCamera.GetScreenBoundariesInWorld(Vector3.zero);
             boundaries.AddOffset(cameraBoundariesOffset);
-
-            //NOTE: Maybe this should be moved to the class that needs this behavior rather than leaving it here.
-            if (SpawnPrefabOnCreation)
-            {
-                prefabInstancesPool.Get();
-            }
-
             GetSpawningDelayInSeconds = getSpawningDelayInSeconds;
             spawningTimer = new Timer(GetSpawningDelayInSeconds(), sourceIsRepeating: false);
             spawningTimer.OnTimerCompleted += OnSpawningTimerCompleted;
             spawningTimer.Start();
-
             EventDispatcher.Instance.AddListener(this, typeof(GameplayEvents), typeof(UiEvents));
         }
 
