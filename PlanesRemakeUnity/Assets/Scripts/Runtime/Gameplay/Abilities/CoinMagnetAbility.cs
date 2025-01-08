@@ -19,6 +19,8 @@ namespace PlanesRemake.Runtime.Gameplay.Abilities
         private float attractionSpeed = 10;
         private GameObject magnetAbilityPrefabInstance = null;
         private ContentLoader contentLoader = null;
+        private Material abilityMaterial = null;
+        private AnimationCurve transparencyOverTime = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
         protected override bool IsAbilityTimerTickEnabled => true;
 
@@ -30,6 +32,9 @@ namespace PlanesRemake.Runtime.Gameplay.Abilities
             GameObject magnetAbilityPrefab = contentLoader.LoadAssetSynchronously<GameObject>(MAGNET_ABILITY_PREFAP_PATH);
             magnetAbilityPrefabInstance = GameObject.Instantiate(magnetAbilityPrefab, owner.transform);
             coinCollisionDetection = magnetAbilityPrefabInstance.GetComponent<CollisionEventNotifier>();
+            MeshRenderer meshRenderer = magnetAbilityPrefabInstance.GetComponent<MeshRenderer>();
+            abilityMaterial = meshRenderer.material;
+            abilityMaterial.SetFloat("_Transparency", 0);
         }
 
         public override void Activate()
@@ -59,7 +64,9 @@ namespace PlanesRemake.Runtime.Gameplay.Abilities
         {
             base.OnAbilityTimerTick(deltaTime, timeTranscurred);
 
-            for(int i = 0; i < pickUpItemsAttracted.Count; i++)
+            abilityMaterial.SetFloat("_Transparency", timeTranscurred / activeTimer.Duration);
+
+            for (int i = 0; i < pickUpItemsAttracted.Count; i++)
             {
                 BasePickUpItem pickUpItem = pickUpItemsAttracted[i];
                 Vector3 moveDirection = owner.transform.position - pickUpItem.transform.position;

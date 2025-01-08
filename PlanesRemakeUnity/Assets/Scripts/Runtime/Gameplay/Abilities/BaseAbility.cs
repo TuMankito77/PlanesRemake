@@ -12,7 +12,7 @@ namespace PlanesRemake.Runtime.Gameplay.Abilities
 
         protected GameObject owner = null;
 
-        private Timer activeTimer = null;
+        protected Timer activeTimer = null;
 
         protected abstract bool IsAbilityTimerTickEnabled { get; }
 
