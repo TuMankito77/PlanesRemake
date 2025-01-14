@@ -11,11 +11,11 @@ namespace PlanesRemake.Editor.Database
         {
             base.OnInspectorGUI();
 
-            T1 cllipIdsDatabase = target as T1;
+            T1 fileIdsDatabase = target as T1;
             
-            if (GUILayout.Button($"Regenerate {cllipIdsDatabase.GetType().Name} ID class file"))
+            if (GUILayout.Button($"Regenerate {fileIdsDatabase.GetType().Name} ID class file"))
             {
-                cllipIdsDatabase.GenerateIdsContainerClassFile();
+                fileIdsDatabase.GenerateIdsContainerClassFile();
             }
         }
     }
