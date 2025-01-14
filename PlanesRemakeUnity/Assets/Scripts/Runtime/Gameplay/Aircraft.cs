@@ -47,7 +47,7 @@ namespace PlanesRemake.Runtime.Gameplay
         private float verticalSpeed = 0;
         private bool isFuelEmpty = false;
         private BaseAbility currentAbility = null;
-        private ContentLoader contentLoader = null;
+        private AbilityDataBase abilityDataBase = null;
         //NOTE: Remove this timer once we have an animation an we know when the destroy animation finishes.
         private Timer timer = null;
         
@@ -103,13 +103,13 @@ namespace PlanesRemake.Runtime.Gameplay
 
         #endregion
 
-        public void Initialize(Camera sourceIsometricCamera, CameraBoundaries cameraBoundariesOffset, AudioManager sourceAudioManager, ContentLoader sourceContentLoader, float fuelDuration)
+        public void Initialize(Camera sourceIsometricCamera, CameraBoundaries cameraBoundariesOffset, AudioManager sourceAudioManager, AbilityDataBase sourceAbilityDatabase, float fuelDuration)
         {
             boundaries = sourceIsometricCamera.GetScreenBoundariesInWorld(transform.position);
             boundaries.AddOffset(cameraBoundariesOffset);
             audioManager = sourceAudioManager;
             audioManager.PlayLoopingClip(GetInstanceID(), ClipIds.AIRCRAFT_ENGINE_CLIP, transform, true);
-            contentLoader = sourceContentLoader;
+            abilityDataBase = sourceAbilityDatabase;
             transform.position = boundaries.center;
             EventDispatcher.Instance.Dispatch(UiEvents.OnSetFuelTimerDuration, fuelDuration);
         }
@@ -206,14 +206,14 @@ namespace PlanesRemake.Runtime.Gameplay
                         break;
                     }
 
-                case GameplayEvents.OnMagnetCollected:
+                case GameplayEvents.OnCoinMagnetCollected:
                     {
                         if(currentAbility != null)
                         {
                             currentAbility.Deactivate();
                         }
 
-                        currentAbility = new CoinMagnetAbility(middlePositionAttachment.gameObject, 5, contentLoader);
+                        currentAbility = new MagnetAbility(middlePositionAttachment.gameObject, 5, abilityDataBase.CoinMagnetAbilityData);
                         currentAbility.onAbilityEffectFinished += OnAbilityEffectFinished;
                         currentAbility.Activate();
                         break;

@@ -11,6 +11,7 @@ namespace PlanesRemake.Runtime.Core
     using PlanesRemake.Runtime.Utils;
     using PlanesRemake.Runtime.UI;
     using PlanesRemake.Runtime.UI.Views;
+    using PlanesRemake.Runtime.Gameplay.Abilities;
 
     public class LevelInitializer : BaseSystem
     {
@@ -74,7 +75,8 @@ namespace PlanesRemake.Runtime.Core
             AircraftDatabase aircraftDatabase = await contentLoader.LoadAsset<AircraftDatabase>(AircraftDatabase.AIRCRAFTS_DATABASE_SCRIPTABLE_OBJECT_PATH);
             Aircraft aircraftPrefab = aircraftDatabase.GetFile(aircraftSelected).AircraftPrefab;
             aircraft = GameObject.Instantiate(aircraftPrefab, Vector3.zero, Quaternion.Euler(15, 105, 0));
-            aircraft.Initialize(isometricCamera, aircraftCameraBoundariesOffset, audioManager, contentLoader, fuelDuration: 50);
+            AbilityDataBase abilityDataBase = await contentLoader.LoadAsset<AbilityDataBase>(AbilityDataBase.ABILITY_DATABASE_SCRIPTABLE_OBJECT_PATH);
+            aircraft.Initialize(isometricCamera, aircraftCameraBoundariesOffset, audioManager, abilityDataBase, fuelDuration: 50);
 
             //TO-DO: Move this to a scriptable object so that it can be configured from Unity rather than in code.
             CameraBoundaries cameraBoundariesOffset = new CameraBoundaries()
@@ -115,7 +117,7 @@ namespace PlanesRemake.Runtime.Core
                 cameraBoundariesOffset,
                 minSpawningTime: 30,
                 maxSpawningTime: 41));
-            Magnet magnetPrefab = await contentLoader.LoadAsset<Magnet>(MAGNET_PREFAB_PATH);
+            CoinMagnet magnetPrefab = await contentLoader.LoadAsset<CoinMagnet>(MAGNET_PREFAB_PATH);
             spawners.Add(new PickUpSpawner(
                 magnetPrefab,
                 SPAWNER_POOL_SIZE,

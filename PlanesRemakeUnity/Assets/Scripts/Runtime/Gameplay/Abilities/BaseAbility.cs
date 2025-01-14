@@ -11,15 +11,16 @@ namespace PlanesRemake.Runtime.Gameplay.Abilities
         public event Action onAbilityEffectFinished;
 
         protected GameObject owner = null;
-
         protected Timer activeTimer = null;
+        protected AbilityData abilityData = null;
 
         protected abstract bool IsAbilityTimerTickEnabled { get; }
 
-        public BaseAbility(GameObject sourceOwner, float sourceDurationInSeconds)
+        public BaseAbility(GameObject sourceOwner, AbilityData sourceAbilityData)
         {
             owner = sourceOwner;
-            activeTimer = new Timer(sourceDurationInSeconds);
+            abilityData = sourceAbilityData;
+            activeTimer = new Timer(abilityData.Duration);
         }
 
         public virtual void Activate()
