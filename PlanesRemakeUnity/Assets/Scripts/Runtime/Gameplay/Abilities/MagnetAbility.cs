@@ -7,6 +7,7 @@ namespace PlanesRemake.Runtime.Gameplay.Abilities
     
     using PlanesRemake.Runtime.Gameplay.CommonBehaviors;
     using PlanesRemake.Runtime.Events;
+    using PlanesRemake.Runtime.Gameplay.PickUps;
 
     public class MagnetAbility : VisualAbility, IListener
     {

@@ -4,6 +4,7 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
 
     using PlanesRemake.Runtime.Sound;
     using PlanesRemake.Runtime.Utils;
+    using PlanesRemake.Runtime.Gameplay.PickUps;
 
     public class PickUpSpawner : TimerSpawner
     {
