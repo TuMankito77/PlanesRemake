@@ -1,5 +1,59 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3465318797603217590
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3625780348722394562}
+  - component: {fileID: 6729813581000251585}
+  m_Layer: 6
+  m_Name: CrashDetectionCollider
+  m_TagString: CrashCollider
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3625780348722394562
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3465318797603217590}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4837489700871860818}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!64 &6729813581000251585
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3465318797603217590}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -7912280535021910496, guid: a4e0a934430a13647874e6d257e7222c, type: 3}
 --- !u!1 &4837489700871892594
 GameObject:
   m_ObjectHideFlags: 0
@@ -39,6 +93,7 @@ Transform:
   - {fileID: 6716859018759306956}
   - {fileID: 1167895054026982225}
   - {fileID: 3092186624168113177}
+  - {fileID: 3625780348722394562}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4837489700873155186
@@ -115,6 +170,7 @@ MonoBehaviour:
   - {fileID: 4837489700874154162}
   animator: {fileID: 3748680821208295502}
   middlePositionAttachment: {fileID: 3092186624168113177}
+  crashDetectionCollider: {fileID: 6729813581000251585}
 --- !u!64 &3211565370048440531
 MeshCollider:
   m_ObjectHideFlags: 0
