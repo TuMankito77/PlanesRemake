@@ -9,13 +9,13 @@ namespace PlanesRemake.Runtime.Gameplay
     using PlanesRemake.Runtime.Events;
     using PlanesRemake.Runtime.Sound;
     using PlanesRemake.Runtime.Gameplay.Abilities;
-    using PlanesRemake.Runtime.Core;
 
     public class Aircraft : MonoBehaviour, IInputControlableEntity, IListener
     {
         //NOTE: This is momentaneous, we have to make this tag
         //changeble from a drop-down menu on each object that uses it.
         public const string AIRCRAFT_TAG = "Aircraft";
+        public const string CRASH_DETECTION_COLLIDER_TAG = "CrashCollider";
         private const string HORIZONTAL_SPEED_ANIM_VAR_NAME = "HorizontalSpeed";
         private const string VERTICAL_SPEED_ANIM_VAR_NAME = "VerticalSpeed";
 
@@ -40,6 +40,9 @@ namespace PlanesRemake.Runtime.Gameplay
         [SerializeField]
         private Transform middlePositionAttachment = null;
 
+        [SerializeField]
+        private Collider crashDetectionCollider = null;
+
         private Vector2 direction = Vector2.zero;
         private CameraBoundaries boundaries = default(CameraBoundaries);
         private AudioManager audioManager = null;
@@ -50,7 +53,7 @@ namespace PlanesRemake.Runtime.Gameplay
         private AbilityDataBase abilityDataBase = null;
         //NOTE: Remove this timer once we have an animation an we know when the destroy animation finishes.
         private Timer timer = null;
-        
+
         #region Unity Methods
 
         private void Update()
@@ -180,7 +183,7 @@ namespace PlanesRemake.Runtime.Gameplay
                     {
                         Collider collider = data as Collider;
 
-                        if (collider.gameObject != gameObject)
+                        if (collider.gameObject != crashDetectionCollider.gameObject)
                         {
                             return;
                         }
@@ -208,14 +211,13 @@ namespace PlanesRemake.Runtime.Gameplay
 
                 case GameplayEvents.OnCoinMagnetCollected:
                     {
-                        if(currentAbility != null)
-                        {
-                            currentAbility.Deactivate();
-                        }
+                        ActivateAbility(new MagnetAbility(middlePositionAttachment.gameObject, abilityDataBase.CoinMagnetAbilityData));
+                        break;
+                    }
 
-                        currentAbility = new MagnetAbility(middlePositionAttachment.gameObject, 5, abilityDataBase.CoinMagnetAbilityData);
-                        currentAbility.onAbilityEffectFinished += OnAbilityEffectFinished;
-                        currentAbility.Activate();
+                case GameplayEvents.OnShieldCollected:
+                    {
+                        ActivateAbility(new ShieldAbility(middlePositionAttachment.gameObject, abilityDataBase.ShieldAbilityData, crashDetectionCollider));
                         break;
                     }
 
@@ -273,6 +275,20 @@ namespace PlanesRemake.Runtime.Gameplay
             //And yes, the direction also has this constraint, but the problem comes back when calculating 
             //the speed for each axis (-_-) 
             return Vector3.ClampMagnitude(velocity, movementSpeed);
+        }
+
+        private void ActivateAbility(BaseAbility baseAbility)
+        {
+            if (currentAbility != null)
+            {
+                currentAbility.onAbilityEffectFinished -= OnAbilityEffectFinished;
+                currentAbility.Deactivate();
+                currentAbility = null;
+            }
+
+            currentAbility = baseAbility;
+            currentAbility.onAbilityEffectFinished += OnAbilityEffectFinished;
+            currentAbility.Activate();
         }
 
         private void OnAbilityEffectFinished()

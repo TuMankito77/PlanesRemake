@@ -1,8 +1,11 @@
 namespace PlanesRemake.Runtime.Gameplay.Spawners
 {
+    using System.Collections.Generic;
+    
     using UnityEngine;
 
     using PlanesRemake.Runtime.Utils;
+    using PlanesRemake.Runtime.Events;
 
     public class ObstacleSpawner : TimerSpawner
     {
@@ -41,7 +44,7 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
             Obstacle obstacle = instance as Obstacle;
             int osilatingSpeed = Random.Range(5, 11);
             float osilationDistance = Random.Range(1, boundaries.top);
-            obstacle.Initialize(Aircraft.AIRCRAFT_TAG, prefabInstancesPool, boundaries, movementSpeed: 3, osilatingSpeed, osilationDistance);
+            obstacle.Initialize(Aircraft.CRASH_DETECTION_COLLIDER_TAG, Aircraft.AIRCRAFT_TAG, prefabInstancesPool, boundaries, movementSpeed: 3, osilatingSpeed, osilationDistance);
         }
     }
 }

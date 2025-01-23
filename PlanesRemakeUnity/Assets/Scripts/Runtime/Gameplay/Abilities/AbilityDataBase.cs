@@ -11,6 +11,10 @@ namespace PlanesRemake.Runtime.Gameplay.Abilities
         [SerializeField]
         private MagnetAbilityData coinMagnetAbilityData = null;
 
+        [SerializeField]
+        private ShieldAbilityData shieldAbilityData = null;
+
         public MagnetAbilityData CoinMagnetAbilityData => coinMagnetAbilityData;
+        public ShieldAbilityData ShieldAbilityData => shieldAbilityData;
     }
 }

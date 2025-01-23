@@ -3,11 +3,11 @@ namespace PlanesRemake.Runtime.Gameplay
     using System;
     
     using UnityEngine;
+    using UnityEngine.Pool;
     
     using PlanesRemake.Runtime.Gameplay.CommonBehaviors;
     using PlanesRemake.Runtime.Events;
     using PlanesRemake.Runtime.Utils;
-    using UnityEngine.Pool;
 
     [RequireComponent(typeof(DirectionalMovement), typeof(OsilateMovement))]
     public class Obstacle : BasePoolableObject, IListener
@@ -28,7 +28,8 @@ namespace PlanesRemake.Runtime.Gameplay
         private ObjectPoolReleaser objectPoolReleaser = null;
         
         private bool wasCrossed = false;
-        private string triggerDetectionTag = string.Empty;
+        private string crashTriggerDetectionTag = string.Empty;
+        private string evadedTriggerDetectionTag = string.Empty;
         private IObjectPool<BasePoolableObject> obstaclesPool = null;
 
         protected override IObjectPool<BasePoolableObject> ObjectPool => obstaclesPool;
@@ -39,7 +40,8 @@ namespace PlanesRemake.Runtime.Gameplay
         {
             foreach (CollisionEventNotifier wallCollider in wallColliders)
             {
-                wallCollider.OnTiggerEnterDetected += OnWallTriggerEntered;
+                wallCollider.OnTiggerEnterDetected += OnWallTriggerEnter;
+                wallCollider.OnTriggerExitDetected += OnWallTriggerExit;
             }
 
             gapCollider.OnTriggerExitDetected += OnGapTriggerExited;
@@ -50,7 +52,8 @@ namespace PlanesRemake.Runtime.Gameplay
         {
             foreach (CollisionEventNotifier wallCollider in wallColliders)
             {
-                wallCollider.OnTiggerEnterDetected -= OnWallTriggerEntered;
+                wallCollider.OnTiggerEnterDetected -= OnWallTriggerEnter;
+                wallCollider.OnTriggerExitDetected -= OnWallTriggerExit;
             }
 
             gapCollider.OnTriggerExitDetected -= OnGapTriggerExited;
@@ -89,9 +92,10 @@ namespace PlanesRemake.Runtime.Gameplay
 
         //NOTE: We can create a container that has all of this information so that it gets passed in
         //and we do not have this long list of parameters 
-        public void Initialize(string sourceTriggerDetectionTag, IObjectPool<BasePoolableObject> sourceObstaclesPool, CameraBoundaries cameraBoundaries, float movementSpeed, float osilationSpeed, float osilationDistance)
+        public void Initialize(string sourceCrashTriggerDetectionTag, string sourceEvadedTriggerDetectionTag, IObjectPool<BasePoolableObject> sourceObstaclesPool, CameraBoundaries cameraBoundaries, float movementSpeed, float osilationSpeed, float osilationDistance)
         {
-            triggerDetectionTag = sourceTriggerDetectionTag;
+            crashTriggerDetectionTag = sourceCrashTriggerDetectionTag;
+            evadedTriggerDetectionTag = sourceEvadedTriggerDetectionTag;
             obstaclesPool = sourceObstaclesPool;
             objectPoolReleaser.SetCameraBoundaries(cameraBoundaries);
             Vector3 velocityVector = new Vector3(-movementSpeed, 0, 0);
@@ -102,17 +106,27 @@ namespace PlanesRemake.Runtime.Gameplay
             wasCrossed = false;
         }
 
-        private void OnWallTriggerEntered(Collider other)
+        private void OnWallTriggerEnter(Collider other)
         {
-            if(other.tag == triggerDetectionTag)
+            if(other.tag == crashTriggerDetectionTag)
             {
                 EventDispatcher.Instance.Dispatch(GameplayEvents.OnWallcollision, other);
             }
         }
 
+        private void OnWallTriggerExit(Collider other)
+        {
+            MarkWallAsEvaded(other);
+        }
+
         private void OnGapTriggerExited(Collider other)
         {
-            if(other.tag == triggerDetectionTag && !wasCrossed &&
+            MarkWallAsEvaded(other);
+        }
+
+        private void MarkWallAsEvaded(Collider other)
+        {
+            if (other.tag == evadedTriggerDetectionTag && !wasCrossed &&
                 other.transform.position.x > transform.position.x)
             {
                 wasCrossed = true;

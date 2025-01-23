@@ -8,6 +8,7 @@ namespace PlanesRemake.Runtime.Events
         OnAircraftDestroyed,
         OnFuelEmpty,
         OnFuelCollected,
-        OnCoinMagnetCollected
+        OnCoinMagnetCollected,
+        OnShieldCollected
     }
 }

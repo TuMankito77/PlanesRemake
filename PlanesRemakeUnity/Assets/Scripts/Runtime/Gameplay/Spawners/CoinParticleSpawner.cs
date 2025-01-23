@@ -7,6 +7,7 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
 
     using PlanesRemake.Runtime.Events;
     using PlanesRemake.Runtime.Utils;
+    using PlanesRemake.Runtime.Gameplay.PickUps;
 
     public class CoinParticleSpawner : EventDrivenSpawner
     {
@@ -65,6 +66,25 @@ namespace PlanesRemake.Runtime.Gameplay.Spawners
                     {
                         Fuel fuel = data as Fuel;
                         SpawnParticles(fuel.transform.position);
+                        break;
+                    }
+
+                case GameplayEvents.OnCoinMagnetCollected:
+                    {
+                        CoinMagnet coinMagnet = data as CoinMagnet;
+                        SpawnParticles(coinMagnet.transform.position);
+                        break;
+                    }
+
+                case GameplayEvents.OnShieldCollected:
+                    {
+                        Shield shield = data as Shield;
+                        SpawnParticles(shield.transform.position);
+                        break;
+                    }
+
+                default:
+                    {
                         break;
                     }
             }

@@ -1,5 +1,6 @@
 namespace PlanesRemake.Runtime.Core
 {
+    using System.Threading.Tasks;
     using System.Collections.Generic;
     
     using UnityEngine;
@@ -7,11 +8,11 @@ namespace PlanesRemake.Runtime.Core
     using PlanesRemake.Runtime.Gameplay;
     using PlanesRemake.Runtime.Gameplay.Spawners;
     using PlanesRemake.Runtime.Sound;
-    using System.Threading.Tasks;
     using PlanesRemake.Runtime.Utils;
     using PlanesRemake.Runtime.UI;
     using PlanesRemake.Runtime.UI.Views;
     using PlanesRemake.Runtime.Gameplay.Abilities;
+    using PlanesRemake.Runtime.Gameplay.PickUps;
 
     public class LevelInitializer : BaseSystem
     {
@@ -20,6 +21,7 @@ namespace PlanesRemake.Runtime.Core
         private const string COIN_PREFAB_PATH = "MainLevel/Coin";
         private const string FUEL_PREFAB_PATH = "MainLevel/Fuel";
         private const string MAGNET_PREFAB_PATH = "MainLevel/Magnet";
+        private const string SHIELD_PREFAB_PATH = "MainLevel/Shield";
         private const string COIN_VFX_PREFAB_PATH = "MainLevel/VFX_CoinCollected";
         private const string BACKGROUND_RENDERING_CAMERA_PREFAB_PATH = "MainLevel/BackgroundRenderingCamera";
         private const string ISOMETRIC_CAMERA_PREFAB_PATH = "MainLevel/IsometricCamera";
@@ -120,6 +122,16 @@ namespace PlanesRemake.Runtime.Core
             CoinMagnet magnetPrefab = await contentLoader.LoadAsset<CoinMagnet>(MAGNET_PREFAB_PATH);
             spawners.Add(new PickUpSpawner(
                 magnetPrefab,
+                SPAWNER_POOL_SIZE,
+                SPAWNER_POOL_MAX_CAPACITY,
+                isometricCamera,
+                audioManager,
+                cameraBoundariesOffset,
+                minSpawningTime: 25,
+                maxSpawningTime: 30));
+            Shield shieldPrefab = await contentLoader.LoadAsset<Shield>(SHIELD_PREFAB_PATH);
+            spawners.Add(new PickUpSpawner(
+                shieldPrefab,
                 SPAWNER_POOL_SIZE,
                 SPAWNER_POOL_MAX_CAPACITY,
                 isometricCamera,

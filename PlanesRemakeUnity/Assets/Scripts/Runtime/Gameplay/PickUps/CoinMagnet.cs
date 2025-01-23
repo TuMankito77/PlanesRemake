@@ -1,4 +1,4 @@
-namespace PlanesRemake.Runtime.Gameplay
+namespace PlanesRemake.Runtime.Gameplay.PickUps
 {
     using PlanesRemake.Runtime.Events;
     using PlanesRemake.Runtime.Sound;
