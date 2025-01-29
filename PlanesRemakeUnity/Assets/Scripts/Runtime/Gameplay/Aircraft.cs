@@ -54,6 +54,8 @@ namespace PlanesRemake.Runtime.Gameplay
         //NOTE: Remove this timer once we have an animation an we know when the destroy animation finishes.
         private Timer timer = null;
 
+        public float MovementSpeed => movementSpeed;
+
         #region Unity Methods
 
         private void Update()
@@ -115,6 +117,11 @@ namespace PlanesRemake.Runtime.Gameplay
             abilityDataBase = sourceAbilityDatabase;
             transform.position = boundaries.center;
             EventDispatcher.Instance.Dispatch(UiEvents.OnSetFuelTimerDuration, fuelDuration);
+        }
+
+        public void UpdateMovementSpeed(float speed)
+        {
+            movementSpeed = speed;
         }
 
         public void UpdateDirection(Vector2 sourceDirection)
@@ -218,6 +225,12 @@ namespace PlanesRemake.Runtime.Gameplay
                 case GameplayEvents.OnShieldCollected:
                     {
                         ActivateAbility(new ShieldAbility(middlePositionAttachment.gameObject, abilityDataBase.ShieldAbilityData, crashDetectionCollider));
+                        break;
+                    }
+
+                case GameplayEvents.OnSpeedBoosterCollected:
+                    {
+                        ActivateAbility(new SpeedBoosterAbility(middlePositionAttachment.gameObject, abilityDataBase.SpeedBoosterAbilityData, this));
                         break;
                     }
 

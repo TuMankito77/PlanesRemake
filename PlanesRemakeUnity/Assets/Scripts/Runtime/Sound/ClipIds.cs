@@ -12,6 +12,7 @@ namespace PlanesRemake.Runtime.Sound
 		public const string FUEL_CLIP = "FuelClip";
 		public const string MAGNET_CLIP = "MagnetClip";
 		public const string SHIELD_CLIP = "ShieldClip";
+		public const string SPEED_BOOSTER_CLIP = "SpeedBoosterClip";
 	}
 }
 
