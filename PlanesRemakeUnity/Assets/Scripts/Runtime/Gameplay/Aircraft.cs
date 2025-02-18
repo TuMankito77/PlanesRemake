@@ -234,6 +234,12 @@ namespace PlanesRemake.Runtime.Gameplay
                         break;
                     }
 
+                case GameplayEvents.OnCoinMultiplierCollected:
+                    {
+                        ActivateAbility(new CoinMultiplierAbility(middlePositionAttachment.gameObject, abilityDataBase.CoinMultiplierAbilityData, meshRenderersToHideWhenCrashing));
+                        break;
+                    }
+
                 default:
                     {
                         break;

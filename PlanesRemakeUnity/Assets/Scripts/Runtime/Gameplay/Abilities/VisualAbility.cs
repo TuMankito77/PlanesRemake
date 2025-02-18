@@ -1,35 +1,53 @@
 namespace PlanesRemake.Runtime.Gameplay.Abilities
 {
+    using System.Collections.Generic;
+
     using UnityEngine;
 
-    public class VisualAbility : BaseAbility
+    public abstract class VisualAbility : BaseAbility
     {
-        protected GameObject AbilityVisualPrefabInstance = null;
+        protected GameObject abilityVisualPrefabInstance = null;
         private AnimationCurve transparencyOverTime = AnimationCurve.EaseInOut(0, 0, 1, 1);
-        private Material abilityMaterial = null;
+        private List<Material> abilityMaterials = null;
 
         protected override bool IsAbilityTimerTickEnabled => true;
 
         public VisualAbility(GameObject sourceOwner, AbilityData sourceAbilityData) : 
             base(sourceOwner, sourceAbilityData)
         {
-            AbilityVisualPrefabInstance = GameObject.Instantiate(sourceAbilityData.AbilityVisualPrefab, owner.transform);
-            MeshRenderer meshRenderer = AbilityVisualPrefabInstance.GetComponent<MeshRenderer>();
-            abilityMaterial = meshRenderer.material;
-            abilityMaterial.SetFloat("_Transparency", 0);
+            abilityVisualPrefabInstance = GameObject.Instantiate(sourceAbilityData.AbilityVisualPrefab, owner.transform);
+            abilityMaterials = new List<Material>();
+            MeshRenderer meshRenderer = abilityVisualPrefabInstance.GetComponent<MeshRenderer>();
+
+            if(meshRenderer != null)
+            {
+                abilityMaterials.Add(meshRenderer.material);
+            }
+
+            UpdateMaterialsTransparency(0);
             transparencyOverTime = sourceAbilityData.TransparencyOverTime;
         }
 
         protected override void OnAbilityTimerTick(float deltaTime, float timeTranscurred)
         {
             base.OnAbilityTimerTick(deltaTime, timeTranscurred);
-            abilityMaterial.SetFloat("_Transparency", transparencyOverTime.Evaluate(timeTranscurred / activeTimer.Duration));
+            UpdateMaterialsTransparency(transparencyOverTime.Evaluate(timeTranscurred / activeTimer.Duration));
         }
 
         public override void Deactivate()
         {
             base.Deactivate();
-            GameObject.Destroy(AbilityVisualPrefabInstance);
+            abilityMaterials.Clear();
+            abilityMaterials = null;
+            GameObject.Destroy(abilityVisualPrefabInstance);
+        }
+
+        private void UpdateMaterialsTransparency(float transparency)
+        {
+            foreach(Material material in abilityMaterials)
+            {
+                material.SetFloat("_Transparency", transparency);
+            }
         }
     }
 }

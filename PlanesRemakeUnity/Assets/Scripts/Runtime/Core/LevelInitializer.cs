@@ -23,6 +23,7 @@ namespace PlanesRemake.Runtime.Core
         private const string MAGNET_PREFAB_PATH = "MainLevel/Magnet";
         private const string SHIELD_PREFAB_PATH = "MainLevel/Shield";
         private const string SPEED_BOOSTER_PREFAB_PATH = "MainLevel/SpeedBooster";
+        private const string COIN_MULTIPLIER_PREFAB_PATH = "MainLevel/CoinMultiplier";
         private const string COIN_VFX_PREFAB_PATH = "MainLevel/VFX_CoinCollected";
         private const string BACKGROUND_RENDERING_CAMERA_PREFAB_PATH = "MainLevel/BackgroundRenderingCamera";
         private const string ISOMETRIC_CAMERA_PREFAB_PATH = "MainLevel/IsometricCamera";
@@ -150,6 +151,16 @@ namespace PlanesRemake.Runtime.Core
                 cameraBoundariesOffset,
                 minSpawningTime: 15,
                 maxSpawningTime: 20));
+            CoinMultiplier coinMultiplierPrefab = await contentLoader.LoadAsset<CoinMultiplier>(COIN_MULTIPLIER_PREFAB_PATH);
+            spawners.Add(new PickUpSpawner(
+                coinMultiplierPrefab,
+                SPAWNER_POOL_SIZE,
+                SPAWNER_POOL_MAX_CAPACITY,
+                isometricCamera,
+                audioManager,
+                cameraBoundariesOffset,
+                minSpawningTime: 40,
+                maxSpawningTime: 45));
             TimerPoolableObject timerPoolableObjectPrefab = await contentLoader.LoadAsset<TimerPoolableObject>(COIN_VFX_PREFAB_PATH);
             spawners.Add(new CoinParticleSpawner(timerPoolableObjectPrefab, SPAWNER_POOL_SIZE, SPAWNER_POOL_MAX_CAPACITY));
             return true;

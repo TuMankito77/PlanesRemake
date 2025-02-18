@@ -17,8 +17,12 @@ namespace PlanesRemake.Runtime.Gameplay.Abilities
         [SerializeField]
         private SpeedBoosterAbilityData speedBoosterAbilityData = null;
 
+        [SerializeField]
+        private CoinMultiplierAbilityData coinMultiplierAbilityData = null;
+
         public MagnetAbilityData CoinMagnetAbilityData => coinMagnetAbilityData;
         public ShieldAbilityData ShieldAbilityData => shieldAbilityData;
         public SpeedBoosterAbilityData SpeedBoosterAbilityData => speedBoosterAbilityData;
+        public CoinMultiplierAbilityData CoinMultiplierAbilityData => coinMultiplierAbilityData;
     }
 }

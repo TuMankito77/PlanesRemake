@@ -22,7 +22,7 @@ namespace PlanesRemake.Runtime.Gameplay.Abilities
             :base(sourceOwner, sourceMagnetAbilityData)
         {
             pickUpItemsAttracted = new List<BasePickUpItem>();
-            coinCollisionDetection = AbilityVisualPrefabInstance.GetComponent<CollisionEventNotifier>();
+            coinCollisionDetection = abilityVisualPrefabInstance.GetComponent<CollisionEventNotifier>();
             attractionSpeed = sourceMagnetAbilityData.AttractionSpeed;
             pickUpItemTag = sourceMagnetAbilityData.PickUpItemTag;
             eventsToListenFor.Add(typeof(GameplayEvents));

@@ -17,6 +17,8 @@ namespace PlanesRemake.Runtime.Core
     using PlanesRemake.Runtime.Utils;
     using PlanesRemake.Runtime.UI.Views.DataContainers;
     using PlanesRemake.Runtime.Localization;
+    using PlanesRemake.Runtime.Gameplay.Abilities;
+    using PlanesRemake.Runtime.Gameplay.PickUps;
 
     public class GameManager : IListener
     {
@@ -35,6 +37,7 @@ namespace PlanesRemake.Runtime.Core
         private StorageAccessor storageAccessor = null;
         private int gameSessionCoinsCollected = 0;
         private int gameSessionWallsEvaded = 0;
+        private int coinMultiplier = 1;
 
         public bool IsGamePaused { get; private set; } = false;
 
@@ -58,12 +61,13 @@ namespace PlanesRemake.Runtime.Core
             systemsInitializer.OnSystemsInitialized += OnSystemsInitialized;
             systemsInitializer.InitializeSystems(baseSystems);
 
-            EventDispatcher.Instance.AddListener(this, typeof(UiEvents), typeof(GameplayEvents));
+            EventDispatcher.Instance.AddListener(this, typeof(UiEvents), typeof(GameplayEvents), typeof(AbilityEvents));
         }
 
         ~GameManager()
         {
             systemsInitializer.OnSystemsInitialized -= OnSystemsInitialized;
+            EventDispatcher.Instance.RemoveListener(this, typeof(UiEvents), typeof(GameplayEvents), typeof(AbilityEvents));
         }
 
         #region IListener
@@ -81,6 +85,12 @@ namespace PlanesRemake.Runtime.Core
                 case GameplayEvents gameplayEvent:
                     {
                         HandleGameplayEvents(gameplayEvent, data);
+                        break;
+                    }
+
+                case AbilityEvents abilityEvent:
+                    {
+                        HandleAbilityEvents(abilityEvent, data);
                         break;
                     }
 
@@ -311,8 +321,9 @@ namespace PlanesRemake.Runtime.Core
 
                 case GameplayEvents.OnCoinCollected:
                     {
-                        playerInformation.CoinsCollected++;
-                        gameSessionCoinsCollected++;
+                        Coin coin = data as Coin;
+                        playerInformation.CoinsCollected += (coin.CoinValue * coinMultiplier);
+                        gameSessionCoinsCollected += (coin.CoinValue * coinMultiplier);
                         string coinsCollectedAsString = gameSessionCoinsCollected.ToString();
                         EventDispatcher.Instance.Dispatch(UiEvents.OnCoinsValueChanged, coinsCollectedAsString);
                         break;
@@ -396,6 +407,30 @@ namespace PlanesRemake.Runtime.Core
             {
                 PlayerInformation playerInformationFound = storageAccessor.Load<PlayerInformation>(playerInformation.Key);
                 playerInformationFound.TrasferValidValues(ref playerInformation);
+            }
+        }
+
+        private void HandleAbilityEvents(AbilityEvents abilityEvent, object data)
+        {
+            switch(abilityEvent)
+            {
+                case AbilityEvents.OnCoinMultiplierActivated:
+                    {
+                        CoinMultiplierAbility coinMultiplierAbility = data as CoinMultiplierAbility;
+                        coinMultiplier = coinMultiplierAbility.CoinMultiplier;
+                        break;
+                    }
+
+                case AbilityEvents.OnCoinMultiplierDeactivated:
+                    {
+                        coinMultiplier = 1;
+                        break;
+                    }
+
+                default:
+                    {
+                        break;
+                    }
             }
         }
     }
