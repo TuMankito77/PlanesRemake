@@ -7,6 +7,8 @@ TagManager:
   - Enemy
   - Coin
   - Aircraft
+  - Shield
+  - CrashCollider
   layers:
   - Default
   - TransparentFX
@@ -15,10 +17,10 @@ TagManager:
   - Water
   - UI
   - Isometric
-  - 
+  - Aircraft
   - PostProcessing
-  - 
-  - 
+  - WallCollision
+  - Coin
   - 
   - 
   - 
