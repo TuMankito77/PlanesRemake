@@ -67,7 +67,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0d958e14d0efa414eb663abf07f8bb17, type: 2}
+  - {fileID: 2100000, guid: 1a2628a6e05857c4bb815eaaeece56e3, type: 2}
   - {fileID: 2100000, guid: 1ee9d7eb49f7c4d4987ab7dc7c853c19, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -160,6 +160,7 @@ MonoBehaviour:
   directionalMovement: {fileID: -433340286096653637}
   directionalSpinning: {fileID: 8073224409989380935}
   objectPoolReleaser: {fileID: -228672230060306833}
+  coinValue: 1
 --- !u!65 &-7572474321189022231
 BoxCollider:
   m_ObjectHideFlags: 0

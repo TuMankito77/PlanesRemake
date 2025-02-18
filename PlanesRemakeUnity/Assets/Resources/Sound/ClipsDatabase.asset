@@ -31,3 +31,5 @@ MonoBehaviour:
     file: {fileID: 8300000, guid: fe9688037ab61b845a62c95c1bca923e, type: 3}
   - id: SpeedBoosterClip
     file: {fileID: 8300000, guid: fe9688037ab61b845a62c95c1bca923e, type: 3}
+  - id: CoinMultiplierClip
+    file: {fileID: 8300000, guid: fe9688037ab61b845a62c95c1bca923e, type: 3}

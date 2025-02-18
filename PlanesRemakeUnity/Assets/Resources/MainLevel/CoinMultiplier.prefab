@@ -16,9 +16,9 @@ GameObject:
   - component: {fileID: 5209237313255911734}
   - component: {fileID: 2591066149128651110}
   - component: {fileID: 6873165779635352711}
-  - component: {fileID: -4210574643265183146}
+  - component: {fileID: 7307153396645697067}
   m_Layer: 6
-  m_Name: Shield
+  m_Name: CoinMultiplier
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -100,7 +100,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 357805008572273756}
-  m_Mesh: {fileID: -462981019419857548, guid: 0366bb32b899ab347a2b408dcc0b6a6c, type: 3}
+  m_Mesh: {fileID: -693113712858086294, guid: 3eedecf445570fd4faa2c2b4f54eb361, type: 3}
 --- !u!23 &2591066149128651110
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -121,8 +121,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 960327ecd1f405a438800f185dffa7f3, type: 2}
-  - {fileID: 2100000, guid: 8da8ac49b3239844a9d62ec101e3da8c, type: 2}
+  - {fileID: 2100000, guid: 1a2628a6e05857c4bb815eaaeece56e3, type: 2}
+  - {fileID: 2100000, guid: 1ee9d7eb49f7c4d4987ab7dc7c853c19, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -163,9 +163,9 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 0.6}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-4210574643265183146
+  m_Size: {x: 1.79, y: 2, z: 0.6}
+  m_Center: {x: 0.09, y: 0, z: 0}
+--- !u!114 &7307153396645697067
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -174,7 +174,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 357805008572273756}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c6e199fd8c740f4fbca6a10f0d718e1, type: 3}
+  m_Script: {fileID: 11500000, guid: 3a787006f86689440bfe09075a776ab9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionEventNotifier: {fileID: 749794728765401390}
